@@ -3,21 +3,17 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-const passport = require('passport');
+const passport = require("passport");
 
 // Load input validation
-const validateLoginInput = require('../../validation/login')
+const validateLoginInput = require("../../validation/login");
 
-// Load admin model
 const Base = require("../../models/Base");
 
 router.post("/login", (req, res) => {
-
-  const {errors, isValid} = validateLoginInput(req.body);
-  if(!isValid){
-
-   return res.status(400).json(errors);
-   
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
 
   const email = req.body.email;
@@ -29,7 +25,6 @@ router.post("/login", (req, res) => {
     // check for user
 
     if (!user) {
-
       errors.email = "User not found";
       return res.status(404).json(errors.email);
     }
@@ -42,25 +37,28 @@ router.post("/login", (req, res) => {
         //User matched
 
         // Logged in user information
-        const payload = { id: user.id, name: user.name, email: user.email, institution: user.institution}; // Create JWT Payload
+        const payload = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          institution: user.institution,
+          userType: user.userType
+        }; // Create JWT Payload
 
         // Sign the token
-        // Token valid for 3 hours, after that you have to login again
-        jwt.sign(payload, keys.secretOrKey, { expiresIn: 10800 }, (err, token) => {
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          (err, token) => {
+            if (err) throw err;
 
-          if(err) throw err;
-
-          res.json({
-
-            success: true,
-            token: 'Bearer ' + token
-
-          });
-
-
-        });
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          }
+        );
       } else {
-
         errors.password = "Incorrect password";
         return res.status(400).json(errors.password);
       }
@@ -72,16 +70,17 @@ router.post("/login", (req, res) => {
 // @desc Return current user
 // @access Private
 
-router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
-
-  
-  res.json({
-    id: req.user.id,
-    name: req.user.name,
-    email: req.user.email,
-    institution: req.user.institution
-  });
-
-});
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      institution: req.user.institution
+    });
+  }
+);
 
 module.exports = router;

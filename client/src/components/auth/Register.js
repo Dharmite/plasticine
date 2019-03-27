@@ -1,23 +1,43 @@
 import React, { Component } from "react";
-import axios from 'axios';
-import classnames from 'classnames';
+import classnames from "classnames";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 class Register extends Component {
-
   state = {
-    name: '',
-    email: '',
-    password: '',
-    password2: '',
-    institution: '',
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+    institution: "",
     errors: {}
+  };
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      if (this.props.auth.isAdmin) {
+        this.props.history.push("/admin-dashboard");
+      } else if (this.props.auth.isTherapist) {
+        this.props.history.push("/therapist-dashboard");
+      } else if (this.props.auth.isParent) {
+        this.props.history.push("/parent-dashboard");
+      }
+    }
   }
 
-  onChange = (e) => {
-    this.setState({[e.target.name]: e.target.value});
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
-  onSubmit = (e) => {
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = e => {
     e.preventDefault();
 
     const newUser = {
@@ -26,17 +46,12 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2,
       institution: this.state.institution
-    }
+    };
 
-    axios.post('/api/admin/register', newUser)
-    .then(res => console.log(res.data))
-    .catch(err => this.setState({errors: err.response.data}));
-    
-  }
+    this.props.registerUser(newUser, this.props.history);
+  };
 
   render() {
-
-
     const { errors } = this.state;
 
     // const errors = this.state.errors;
@@ -47,92 +62,84 @@ class Register extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Registo</h1>
-              <p className="lead text-center">Registe-se como administrador do seu centro</p>
-              <form noValidate onSubmit = {this.onSubmit}>
+              <p className="lead text-center">
+                Registe-se como administrador do seu centro
+              </p>
+              <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{
-                      'is-invalid': errors.name
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.name
                     })}
                     placeholder="Nome"
                     name="name"
-                    value = {this.state.name}
-                    onChange = {this.onChange}
+                    value={this.state.name}
+                    onChange={this.onChange}
                   />
                   {errors.name ? (
-                    <div class="invalid-feedback">
-                      {errors.name}
-                    </div>
-                  ): null}
+                    <div class="invalid-feedback">{errors.name}</div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
                     type="email"
-                    className={classnames("form-control form-control-lg",{
-                      'is-invalid': errors.email
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.email
                     })}
                     placeholder="Email"
                     name="email"
-                    value = {this.state.email}
-                    onChange = {this.onChange}
+                    value={this.state.email}
+                    onChange={this.onChange}
                   />
                   {errors.email ? (
-                    <div class="invalid-feedback">
-                      {errors.email}
-                    </div>
-                  ): null}
+                    <div class="invalid-feedback">{errors.email}</div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className={classnames("form-control form-control-lg",{
-                      'is-invalid': errors.password
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.password
                     })}
                     placeholder="Password"
                     name="password"
-                    value = {this.state.password}
-                    onChange = {this.onChange}
+                    value={this.state.password}
+                    onChange={this.onChange}
                   />
                   {errors.password ? (
-                    <div class="invalid-feedback">
-                      {errors.password}
-                    </div>
-                  ): null}
+                    <div class="invalid-feedback">{errors.password}</div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className={classnames("form-control form-control-lg",{
-                      'is-invalid': errors.password2
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.password2
                     })}
                     placeholder="Confirme a sua Password"
                     name="password2"
-                    value = {this.state.password2}
-                    onChange = {this.onChange}
+                    value={this.state.password2}
+                    onChange={this.onChange}
                   />
                   {errors.password2 ? (
-                    <div class="invalid-feedback">
-                      {errors.password2}
-                    </div>
-                  ): null}
+                    <div class="invalid-feedback">{errors.password2}</div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{
-                      'is-invalid': errors.institution
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.institution
                     })}
                     placeholder="Instituição"
                     name="institution"
-                    value = {this.state.institution}
-                    onChange = {this.onChange}
+                    value={this.state.institution}
+                    onChange={this.onChange}
                   />
                   {errors.institution ? (
-                    <div class="invalid-feedback">
-                      {errors.institution}
-                    </div>
-                  ): null}
+                    <div class="invalid-feedback">{errors.institution}</div>
+                  ) : null}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
@@ -144,4 +151,18 @@ class Register extends Component {
   }
 }
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));

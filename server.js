@@ -8,8 +8,6 @@ const users = require("./routes/api/users");
 
 const app = express();
 
-app.use(express.static("client"));
-
 // body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
