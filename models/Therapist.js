@@ -6,7 +6,68 @@ const TherapistSchema = new Schema({
   specialty: {
     type: String,
     required: true
-  }
+  },
+  patient: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "patient"
+    }
+  ],
+
+  previousPatients: [{
+      name: {
+        type: String,
+        required: true
+      },
+    
+      age: {
+        type: String,
+        required: true
+      },
+    
+      clinicalStatus: {
+        type: String,
+        required: true
+      },
+    
+      schoolName: {
+        type: String,
+        required: true
+      },
+    
+      schoolSchedule: {
+        type: String,
+        required: true
+      },
+    
+      medicine: [
+        {
+          name: {
+            type: String,
+            required: true
+          },
+          observation: {
+            type: String,
+            required: true
+          },
+          dosage: {
+            type: String,
+            required: true
+          },
+          time: {
+            type: String,
+            required: true
+          },
+          startingDate: {
+            type: Date
+          },
+          finishedDate: {
+            type: Date
+          }
+        }
+      ]
+  }]
+
 });
 
 module.exports = Therapist = Base.discriminator("therapist", TherapistSchema);

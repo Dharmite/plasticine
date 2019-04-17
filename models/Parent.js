@@ -3,14 +3,12 @@ const Schema = mongoose.Schema;
 const Base = require("./Base");
 
 const ParentSchema = new Schema({
-  childName: {
-    type: String,
-    required: true
-  },
-  childAge: {
-    type: Number,
-    required: true
-  }
+  patient: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "patient"
+    }
+  ]
 });
 
 module.exports = Parent = Base.discriminator("parent", ParentSchema);

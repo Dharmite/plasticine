@@ -8,10 +8,7 @@ import { withRouter } from "react-router-dom";
 class Navbar extends Component {
   onLogoutClick(e) {
     e.preventDefault();
-    // this.props.logoutUser();
     this.props.logoutUser(this.props.history);
-
-    // window.location.href = '/';
   }
 
   render() {
@@ -21,7 +18,7 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <a href="" className="nav-link">
-            Dashboard
+            Perfil
           </a>
         </li>
         <li className="nav-item">
@@ -30,7 +27,7 @@ class Navbar extends Component {
             onClick={this.onLogoutClick.bind(this)}
             className="nav-link"
           >
-            Logout
+            Sair
           </a>
         </li>
       </ul>
@@ -40,12 +37,12 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/register">
-            Sign Up
+            Registo
           </Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="/login">
-            Login
+            Entrar
           </Link>
         </li>
       </ul>

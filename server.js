@@ -5,6 +5,8 @@ const express = require("express"),
 
 const admin = require("./routes/api/admin");
 const users = require("./routes/api/users");
+const patientProfile = require("./routes/api/patient-profile");
+
 
 const app = express();
 
@@ -24,8 +26,10 @@ app.use(passport.initialize());
 // Passport config
 require('./config/passport')(passport);
 
-app.use("/api/admin", admin);
 app.use("/api/users", users);
+app.use("/api/admin", admin);
+app.use("/api/patient-profile", patientProfile);
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to plasticine");

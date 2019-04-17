@@ -8,7 +8,7 @@ import axios from "axios";
 
 export const registerUser = (userData, history) => dispatch => {
   axios
-    .post("/api/admin/register", userData)
+    .post("/api/users/register", userData)
     .then(res => history.push("login"))
     .catch(err =>
       dispatch({

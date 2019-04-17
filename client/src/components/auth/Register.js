@@ -11,7 +11,6 @@ class Register extends Component {
     email: "",
     password: "",
     password2: "",
-    institution: "",
     errors: {}
   };
 
@@ -44,8 +43,7 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2,
-      institution: this.state.institution
+      password2: this.state.password2
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -124,21 +122,6 @@ class Register extends Component {
                   />
                   {errors.password2 ? (
                     <div class="invalid-feedback">{errors.password2}</div>
-                  ) : null}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.institution
-                    })}
-                    placeholder="Instituição"
-                    name="institution"
-                    value={this.state.institution}
-                    onChange={this.onChange}
-                  />
-                  {errors.institution ? (
-                    <div class="invalid-feedback">{errors.institution}</div>
                   ) : null}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
