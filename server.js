@@ -6,7 +6,8 @@ const express = require("express"),
 const admin = require("./routes/api/admin");
 const users = require("./routes/api/users");
 const patientProfile = require("./routes/api/patient-profile");
-
+const resource = require("./routes/api/resource");
+const therapeuticNote = require("./routes/api/therapeuticNote");
 
 const app = express();
 
@@ -29,7 +30,8 @@ require('./config/passport')(passport);
 app.use("/api/users", users);
 app.use("/api/admin", admin);
 app.use("/api/patient-profile", patientProfile);
-
+app.use("/api/resource", resource);
+app.use("/api/therapeuticNote", therapeuticNote);
 
 app.get("/", (req, res) => {
   res.send("Welcome to plasticine");

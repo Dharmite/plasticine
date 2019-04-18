@@ -6,6 +6,10 @@ const TherapeuticNoteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "base"
   },
+  patient: {
+    type: Schema.Types.ObjectId,
+    ref: "patient"
+  },
   title: {
     type: String,
     required: true
@@ -44,7 +48,4 @@ const TherapeuticNoteSchema = new Schema({
   ]
 });
 
-module.exports = TherapeuticNote = mongoose.model(
-  "therapeuticnote",
-  TherapeuticNoteSchema
-);
+module.exports = TherapeuticNote = mongoose.model("therapeuticnote",TherapeuticNoteSchema);

@@ -23,7 +23,25 @@ const isParent = (req, res, next) => {
 const isTherapist = (req, res, next) => {
 
     if(req.user.userType !== "therapist"){
-        res.json({msg: "merda"});
+        res.json({msg: "unauthorized"});
+    }else{
+        return next();
+    }
+};
+
+const isTherapistOrAdmin = (req, res, next) => {
+
+    if(req.user.userType !== "admin" && req.user.userType !== "therapist"){
+        res.json({msg: "unauthorized"});
+    }else{
+        return next();
+    }
+};
+
+const isTherapistOrParent = (req, res, next) => {
+
+    if(req.user.userType !== "parent" && req.user.userType !== "therapist"){
+        res.json({msg: "unauthorized"});
     }else{
         return next();
     }
@@ -32,5 +50,7 @@ const isTherapist = (req, res, next) => {
 module.exports = {
   isAdmin: isAdmin,
   isParent: isParent,
-  isTherapist: isTherapist
+  isTherapist: isTherapist,
+  isTherapistOrAdmin:isTherapistOrAdmin,
+  isTherapistOrParent: isTherapistOrParent
 };

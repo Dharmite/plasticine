@@ -1,12 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Base = require('./Base');
+const Base = require("./Base");
 
 const TherapistSchema = new Schema({
   specialty: {
     type: String,
     required: true
   },
+  specialtyList: [
+    "Psicologia",
+    "Terapia da Fala",
+    "Psicomotricidade",
+    "Fisioterapia",
+    "Terapia Ocupacional"
+  ],
   patient: [
     {
       type: Schema.Types.ObjectId,
@@ -14,32 +21,33 @@ const TherapistSchema = new Schema({
     }
   ],
 
-  previousPatients: [{
+  previousPatients: [
+    {
       name: {
         type: String,
         required: true
       },
-    
+
       age: {
         type: String,
         required: true
       },
-    
+
       clinicalStatus: {
         type: String,
         required: true
       },
-    
+
       schoolName: {
         type: String,
         required: true
       },
-    
+
       schoolSchedule: {
         type: String,
         required: true
       },
-    
+
       medicine: [
         {
           name: {
@@ -66,8 +74,15 @@ const TherapistSchema = new Schema({
           }
         }
       ]
-  }]
+    }
+  ],
 
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "therapeuticnote"
+    }
+  ]
 });
 
 module.exports = Therapist = Base.discriminator("therapist", TherapistSchema);
