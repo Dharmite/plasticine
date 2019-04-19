@@ -1,7 +1,8 @@
 const express = require("express"),
 	  mongoose = require("mongoose"),
 	  bodyParser = require("body-parser"),
-    passport = require('passport');
+    passport = require('passport'),
+    multer = require("multer");
 
 const admin = require("./routes/api/admin");
 const users = require("./routes/api/users");
@@ -26,6 +27,9 @@ app.use(passport.initialize());
 
 // Passport config
 require('./config/passport')(passport);
+
+// Static folder with uploaded assets
+app.use(express.static('./uploads'));
 
 app.use("/api/users", users);
 app.use("/api/admin", admin);
