@@ -45,7 +45,25 @@ const TherapeuticNoteSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "base"
     }
+  ],
+
+  files: [
+    {
+      filename: {
+        type: String
+      },
+
+      destination: {
+        type: String
+      },
+      src: {
+        type: String
+      }
+    }
   ]
 });
 
-module.exports = TherapeuticNote = mongoose.model("therapeuticnote",TherapeuticNoteSchema);
+module.exports = TherapeuticNote = mongoose.model(
+  "therapeuticnote",
+  TherapeuticNoteSchema
+);

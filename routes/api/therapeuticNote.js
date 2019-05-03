@@ -1,12 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const multer = require("multer");
+const path = require("path");
 
 const TherapeuticNote = require("../../models/TherapeuticNote");
 const Patient = require("../../models/Patient");
 const Base = require("../../models/Base");
 
 const auth_middleware = require("../../middlewares/auth");
+
+// Set Storage Engine
+const storage = multer.diskStorage({
+  destination: "./uploads/",
+  filename: function(req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  }
+});
+
+// Init upload
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function(req, file, cb) {
+    checkFileType(file, cb);
+  }
+}).array("files");
+
+// Check File Type
+function checkFileType(file, cb) {
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png|gif|pdf|mp3|aac|ogg|m4a|wma|flac|wav|m4v|mov|flv|avi|mpg|wmv/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb("Error: Invalid file type!");
+  }
+}
 
 // @route POST api/therapeuticNote/new/:patient_id
 // @desc Create Therapeutic Note
@@ -19,6 +57,10 @@ router.post(
   (req, res) => {
     Patient.findById(req.params.patient_id)
       .then(patient => {
+        if (!patient) {
+          res.status(404).json({ msg: "Patient not found" });
+        }
+
         if (req.user.userType == "therapist") {
           let authorizationTherapist = false;
 
@@ -31,41 +73,59 @@ router.post(
           if (!authorizationTherapist) {
             res.status(400).json({ msg: "Not authorized" });
           } else {
-            const users = req.body.availableTo.split(";");
-            if (users.length == 1) {
-              users[0] = req.user.id;
-            }
+            upload(req, res, err => {
+              if (err) throw err;
+              const newTherapeuticNote = {
+                user: req.user.id,
+                patient: req.params.patient_id,
+                title: req.body.title,
+                observation: req.body.observation,
+                availableTo: [],
+                files: []
+              };
 
-            const newTherapeuticNote = {
-              user: req.user.id,
-              patient: req.params.patient_id,
-              title: req.body.title,
-              observation: req.body.observation,
-              availableTo: users
-            };
+              let users = req.body.availableTo.split(";");
 
-            new TherapeuticNote(newTherapeuticNote)
-              .save()
-              .then(note => {
-                note.availableTo.forEach(user => {
-                  Base.findById(user)
-                    .then(user => {
-                      user.notes.push(note.id);
-                      user
-                        .save()
-                        .then(user => {
-                          patient.therapeuticNote.push(note);
-                          patient
-                            .save()
-                            .then(patient => res.json(patient))
-                            .catch(err => res.json(err));
-                        })
-                        .catch(err => res.json(err));
-                    })
-                    .catch(err => res.json(err));
-                });
-              })
-              .catch(err => res.json(err));
+              if (users[0] == "") {
+                users[0] = req.user.id;
+                newTherapeuticNote.availableTo = users[0];
+              }
+
+              newTherapeuticNote.availableTo = users;
+
+              req.files.forEach(file => {
+                let fileObj = {
+                  filename: file.filename,
+                  destination: file.destination,
+                  src: file.destination + file.filename
+                };
+                newTherapeuticNote.files.push(fileObj);
+              });
+
+              new TherapeuticNote(newTherapeuticNote)
+                .save()
+                .then(note => {
+                  res.json(note);
+                  note.availableTo.forEach(user => {
+                    Base.findById(user)
+                      .then(user => {
+                        user.notes.push(note.id);
+                        user
+                          .save()
+                          .then(user => {
+                            patient.therapeuticNote.push(note);
+                            patient
+                              .save()
+                              .then(patient => res.json(patient))
+                              .catch(err => res.json(err));
+                          })
+                          .catch(err => res.json(err));
+                      })
+                      .catch(err => res.json(err));
+                  });
+                })
+                .catch(err => res.json(err));
+            });
           }
         } else if (req.user.userType == "parent") {
           let authorizationParent = false;
@@ -79,34 +139,62 @@ router.post(
           if (!authorizationParent) {
             res.status(400).json({ msg: "Not authorized" });
           } else {
-            const users = req.body.availableTo.split(";");
-            if (users.length == 1) {
-              users[0] = req.user.id;
-            }
-            const newTherapeuticNote = {
-              user: req.user.id,
-              patient: req.params.patient_id,
-              title: req.body.title,
-              observation: req.body.observation,
-              availableTo: users
-            };
-            new TherapeuticNote(newTherapeuticNote)
-              .save()
-              .then(note => {
-                note.availableTo.forEach(user => {
-                  Base.findById(user)
-                    .then(user => {
-                      user.notes.push(note.id);
-                      user
-                        .save()
-                        .then(user => res.json(user0))
-                        .catch(err => res.json(err));
-                    })
-                    .catch(err => res.json(err));
-                });
-              })
-              .catch(err => res.json(err));
+            upload(req, res, err => {
+              if (err) throw err;
+              const newTherapeuticNote = {
+                user: req.user.id,
+                patient: req.params.patient_id,
+                title: req.body.title,
+                observation: req.body.observation,
+                availableTo: [],
+                files: []
+              };
+
+              let users = req.body.availableTo.split(";");
+
+              if (users[0] == "") {
+                users[0] = req.user.id;
+                newTherapeuticNote.availableTo = users[0];
+              }
+
+              newTherapeuticNote.availableTo = users;
+
+              req.files.forEach(file => {
+                let fileObj = {
+                  filename: file.filename,
+                  destination: file.destination,
+                  src: file.destination + file.filename
+                };
+                newTherapeuticNote.files.push(fileObj);
+              });
+
+              new TherapeuticNote(newTherapeuticNote)
+                .save()
+                .then(note => {
+                  res.json(note);
+                  note.availableTo.forEach(user => {
+                    Base.findById(user)
+                      .then(user => {
+                        user.notes.push(note.id);
+                        user
+                          .save()
+                          .then(user => {
+                            patient.therapeuticNote.push(note);
+                            patient
+                              .save()
+                              .then(patient => res.json(patient))
+                              .catch(err => res.json(err));
+                          })
+                          .catch(err => res.json(err));
+                      })
+                      .catch(err => res.json(err));
+                  });
+                })
+                .catch(err => res.json(err));
+            });
           }
+
+          // aqui!!!
         }
       })
       .catch(err => res.json(err));

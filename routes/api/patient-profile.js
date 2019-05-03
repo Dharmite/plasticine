@@ -16,7 +16,7 @@ const auth_middleware = require("../../middlewares/auth");
 router.get("/all", (req, res) => {
   const errors = {};
 
-  Patient.find()
+  Patient.find().populate('therapist')
     .then(patients => {
       if (patients.length === 0) {
         errors.noprofile = "Não há nenhum perfil para mostrar";

@@ -99,7 +99,7 @@ router.post("/login", (req, res) => {
         });
       } else {
         errors.password = "Incorrect password";
-        return res.status(400).json({password: errors.password});
+        return res.status(400).json({ password: errors.password });
       }
     });
   });
@@ -172,6 +172,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Therapist.find()
+      .populate("patient").populate("notes")
       .then(therapists => {
         if (!therapists) {
           res.status(404).json({ error: "Não há terapeutas" });
@@ -191,7 +192,7 @@ router.get(
   "/parents",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Parent.find()
+    Parent.find().populate('patient ')
       .then(parents => {
         if (!parents) {
           res.status(404).json({ error: "Não há parents" });

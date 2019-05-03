@@ -1,23 +1,34 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
+
 import store from "./store";
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import {setCurrentUser} from './actions/authActions';
+
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+
+import { setCurrentUser } from "./actions/authActions";
 
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
+import NotFound from "./components/pages/NotFound";
+
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 
-import "./App.css";
+import DashboardAdmin from "./components/admin/DashboardAdmin";
+import DashboardTherapist from "./components/therapist/DashboardTherapist";
+import DashboardParent from "./components/parent/DashboardParent";
 
+import AddTherapist from "./components/therapist/AddTherapist";
+import AddParent from "./components/parent/AddParent";
+import AddPatient from "./components/patient/AddPatient";
+
+import "./App.css";
 
 // check for token
 
-if(localStorage.jwtToken){
-
+if (localStorage.jwtToken) {
   // set auth token header auth
   setAuthToken(localStorage.jwtToken);
 
@@ -26,8 +37,7 @@ if(localStorage.jwtToken){
   const decoded = jwt_decode(localStorage.jwtToken);
 
   // set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded))
-
+  store.dispatch(setCurrentUser(decoded));
 }
 
 class App extends Component {
@@ -37,10 +47,41 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
+
             <Route exact path="/" component={Landing} />
+
             <div className="container">
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
+              <Switch>
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+                <Route
+                  exact
+                  path="/admin-dashboard"
+                  component={DashboardAdmin}
+                />{" "}
+                <Route
+                  exact
+                  path="/therapist-dashboard"
+                  component={DashboardTherapist}
+                />
+                <Route
+                  exact
+                  path="/parent-dashboard"
+                  component={DashboardParent}
+                />
+                <Route
+                  exact
+                  path="/terapeuta/adicionar"
+                  component={AddTherapist}
+                />
+                <Route exact path="/parente/adicionar" component={AddParent} />
+                <Route
+                  exact
+                  path="/paciente/adicionar"
+                  component={AddPatient}
+                />
+                <Route component={NotFound} />
+              </Switch>
             </div>
           </div>
         </Router>

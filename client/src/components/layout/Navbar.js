@@ -12,14 +12,27 @@ class Navbar extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.auth;
+    const { isAuthenticated, isAdmin, isTherapist, isParent } = this.props.auth;
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <a href="" className="nav-link">
-            Perfil
-          </a>
+          {isAdmin ? (
+            <Link to="/admin-dashboard" className="nav-link">
+              Perfil
+            </Link>
+          ) : null}
+          {isTherapist ? (
+            <Link to="/therapist-dashboard" className="nav-link">
+              Perfil
+            </Link>
+          ) : null}
+
+          {isParent ? (
+            <Link to="/parent-dashboard" className="nav-link">
+              Perfil
+            </Link>
+          ) : null}
         </li>
         <li className="nav-item">
           <a

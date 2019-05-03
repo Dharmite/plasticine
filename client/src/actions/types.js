@@ -1,2 +1,15 @@
-export const GET_ERRORS = 'GET_ERRORS';
-export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const GET_ERRORS = "GET_ERRORS";
+
+export const SET_CURRENT_USER = "SET_CURRENT_USER";
+
+export const GET_THERAPISTS = "GET_THERAPISTS";
+export const ADD_THERAPIST = "ADD_THERAPIST";
+export const THERAPISTS_LOADING = "THERAPISTS_LOADING";
+
+export const GET_PARENTS = "GET_PARENTS";
+export const ADD_PARENT = "ADD_PARENT";
+export const PARENTS_LOADING = "PARENTS_LOADING";
+
+export const GET_PATIENTS = "GET_PATIENTS";
+export const ADD_PATIENT = "ADD_PATIENT";
+export const PATIENTS_LOADING = "PATIENTS_LOADING";
