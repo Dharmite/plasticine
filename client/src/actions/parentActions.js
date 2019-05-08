@@ -1,4 +1,9 @@
-import { GET_PARENTS, ADD_PARENT } from "./types";
+import {
+  GET_PARENTS,
+  ADD_PARENT,
+  GET_PARENT,
+  UPDATE_PARENT
+} from "./types";
 
 import axios from "axios";
 
@@ -16,6 +21,25 @@ export const addParent = newParent => async dispatch => {
 
   dispatch({
     type: ADD_PARENT,
+    payload: res.data
+  });
+};
+
+export const getParent = id => async dispatch => {
+  const res = await axios.get(`/api/users/parent/${id}`);
+  dispatch({
+    type: GET_PARENT,
+    payload: res.data
+  });
+};
+
+export const updateParent = parent => async dispatch => {
+  const res = await axios.post(
+    `/api/users/parent/${parent.id}`,
+    parent
+  );
+  dispatch({
+    type: UPDATE_PARENT,
     payload: res.data
   });
 };

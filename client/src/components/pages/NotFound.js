@@ -2,7 +2,7 @@ import React from "react";
 
 export default () => {
   return (
-    <div>
+    <div className = "pageNotFound">
       <h1 className="display-4">
         <span className="text-danger">404</span> Página não encontrada
       </h1>

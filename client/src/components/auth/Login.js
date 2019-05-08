@@ -16,9 +16,9 @@ class Login extends Component {
       if (this.props.auth.isAdmin) {
         this.props.history.push("/admin-dashboard");
       } else if (this.props.auth.isTherapist) {
-        this.props.history.push("/therapist-dashboard");
+        this.props.history.push("/terapeuta-dashboard");
       } else if (this.props.auth.isParent) {
-        this.props.history.push("/parent-dashboard");
+        this.props.history.push("/parente-dashboard");
       }
     }
   }
@@ -31,9 +31,9 @@ class Login extends Component {
     if (nextProps.auth.isAuthenticated && nextProps.auth.isAdmin) {
       this.props.history.push("/admin-dashboard");
     } else if (nextProps.auth.isAuthenticated && nextProps.auth.isTherapist) {
-      this.props.history.push("/therapist-dashboard");
+      this.props.history.push("/terapeuta-dashboard");
     } else if (nextProps.auth.isAuthenticated && nextProps.auth.isParent) {
-      this.props.history.push("/parent-dashboard");
+      this.props.history.push("/parente-dashboard");
     }
   }
 

@@ -16,7 +16,8 @@ const auth_middleware = require("../../middlewares/auth");
 router.get("/all", (req, res) => {
   const errors = {};
 
-  Patient.find().populate('therapist')
+  Patient.find()
+    .populate("therapist")
     .then(patients => {
       if (patients.length === 0) {
         errors.noprofile = "Não há nenhum perfil para mostrar";
@@ -38,6 +39,11 @@ router.get("/patient/:patient_id", (req, res) => {
   const errors = {};
 
   Patient.findOne({ _id: req.params.patient_id })
+    .populate("therapist")
+    .populate("parent")
+    .populate("therapist")
+    .populate("previousTherapists")
+    .populate("therapeuticNote")
     .then(patient => {
       if (!patient) {
         errors.noprofile = "Nenhum perfil encontrado";
@@ -331,7 +337,7 @@ router.post(
   "/:patient_id/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Patient.findById({ _id: req.params.patient_id })
+    Patient.findById({ _id: req.params.patient_id }).populate('therapist')
       .then(patient => {
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
@@ -346,7 +352,6 @@ router.post(
                       .json({ err: "User já está associado ao paciente" });
                   }
                 });
-
                 therapist.patient.forEach(elem => {
                   if (elem == req.params.patient_id) {
                     return res
@@ -412,12 +417,23 @@ router.delete(
                 }
               });
               if (association) {
-                let removeIndex = patient.therapist
-                  .map(therapist => therapist.id)
-                  .indexOf(req.params.therapist_id);
-                // Splice out of array
-                patient.therapist.splice(removeIndex, 1);
-                patient.previousTherapists.push(therapist.id);
+                // let removeIndex = patient.therapist
+                //   .map(therapist => therapist.id)
+                //   .indexOf(req.params.therapist_id);
+                // // Splice out of array
+                // res.json(removeIndex);
+                // patient.therapist.splice(removeIndex, 1);
+                // res.send("entrei");
+                let lista = [];
+                patient.therapist.forEach(element => {
+                  if (!element.equals(req.params.therapist_id)) {
+                    lista.push(element);
+                  }
+                });
+
+                patient.therapist = lista;
+
+                patient.previousTherapists.push(req.params.therapist_id);
 
                 // Save
                 patient
@@ -440,7 +456,7 @@ router.delete(
                     });
                     therapist
                       .save()
-                      .then(therapist => res.json(therapist))
+                      .then(therapist => res.json(patient))
                       .catch(err => res.json(err));
                   })
                   .catch(err => {

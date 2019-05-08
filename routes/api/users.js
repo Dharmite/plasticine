@@ -143,6 +143,28 @@ router.get(
   }
 );
 
+// @route GET api/users/therapist/:therapist_name
+// @desc Return therapist
+// @access Private
+
+router.get(
+  "/therapist/name/:therapist_name",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Therapist.findOne({ name: req.params.therapist_name })
+      .then(therapist => {
+        if (!therapist) {
+          res
+            .status(404)
+            .json({ error: "Não há nenhum terapeuta com esse id" });
+        } else {
+          res.json(therapist);
+        }
+      })
+      .catch(err => res.json(err));
+  }
+);
+
 // @route GET api/users/parent/:parent_id
 // @desc Return parent
 // @access Private
@@ -172,7 +194,8 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Therapist.find()
-      .populate("patient").populate("notes")
+      .populate("patient")
+      .populate("notes")
       .then(therapists => {
         if (!therapists) {
           res.status(404).json({ error: "Não há terapeutas" });
@@ -192,7 +215,8 @@ router.get(
   "/parents",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Parent.find().populate('patient ')
+    Parent.find()
+      .populate("patient ")
       .then(parents => {
         if (!parents) {
           res.status(404).json({ error: "Não há parents" });

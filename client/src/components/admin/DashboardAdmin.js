@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router-dom";
 
 import { getTherapists } from "../../actions/therapistActions";
 import { getParents } from "../../actions/parentActions";
@@ -45,10 +44,10 @@ class DashboardAdmin extends Component {
             </Link>
           </div>
 
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item">
               <a
-                class="nav-link active"
+                className="nav-link active"
                 id="therapist-tab"
                 data-toggle="tab"
                 href="#therapist"
@@ -59,9 +58,9 @@ class DashboardAdmin extends Component {
                 Terapeutas
               </a>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <a
-                class="nav-link"
+                className="nav-link"
                 id="patient-tab"
                 data-toggle="tab"
                 href="#patient"
@@ -72,9 +71,9 @@ class DashboardAdmin extends Component {
                 Pacientes
               </a>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <a
-                class="nav-link"
+                className="nav-link"
                 id="parent-tab"
                 data-toggle="tab"
                 href="#parent"
@@ -86,9 +85,9 @@ class DashboardAdmin extends Component {
               </a>
             </li>
           </ul>
-          <div class="tab-content" id="myTabContent">
+          <div className="tab-content" id="myTabContent">
             <div
-              class="tab-pane fade show active"
+              className="tab-pane fade show active"
               id="therapist"
               role="tabpanel"
               aria-labelledby="therapist-tab"
@@ -98,7 +97,7 @@ class DashboardAdmin extends Component {
               ))}
             </div>
             <div
-              class="tab-pane fade"
+              className="tab-pane fade"
               id="patient"
               role="tabpanel"
               aria-labelledby="patient-tab"
@@ -108,7 +107,7 @@ class DashboardAdmin extends Component {
               ))}
             </div>
             <div
-              class="tab-pane fade"
+              className="tab-pane fade"
               id="parent"
               role="tabpanel"
               aria-labelledby="parent-tab"

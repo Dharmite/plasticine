@@ -23,25 +23,25 @@ class Navbar extends Component {
             </Link>
           ) : null}
           {isTherapist ? (
-            <Link to="/therapist-dashboard" className="nav-link">
+            <Link to="/terapeuta-dashboard" className="nav-link">
               Perfil
             </Link>
           ) : null}
 
           {isParent ? (
-            <Link to="/parent-dashboard" className="nav-link">
+            <Link to="/parente-dashboard" className="nav-link">
               Perfil
             </Link>
           ) : null}
         </li>
         <li className="nav-item">
-          <a
-            href=""
+          <Link
+            to=""
             onClick={this.onLogoutClick.bind(this)}
             className="nav-link"
           >
             Sair
-          </a>
+          </Link>
         </li>
       </ul>
     );

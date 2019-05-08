@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import "./Therapist.css";
 
 class Therapist extends Component {
   render() {
-    const { name, email, specialty, patient } = this.props.therapist;
+    const { _id, name, email, specialty, patient } = this.props.therapist;
 
     return (
       <div class="card card-body bg-light mb-3">
@@ -34,18 +37,18 @@ class Therapist extends Component {
               </div>
 
               <div className="col-4">
-                <a
-                  href="profile.html"
+                <Link
+                  to={`/terapeuta/editar/${_id}`}
                   class="btn btn-info"
                   style={{ width: "100%" }}
                 >
                   Editar
-                </a>
+                </Link>
               </div>
               <div className="col-4">
                 <a
                   href="profile.html"
-                  class="btn btn-info"
+                  class="btn btn-danger"
                   style={{ width: "100%" }}
                 >
                   Apagar
@@ -70,4 +73,11 @@ class Therapist extends Component {
   }
 }
 
-export default Therapist;
+Therapist.propTypes = {
+  therapist: PropTypes.object.isRequired
+};
+
+export default connect(
+  null,
+  {}
+)(Therapist);

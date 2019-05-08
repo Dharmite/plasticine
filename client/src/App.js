@@ -24,6 +24,12 @@ import AddTherapist from "./components/therapist/AddTherapist";
 import AddParent from "./components/parent/AddParent";
 import AddPatient from "./components/patient/AddPatient";
 
+import EditTherapist from "./components/therapist/EditTherapist";
+import EditParent from "./components/parent/EditParent";
+import EditPatient from "./components/patient/EditPatient";
+
+import PatientProfile from "./components/patient/PatientProfile";
+
 import "./App.css";
 
 // check for token
@@ -61,12 +67,12 @@ class App extends Component {
                 />{" "}
                 <Route
                   exact
-                  path="/therapist-dashboard"
+                  path="/terapeuta-dashboard"
                   component={DashboardTherapist}
                 />
                 <Route
                   exact
-                  path="/parent-dashboard"
+                  path="/parente-dashboard"
                   component={DashboardParent}
                 />
                 <Route
@@ -79,6 +85,26 @@ class App extends Component {
                   exact
                   path="/paciente/adicionar"
                   component={AddPatient}
+                />
+                <Route
+                  exact
+                  path="/terapeuta/editar/:id"
+                  component={EditTherapist}
+                />
+                <Route
+                  exact
+                  path="/parente/editar/:id"
+                  component={EditParent}
+                />
+                <Route
+                  exact
+                  path="/paciente/editar/:id"
+                  component={EditPatient}
+                />
+                <Route
+                  exact
+                  path="/paciente/ver/:id"
+                  component={PatientProfile}
                 />
                 <Route component={NotFound} />
               </Switch>

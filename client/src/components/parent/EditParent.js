@@ -1,41 +1,52 @@
 import React, { Component } from "react";
 import TextInputGroup from "../layout/TextInputGroup";
 import { connect } from "react-redux";
-import { addTherapist } from "../../actions/therapistActions";
+import { getParent, updateParent } from "../../actions/parentActions";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-class AddTherapist extends Component {
+class EditParent extends Component {
   state = {
     name: "",
     email: "",
-    password: "",
-    specialty: "",
     errors: {}
   };
+
+  componentWillReceiveProps(nextProps, nextState) {
+    const { name, email } = nextProps.parent;
+    this.setState({
+      name,
+      email
+    });
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getParent(id);
+  }
 
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, specialty } = this.state;
-    
+    const { name, email } = this.state;
 
-    const newTherapist = {
+    // Check For Errors --> Validation
+    const { id } = this.props.match.params;
+
+
+    const newParent = {
+      id,
       name,
-      email,
-      password,
-      specialty
+      email
     };
 
-    //// SUBMIT Therapist ////
-    this.props.addTherapist(newTherapist);
+    this.props.updateParent(newParent);
 
     // Clear State
     this.setState({
       name: "",
       email: "",
       password: "",
-      specialty: "",
       errors: {}
     });
 
@@ -45,11 +56,11 @@ class AddTherapist extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, password, specialty, errors } = this.state;
+    const { name, email, errors } = this.state;
 
     return (
       <div className="card mb-3 mt-4">
-        <div className="card-header">Adicionar terapeuta</div>
+        <div className="card-header">Adicionar parente</div>
         <div className="card-body">
           <form onSubmit={this.onSubmit}>
             <TextInputGroup
@@ -69,26 +80,10 @@ class AddTherapist extends Component {
               onChange={this.onChange}
               error={errors.email}
             />
-            <TextInputGroup
-              label="password"
-              name="password"
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={this.onChange}
-              error={errors.password}
-            />
-            <TextInputGroup
-              label="Especialidade clínica"
-              name="specialty"
-              placeholder="Introduza a especialidade"
-              value={specialty}
-              onChange={this.onChange}
-              error={errors.specialty}
-            />
+
             <input
               type="submit"
-              value="Adicionar terapeuta"
+              value="Editar parente"
               className="btn btn-info btn-block mt-4"
             />
           </form>
@@ -98,11 +93,16 @@ class AddTherapist extends Component {
   }
 }
 
-AddTherapist.propTypes = {
-  addTherapist: PropTypes.func.isRequired
+EditParent.propTypes = {
+  parent: PropTypes.object.isRequired,
+  getParent: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  parent: state.parent.parent
+});
+
 export default connect(
-  null,
-  { addTherapist }
-)(withRouter(AddTherapist));
+  mapStateToProps,
+  { getParent, updateParent }
+)(withRouter(EditParent));

@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 class Parent extends Component {
   render() {
-    const { name, email, patient } = this.props.parent;
+    const { _id, name, email, patient } = this.props.parent;
 
     return (
       <div class="card card-body bg-light mb-3">
@@ -31,13 +34,13 @@ class Parent extends Component {
               </div>
 
               <div className="col-4">
-                <a
-                  href="profile.html"
+                <Link
+                  to={`/parente/editar/${_id}`}
                   class="btn btn-info"
                   style={{ width: "100%" }}
                 >
                   Editar
-                </a>
+                </Link>
               </div>
               <div className="col-4">
                 <a
@@ -67,4 +70,11 @@ class Parent extends Component {
   }
 }
 
-export default Parent;
+Parent.propTypes = {
+  parent: PropTypes.object.isRequired
+};
+
+export default connect(
+  null,
+  {}
+)(Parent);

@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 
 class Landing extends Component {
+  // componentDidMount() {
+  //   if (document.getElementsByClassName("pageNotFound").length == 1) {
+  //     document.getElementsByClassName("pageNotFound")[0].remove();
+  //   }
+  // }
+
   render() {
     return (
       <div

@@ -1,4 +1,9 @@
-import { GET_THERAPISTS, ADD_THERAPIST, GET_ERRORS } from "./types";
+import {
+  GET_THERAPISTS,
+  ADD_THERAPIST,
+  GET_THERAPIST,
+  UPDATE_THERAPIST
+} from "./types";
 
 import axios from "axios";
 
@@ -16,6 +21,26 @@ export const addTherapist = newTherapist => async dispatch => {
 
   dispatch({
     type: ADD_THERAPIST,
+    payload: res.data
+  });
+};
+
+export const getTherapist = id => async dispatch => {
+  const res = await axios.get(`/api/users/therapist/${id}`);
+  dispatch({
+    type: GET_THERAPIST,
+    payload: res.data
+  });
+};
+
+export const updateTherapist = therapist => async dispatch => {
+  const res = await axios.post(
+    `/api/users/therapist/${therapist.id}`,
+    therapist
+  );
+
+  dispatch({
+    type: UPDATE_THERAPIST,
     payload: res.data
   });
 };
