@@ -17,7 +17,7 @@ export const getTherapists = () => async dispatch => {
 };
 
 export const addTherapist = newTherapist => async dispatch => {
-  const res = await await axios.post("/api/admin/therapist", newTherapist);
+  const res = await axios.post("/api/admin/therapist", newTherapist);
 
   dispatch({
     type: ADD_THERAPIST,

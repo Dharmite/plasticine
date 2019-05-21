@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { addTherapist } from "../../actions/therapistActions";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+// import axios from 'axios';
 
 class AddTherapist extends Component {
   state = {
@@ -44,6 +45,13 @@ class AddTherapist extends Component {
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
+  handleSelectionChanged = e => {
+    this.setState({
+      specialty: e.target.value
+    });
+  };
+
+
   render() {
     const { name, email, password, specialty, errors } = this.state;
 
@@ -78,14 +86,27 @@ class AddTherapist extends Component {
               onChange={this.onChange}
               error={errors.password}
             />
-            <TextInputGroup
-              label="Especialidade clínica"
-              name="specialty"
-              placeholder="Introduza a especialidade"
-              value={specialty}
-              onChange={this.onChange}
+
+            <label>Especialidade clínica</label>
+
+            <select
+              className="form-control form-control-lg"
+              id="exampleFormControlSelect1"
               error={errors.specialty}
-            />
+              value={specialty}
+              name="specialty"
+
+              onChange={this.handleSelectionChanged}>
+
+              <option>Escolha uma especialidade</option>
+              <option>Psicologia</option>
+              <option>Terapia da Fala</option>
+              <option>Psicomotricidade</option>
+              <option>Fisioterapia</option>
+              <option>Terapia Ocupacional</option>
+
+            </select>
+
             <input
               type="submit"
               value="Adicionar terapeuta"

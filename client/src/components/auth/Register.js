@@ -51,7 +51,6 @@ class Register extends Component {
 
   render() {
 
-    console.log(this.props);
     const { errors } = this.state;
 
     // const errors = this.state.errors;

@@ -23,18 +23,18 @@ class Patient extends Component {
             <p>Idade: {age}</p>
 
             <div className="row">
-              <div className="col-4">
+              <div className="col-3">
                 <Link
                   to={`/paciente/ver/${_id}`}
                   class="btn btn-info"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%"}}
                 >
                   Ver
                 </Link>
                 
               </div>
 
-              <div className="col-4">
+              <div className="col-3">
                 <Link
                   to={`/paciente/editar/${_id}`}
                   className="btn btn-info"
@@ -43,14 +43,14 @@ class Patient extends Component {
                   Editar
                 </Link>
               </div>
-              <div className="col-4">
-                <a
-                  href="profile.html"
+              <div className="col-5">
+                <Link
+                  to={`/paciente/ver/${_id}`}
                   className="btn btn-info"
                   style={{ width: "100%" }}
                 >
-                  Apagar
-                </a>
+                  Associar Terapeuta
+                </Link>
               </div>
             </div>
           </div>

@@ -28,9 +28,16 @@ import EditTherapist from "./components/therapist/EditTherapist";
 import EditParent from "./components/parent/EditParent";
 import EditPatient from "./components/patient/EditPatient";
 
+import AddMedicine from "./components/patient/AddMedicine";
+import EditMedicine from "./components/patient/EditMedicine";
+
 import PatientProfile from "./components/patient/PatientProfile";
 
+import AddTherapeuticNote from './components/therapist/AddTherapeuticNote';
+
 import "./App.css";
+
+import axios from "axios";
 
 // check for token
 
@@ -42,8 +49,34 @@ if (localStorage.jwtToken) {
 
   const decoded = jwt_decode(localStorage.jwtToken);
 
+  if (decoded.userType == "therapist") {
+    axios
+      .get(`/api/users/therapist/${decoded.id}`)
+      .then(res => {
+        store.dispatch(setCurrentUser(res.data));
+      })
+      .catch(err => console.log(err));
+  }
+  if (decoded.userType == "parent") {
+    axios
+      .get(`/api/users/parent/${decoded.id}`)
+      .then(res => {
+        store.dispatch(setCurrentUser(res.data));
+      })
+      .catch(err => console.log(err));
+  }
+
+  if (decoded.userType == "admin") {
+    axios
+      .get(`/api/admin/${decoded.id}`)
+      .then(res => {
+        store.dispatch(setCurrentUser(res.data));
+      })
+      .catch(err => console.log(err));
+  }
+
   // set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded));
+  // store.dispatch(setCurrentUser(decoded));
 }
 
 class App extends Component {
@@ -105,6 +138,21 @@ class App extends Component {
                   exact
                   path="/paciente/ver/:id"
                   component={PatientProfile}
+                />
+                <Route
+                  exact
+                  path="/paciente/:id/medicamento/adicionar"
+                  component={AddMedicine}
+                />
+                <Route
+                  exact
+                  path="/paciente/:id/ver/medicamento/editar/:medicamento_id"
+                  component={EditMedicine}
+                />
+                <Route
+                  exact
+                  path="/paciente/:id/registo/adicionar"
+                  component={AddTherapeuticNote}
                 />
                 <Route component={NotFound} />
               </Switch>

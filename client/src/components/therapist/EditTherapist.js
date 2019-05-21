@@ -81,14 +81,24 @@ class EditTherapist extends Component {
               onChange={this.onChange}
               error={errors.email}
             />
-            <TextInputGroup
-              label="Especialidade clínica"
-              name="specialty"
-              placeholder="Introduza a especialidade"
-              value={specialty}
-              onChange={this.onChange}
+            <select
+              className="form-control form-control-lg"
+              id="exampleFormControlSelect1"
               error={errors.specialty}
-            />
+              value={specialty}
+              name="specialty"
+
+              onChange={this.handleSelectionChanged}>
+
+              <option>Escolha uma especialidade</option>
+              <option>Psicologia</option>
+              <option>Terapia da Fala</option>
+              <option>Psicomotricidade</option>
+              <option>Fisioterapia</option>
+              <option>Terapia Ocupacional</option>
+
+            </select>
+
             <input
               type="submit"
               value="Editar terapeuta"

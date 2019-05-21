@@ -17,11 +17,26 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
+          {isTherapist ? (
+            <Link to="/criar/recurso" className="nav-link">
+              Criar recurso
+            </Link>
+          ) : null}
+        </li>
+        <li className="nav-item">
+          {isTherapist ? (
+            <Link to="/recursos" className="nav-link">
+              Recursos
+            </Link>
+          ) : null}
+        </li>
+        <li className="nav-item">
           {isAdmin ? (
             <Link to="/admin-dashboard" className="nav-link">
               Perfil
             </Link>
           ) : null}
+
           {isTherapist ? (
             <Link to="/terapeuta-dashboard" className="nav-link">
               Perfil

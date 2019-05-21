@@ -36,11 +36,11 @@ class DashboardAdmin extends Component {
               <i className="fas fa-user-circle text-info mr-1" /> Criar
               Terapeuta
             </Link>{" "}
-            <Link to="/parente/adicionar" className="btn btn-light">
-              <i className="fas fa-user-circle text-info mr-1" /> Criar Parente
-            </Link>
             <Link to="/paciente/adicionar" className="btn btn-light">
               <i className="fas fa-user-circle text-info mr-1" /> Criar Paciente
+            </Link>
+            <Link to="/parente/adicionar" className="btn btn-light">
+              <i className="fas fa-user-circle text-info mr-1" /> Criar Parente
             </Link>
           </div>
 
@@ -92,9 +92,13 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="therapist-tab"
             >
-              {therapists.map(therapist => (
-                <Therapist key={therapist.id} therapist={therapist} />
-              ))}
+              {therapists.length > 0 ? (
+                therapists.map(therapist => (
+                  <Therapist key={therapist.id} therapist={therapist} />
+                ))
+              ) : (
+                <h4 className="mt-4">Sem terapeutas para mostrar</h4>
+              )}
             </div>
             <div
               className="tab-pane fade"
@@ -102,9 +106,13 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="patient-tab"
             >
-              {patients.map(patient => (
-                <Patient key={patient.id} patient={patient} />
-              ))}
+              {patients.length > 0 ? (
+                patients.map(patient => (
+                  <Patient key={patient.id} patient={patient} />
+                ))
+              ) : (
+                <h4 className="mt-4">Sem pacientes para mostrar</h4>
+              )}
             </div>
             <div
               className="tab-pane fade"
@@ -112,9 +120,13 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="parent-tab"
             >
-              {parents.map(parent => (
-                <Parent key={parent.id} parent={parent} />
-              ))}
+              {parents.length > 0 ? (
+                parents.map(parent => (
+                  <Parent key={parent.id} parent={parent} />
+                ))
+              ) : (
+                <h4 className="mt-4">Sem parentes para mostrar</h4>
+              )}
             </div>
           </div>
         </div>

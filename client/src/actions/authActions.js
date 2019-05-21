@@ -3,6 +3,7 @@ import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
 import axios from "axios";
+import { decode } from "punycode";
 
 // Register
 
@@ -36,9 +37,35 @@ export const loginUser = userData => dispatch => {
       // decode token to get user data
       const decoded = jwt_decode(token);
 
-      // set current user
-      dispatch(setCurrentUser(decoded));
+      // set current user´
+      // console.log(decoded, "decoded")
 
+      if (decoded.userType == "therapist") {
+        axios
+          .get(`/api/users/therapist/${decoded.id}`)
+          .then(res => {
+            console.log(res.data.specialty, "data");
+            dispatch(setCurrentUser(res.data));
+          })
+          .catch(err => console.log(err));
+      } if(decoded.userType == "parent") {
+        axios
+        .get(`/api/users/parent/${decoded.id}`)
+        .then(res => {
+          dispatch(setCurrentUser(res.data));
+        })
+        .catch(err => console.log(err));
+      }
+
+
+      if(decoded.userType == "admin") {
+        axios
+        .get(`/api/admin/${decoded.id}`)
+        .then(res => {
+          dispatch(setCurrentUser(res.data));
+        })
+        .catch(err => console.log(err));
+      }
     })
     .catch(err => {
       dispatch({
@@ -50,20 +77,18 @@ export const loginUser = userData => dispatch => {
 
 // set the current user
 
-export const setCurrentUser = decoded => {
+export const setCurrentUser = user => {
   return {
     type: SET_CURRENT_USER,
-    payload: decoded
+    payload: user
   };
 };
 
-
 // logout user
 
-export const logoutUser = (history) => dispatch => {
-
+export const logoutUser = history => dispatch => {
   // remove token from localStorage
-  localStorage.removeItem('jwtToken');
+  localStorage.removeItem("jwtToken");
 
   // remove auth header for future requests
   setAuthToken(false);
@@ -72,7 +97,5 @@ export const logoutUser = (history) => dispatch => {
 
   dispatch(setCurrentUser({}));
 
-  history.push('/login');
-
-   
-}
+  history.push("/login");
+};
