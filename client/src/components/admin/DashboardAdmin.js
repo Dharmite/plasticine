@@ -27,7 +27,7 @@ class DashboardAdmin extends Component {
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4">Perfil de administrador</h1>
-              <p className="lead text-muted">Bem vindo Admin</p>
+              <p className="lead text-muted">Bem vindo {this.props.user.name}</p>
             </div>
           </div>
 
@@ -145,6 +145,7 @@ DashboardAdmin.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  user: state.auth.user,
   therapists: state.therapist.therapists,
   parents: state.parent.parents,
   patients: state.patient.patients

@@ -3,8 +3,7 @@ import TextInputGroup from "../layout/TextInputGroup";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { getPatient } from "../../actions/patientActions";
-import $ from "jquery";
+import { getPatient, addTherapeuticNote } from "../../actions/patientActions";
 
 class AddTherapeuticNote extends Component {
   state = {
@@ -12,24 +11,149 @@ class AddTherapeuticNote extends Component {
     observation: "",
     activity: "",
     behavior: "",
-    availableTo: "",
+    availableTo2: "",
     files: "",
+    filename: "Escolha um ficheiro",
     errors: {}
   };
 
+  onSubmit = e => {
+    e.preventDefault();
+
+    const {
+      title,
+      observation,
+      activity,
+      behavior,
+      files,
+      availableTo2
+    } = this.state;
+
+    let availableTo = "";
+
+    if (availableTo !== "") {
+      availableTo2.forEach(element => {
+        availableTo += element + ",";
+      });
+
+      availableTo = availableTo.replace(/,/g, " ");
+
+      availableTo = availableTo.replace(/\s+$/, "");
+
+      let formData = new FormData();
+      formData.append("title", title);
+      formData.append("observation", observation);
+      formData.append("activity", activity);
+      formData.append("behavior", behavior);
+      formData.append("availableTo", availableTo);
+      for(var x = 0; x<this.state.files.length; x++) {
+        formData.append('files', this.state.files[x])
+    }
+      // formData.append("files", files);
+
+      console.log(files, "files add component");
+
+      const newTherapeuticNote = {
+        title,
+        observation,
+        activity,
+        behavior,
+        availableTo,
+        files
+      };
+
+      console.log(newTherapeuticNote.files, "newTherapeuticNote");
+
+      const { id } = this.props.match.params;
+      this.props.addTherapeuticNote(id, formData);
+
+      // Clear State
+      this.setState({
+        title: "",
+        observation: "",
+        activity: "",
+        behavior: "",
+        files: "",
+        availableTo2: "",
+        errors: {}
+      });
+
+      this.props.history.push("/terapeuta-dashboard");
+    } else {
+      let formData = new FormData();
+      formData.append("title", title);
+      formData.append("observation", observation);
+      formData.append("activity", activity);
+      formData.append("behavior", behavior);
+      formData.append("availableTo", availableTo);
+      for(var x = 0; x<this.state.files.length; x++) {
+        formData.append('files', this.state.files[x])
+    }
+      // formData.append("files", files);
+      console.log(files, "files add component");
+
+
+      const newTherapeuticNote = {
+        title,
+        observation,
+        activity,
+        behavior,
+        availableTo,
+        files
+      };
+
+      console.log(newTherapeuticNote.files, "newTherapeuticNote");
+
+
+      const { id } = this.props.match.params;
+      this.props.addTherapeuticNote(id, formData);
+
+      // Clear State
+      this.setState({
+        title: "",
+        observation: "",
+        activity: "",
+        behavior: "",
+        files: "",
+        availableTo2: "",
+        errors: {}
+      });
+
+      this.props.history.push("/terapeuta-dashboard");
+    }
+  };
+
   handleSelectionChanged = e => {
+    let availableTo2 = [];
+    let inputElements = document.getElementsByClassName("form-check-input");
+    for (var i = 0; inputElements[i]; ++i) {
+      if (inputElements[i].checked) {
+        availableTo2.push(inputElements[i].value);
+      }
+    }
     this.setState({
-      availableTo: e.target.value
+      availableTo2: availableTo2
     });
   };
 
-  componentDidMount() {
+  componentWillMount() {
 
     const { id } = this.props.match.params;
     this.props.getPatient(id);
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChange = e => {
+    if (e.target.name == "files") {
+
+      console.log(this.state.files, "this.state.files");
+      console.log(e.target.files, "e.target.files");
+      // let upload_files = [...e.target.files[]];
+      this.setState({ files: e.target.files });
+      this.setState({ filename: e.target.files[0].name });
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
+    }
+  };
 
   render() {
     const {
@@ -38,18 +162,20 @@ class AddTherapeuticNote extends Component {
       activity,
       behavior,
       errors,
-      availableTo,
-      files
+      availableTo2,
+      files,
+      filename
     } = this.state;
 
-    const { therapist } = this.props.patient;
-    console.log(therapist, "therapist");
+    let { therapist, parent } = this.props.patient;
+
+    console.log(this.props.auth.user, "user");
 
     return (
       <div className="card mb-3 mt-4">
         <div className="card-header">Adicionar registo terapêutico</div>
         <div className="card-body">
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit} encType="multipart/form-data">
             <TextInputGroup
               label="Titulo"
               name="title"
@@ -87,40 +213,52 @@ class AddTherapeuticNote extends Component {
               error={errors.behavior}
             />
 
-            <label>Disponível para:</label>
-
-            {/* <select
-              className="form-control form-control-lg"
-              id="exampleFormControlSelect1"
-              error={errors.availableTo}
-              value={availableTo}
-              name="availableTo"
-              onChange={this.handleSelectionChanged}
-              multiple="multiple"
-            >
-              <option>Escolha com quem quer partilhar</option>
-
+            <div className="form-group">
+              <label>Disponível para:</label>
               {therapist
-                ? therapist.map(elem => <option>{elem.name}</option>)
+                ? therapist.map(elem =>
+                    elem._id !== this.props.auth.user._id ? (
+                      <div class="form-check mb-1">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="availableTo2"
+                          id="defaultCheck1"
+                          value={elem._id}
+                          onChange={this.handleSelectionChanged}
+                          error={errors.availableTo2}
+                        />
+                        <label class="form-check-label" for="defaultCheck1">
+                          {elem.name}
+                        </label>
+                      </div>
+                    ) : null
+                  )
                 : null}
-            </select> */}
-            <select
-              class="mdb-select colorful-select dropdown-primary md-form"
-              multiple
-            >
-              <option value="" disabled selected>
-                Choose your country
-              </option>
-              <option value="1">USA</option>
-              <option value="2">Germany</option>
-              <option value="3">France</option>
-              <option value="4">Poland</option>
-              <option value="5">Japan</option>
-            </select>
-            <label class="mdb-main-label">Label example</label>
-            <button class="btn-save btn btn-primary btn-sm">Save</button>
 
-            <TextInputGroup
+              {parent
+                ? parent.map(elem =>
+                    elem._id !== this.props.auth.user._id ? (
+                      <div class="form-check mb-1">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="availableTo2"
+                          id="defaultCheck1"
+                          value={elem._id}
+                          onChange={this.handleSelectionChanged}
+                          error={errors.availableTo2}
+                        />
+                        <label class="form-check-label" for="defaultCheck1">
+                          {elem.name}
+                        </label>
+                      </div>
+                    ) : null
+                  )
+                : null}
+            </div>
+
+            {/* <TextInputGroup
               label="Ficheiros"
               name="files"
               type="file"
@@ -128,11 +266,28 @@ class AddTherapeuticNote extends Component {
               value={files}
               onChange={this.onChange}
               error={errors.files}
-            />
+            /> */}
+
+            <div className="custom-file mb-4">
+              <input
+                type="file"
+                name="files"
+                className="custom-file-input"
+                id="customFile"
+                placeholder="Faça upload dos ficheiros"
+                onChange={this.onChange}
+                error={errors.files}
+                multiple
+              />
+              <label className="custom-file-label" htmlFor="customFile">
+                {" "}
+                {filename}
+              </label>
+            </div>
 
             <input
               type="submit"
-              value="Adicionar terapeuta"
+              value="Adicionar registo"
               className="btn btn-info btn-block mt-4"
             />
           </form>
@@ -142,9 +297,9 @@ class AddTherapeuticNote extends Component {
   }
 }
 
-// AddTherapeuticNote.propTypes = {
-//     addTherapist: PropTypes.func.isRequired
-// };
+AddTherapeuticNote.propTypes = {
+  addTherapeuticNote: PropTypes.func.isRequired
+};
 
 const mapStateToProps = state => ({
   patient: state.patient.patient,
@@ -155,5 +310,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPatient }
+  { getPatient, addTherapeuticNote }
 )(withRouter(AddTherapeuticNote));

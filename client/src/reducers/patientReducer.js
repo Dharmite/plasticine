@@ -13,7 +13,12 @@ import {
   GET_MEDICINES,
   REMOVE_MEDICINE,
   GET_MEDICINE,
-  UPDATE_MEDICINE
+  UPDATE_MEDICINE,
+  GET_THERAPEUTIC_NOTES,
+  ADD_THERAPEUTIC_NOTE,
+  GET_THERAPEUTIC_NOTE,
+  REMOVE_THERAPEUTIC_NOTE,
+  UPDATE_THERAPEUTIC_NOTE
 } from "../actions/types";
 
 const initialState = {
@@ -23,11 +28,49 @@ const initialState = {
   patientParents: [],
   medicines: [],
   medicine: {},
-  notes: []
+  notes: [],
+  note: {}
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+
+    case GET_THERAPEUTIC_NOTES:
+    return {
+      ...state,
+      notes: action.payload
+    };
+
+  case GET_THERAPEUTIC_NOTE:
+    return {
+      ...state,
+      note: action.payload
+    };
+
+  case REMOVE_THERAPEUTIC_NOTE:
+    return {
+      ...state,
+      notes: state.notes.filter(
+        note => note._id !== action.payload
+      )
+    };
+
+  case UPDATE_THERAPEUTIC_NOTE:
+    return {
+      ...state,
+      notes: state.notes.map(note =>
+        note._id !== action.payload.id
+          ? (note = action.payload)
+          : note
+      )
+    };
+
+  case ADD_THERAPEUTIC_NOTE:
+    return {
+      ...state,
+      notes: [...state.notes, action.payload]
+    };
+
     case GET_PATIENTS:
       return {
         ...state,
@@ -53,12 +96,20 @@ export default function(state = initialState, action) {
         )
       };
 
-      case UPDATE_MEDICINE:
+    case UPDATE_MEDICINE:
       return {
         ...state,
-        medicines: state.medicines.map( medicine =>
-          medicine._id !== action.payload.id ? (medicine = action.payload) : medicine
+        medicines: state.medicines.map(medicine =>
+          medicine._id !== action.payload.id
+            ? (medicine = action.payload)
+            : medicine
         )
+      };
+
+    case ADD_MEDICINE:
+      return {
+        ...state,
+        medicines: [ ...state.medicines, action.payload]
       };
     case GET_PATIENT_THERAPISTS:
       return {
@@ -70,12 +121,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         patientParents: action.payload
-      };
-
-    case ADD_MEDICINE:
-      return {
-        ...state,
-        medicines: action.payload
       };
 
     case ADD_THERAPIST_PATIENT:

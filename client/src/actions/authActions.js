@@ -44,7 +44,6 @@ export const loginUser = userData => dispatch => {
         axios
           .get(`/api/users/therapist/${decoded.id}`)
           .then(res => {
-            console.log(res.data.specialty, "data");
             dispatch(setCurrentUser(res.data));
           })
           .catch(err => console.log(err));

@@ -18,7 +18,7 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           {isTherapist ? (
-            <Link to="/criar/recurso" className="nav-link">
+            <Link to="/recurso/adicionar" className="nav-link">
               Criar recurso
             </Link>
           ) : null}

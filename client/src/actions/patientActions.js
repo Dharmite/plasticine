@@ -14,10 +14,45 @@ import {
   GET_MEDICINES,
   REMOVE_MEDICINE,
   GET_MEDICINE,
-  UPDATE_MEDICINE
+  UPDATE_MEDICINE,
+  GET_THERAPEUTIC_NOTES,
+  ADD_THERAPEUTIC_NOTE,
+  GET_THERAPEUTIC_NOTE,
+  REMOVE_THERAPEUTIC_NOTE,
+  UPDATE_THERAPEUTIC_NOTE
 } from "./types";
 
 import axios from "axios";
+
+
+export const addTherapeuticNote = (patient_id, newTherapeuticNote) => dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  axios
+    .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
+    .then(res => {
+      console.log(patient_id, "patient_id");
+      console.log(newTherapeuticNote, "newTherapeuticNote");
+      console.log(res.data, "res.data");
+      // console.log(config, "config");
+      
+      dispatch({
+        type: ADD_THERAPEUTIC_NOTE,
+        payload: res.data
+      });     
+
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 
 export const updateMedicine = (patient_id, medicine_id, newMedicine) => dispatch => {
   axios

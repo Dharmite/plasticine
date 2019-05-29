@@ -9,6 +9,9 @@ const Patient = require("../../models/Patient");
 
 const auth_middleware = require("../../middlewares/auth");
 
+const validateMedicineInput = require("../../validation/createMedicine");
+
+
 // @route   GET api/patient-profile/all
 // @desc    Get all patient profiles
 // @access  Private
@@ -116,6 +119,12 @@ router.post(
   "/:patient_id/medicine",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+
+    const { errors, isValid } = validateMedicineInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     Patient.findById({ _id: req.params.patient_id })
       .then(patient => {
         if (!patient) {
@@ -125,7 +134,9 @@ router.post(
             name: req.body.name,
             observation: req.body.observation,
             dosage: req.body.dosage,
-            time: req.body.time
+            time: req.body.time,
+            startingDate: req.body.startingDate,
+            finishedDate: req.body.finishedDate
           };
 
           patient.medicine.unshift(newMedicine);
@@ -154,7 +165,9 @@ router.post(
             name: req.body.name,
             observation: req.body.observation,
             dosage: req.body.dosage,
-            time: req.body.time
+            time: req.body.time,
+            startingDate: req.body.startingDate,
+            finishedDate: req.body.finishedDate
           };
           let medicines = patient.medicine;
           let medicineIndex = medicines
@@ -165,6 +178,9 @@ router.post(
           medicines[medicineIndex].observation = newMedicine.observation;
           medicines[medicineIndex].dosage = newMedicine.dosage;
           medicines[medicineIndex].time = newMedicine.time;
+          medicines[medicineIndex].startingDate = newMedicine.startingDate;
+          medicines[medicineIndex].finishedDate = newMedicine.finishedDate;
+
 
           patient.save().then(patient => res.json(patient));
         }
@@ -224,6 +240,35 @@ router.get(
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
         } else {
           res.json(patient.medicine);
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  }
+);
+
+// @route   GET api/patient-profile/:patient_id/medicine/:medicine_id
+// @desc    Show medicine
+// @access  Private
+router.get(
+  "/:patient_id/medicine/:medicine_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Patient.findById({ _id: req.params.patient_id })
+      .then(patient => {
+        if (!patient) {
+          return res.status(400).json({ err: "Nenhum perfil encontrado" });
+        } else {
+          let medicineObj = {}
+          patient.medicine.forEach(medicine => {
+            
+            if(medicine._id == req.params.medicine_id){
+              medicineObj = medicine;
+            }
+          })
+
+          res.json(medicineObj);
         }
       })
       .catch(err => {
@@ -301,13 +346,28 @@ router.delete(
                   association = true;
                 }
               });
+
+              parent.patient.forEach(elem => {
+                if (elem == req.params.patient_id) {
+                  association = true;
+                }
+              });
+
               if (association) {
-                let removeIndex = patient.parent
+                let removeIndex1 = patient.parent
                   .map(parent => parent.id)
                   .indexOf(req.params.parent_id);
-                // Splice out of array
-                patient.parent.splice(removeIndex, 1);
 
+                  let removeIndex2 = parent.patient
+                  .map(patient => patient.id)
+                  .indexOf(req.params.patient_id);
+
+                // Splice out of array
+
+                patient.parent.splice(removeIndex1, 1);
+                parent.patient.splice(removeIndex2, 1);
+
+                parent.save();
                 // Save
                 patient
                   .save()
@@ -337,16 +397,22 @@ router.post(
   "/:patient_id/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Patient.findById({ _id: req.params.patient_id }).populate('therapist')
+    
+    Patient.findById({ _id: req.params.patient_id })
+      .populate("therapist")
       .then(patient => {
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
         } else {
           Therapist.findById({ _id: req.params.therapist_id })
             .then(therapist => {
+              let user_association = false;
+
               if (therapist) {
                 patient.therapist.forEach(elem => {
                   if (elem == req.params.therapist_id) {
+                    user_association = true;
+
                     return res
                       .status(400)
                       .json({ err: "User já está associado ao paciente" });
@@ -354,26 +420,68 @@ router.post(
                 });
                 therapist.patient.forEach(elem => {
                   if (elem == req.params.patient_id) {
+                    user_association = true;
+
                     return res
                       .status(400)
-                      .json({ err: "User já está associado ao paciente" });
+                      .json({ err: "User já está associado ao terapeuta" });
                   }
                 });
-                therapist.patient.push(patient.id);
-                therapist
-                  .save()
-                  .then(therapist => {
-                    patient.therapist.push(therapist.id);
-                    patient
-                      .save()
-                      .then(patient => res.json(patient))
-                      .catch(err => {
-                        res.json(err);
-                      });
-                  })
-                  .catch(err => {
-                    res.json(err);
-                  });
+
+                if (user_association == false) {
+
+
+                  therapist.patient.push(patient._id);
+                  therapist
+                    .save()
+                    .then(therapist => {
+
+
+                      let isPreviousTherapist = false;
+                      let removeIndex;
+
+                      for (
+                        let index = 0;
+                        index < patient.previousTherapists.length;
+                        index++
+                      ) {
+                        if (
+                          patient.previousTherapists[index] ==
+                          req.params.therapist_id
+                        ) {
+                          removeIndex = patient.previousTherapists[index];
+                          isPreviousTherapist = true;
+                        }
+                      }
+
+                      if (isPreviousTherapist) {
+
+                        
+                        patient.previousTherapists.splice(
+                          removeIndex,
+                          1
+                        );
+
+                        patient.previousTherapists = patient.previousTherapists;
+
+                      }
+
+                      patient.therapist.push(therapist._id);
+                      patient
+                        .save()
+                        .then(patient => res.json(patient))
+                        .catch(err => {
+                          res.json(err);
+                        });
+                    })
+                    .catch(err => {
+                      res.json(err);
+                    });
+                } else {
+                  return res
+                    .status(400)
+                    .json({ err: "Utilizador já está associado" });
+                }
               } else {
                 return res
                   .status(404)
@@ -401,13 +509,13 @@ router.delete(
     Patient.findById({ _id: req.params.patient_id })
       .then(patient => {
         if (!patient) {
-          return res.status(400).json({ err: "Nenhum perfil encontrado" });
+          return res.status(404).json({ err: "Nenhum perfil encontrado" });
         } else {
           Therapist.findById({ _id: req.params.therapist_id })
             .then(therapist => {
               if (!therapist) {
                 return res
-                  .status(400)
+                  .status(404)
                   .json({ err: "Nenhum perfil encontrado" });
               }
               let association = false;
@@ -417,13 +525,6 @@ router.delete(
                 }
               });
               if (association) {
-                // let removeIndex = patient.therapist
-                //   .map(therapist => therapist.id)
-                //   .indexOf(req.params.therapist_id);
-                // // Splice out of array
-                // res.json(removeIndex);
-                // patient.therapist.splice(removeIndex, 1);
-                // res.send("entrei");
                 let lista = [];
                 patient.therapist.forEach(element => {
                   if (!element.equals(req.params.therapist_id)) {
@@ -433,7 +534,17 @@ router.delete(
 
                 patient.therapist = lista;
 
-                patient.previousTherapists.push(req.params.therapist_id);
+                let isPreviousTherapist = false;
+
+                patient.previousTherapists.forEach(therapist => {
+                  if (therapist.equals(req.params.therapist_id)) {
+                    isPreviousTherapist = true;
+                  }
+                });
+
+                if (!isPreviousTherapist) {
+                  patient.previousTherapists.push(req.params.therapist_id);
+                }
 
                 // Save
                 patient
@@ -463,7 +574,9 @@ router.delete(
                     res.json(err);
                   });
               } else {
-                return res.status(400).json({ err: "Nenhum user por remover" });
+                return res
+                  .status(400)
+                  .json({ err: "Nenhum utilizador por remover" });
               }
             })
             .catch(err => {

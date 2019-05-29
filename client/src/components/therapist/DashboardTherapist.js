@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+
 class DashboardTherapist extends Component {
+
   render() {
-    const { name, email, specialty, patient } = this.props.auth.user;
+    const { name, email, specialty, patient } = this.props.user;
 
     return (
       <div class="container">
@@ -93,11 +95,19 @@ class DashboardTherapist extends Component {
 }
 
 DashboardTherapist.propTypes = {
-  auth: PropTypes.object.isRequired
+  therapists: PropTypes.array.isRequired,
+  parents: PropTypes.array.isRequired,
+  patients: PropTypes.array.isRequired,
+  getPatients: PropTypes.func.isRequired,
+  getParents: PropTypes.func.isRequired,
+  getTherapists: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  user: state.auth.user,
+  therapists: state.therapist.therapists,
+  parents: state.parent.parents,
+  patients: state.patient.patients
 });
 
 export default connect(

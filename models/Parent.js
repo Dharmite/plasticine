@@ -8,6 +8,12 @@ const ParentSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "patient"
     }
+  ],
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "therapeuticnote"
+    }
   ]
 });
 

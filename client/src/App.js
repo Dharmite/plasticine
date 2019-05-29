@@ -34,6 +34,7 @@ import EditMedicine from "./components/patient/EditMedicine";
 import PatientProfile from "./components/patient/PatientProfile";
 
 import AddTherapeuticNote from './components/therapist/AddTherapeuticNote';
+import AddResource from './components/therapist/AddResource';
 
 import "./App.css";
 
@@ -48,6 +49,15 @@ if (localStorage.jwtToken) {
   // decode token and get user info and exp
 
   const decoded = jwt_decode(localStorage.jwtToken);
+
+  if (decoded.userType == "admin") {
+    axios
+      .get(`/api/admin/${decoded.id}`)
+      .then(res => {
+        store.dispatch(setCurrentUser(res.data));
+      })
+      .catch(err => console.log(err));
+  }
 
   if (decoded.userType == "therapist") {
     axios
@@ -66,14 +76,7 @@ if (localStorage.jwtToken) {
       .catch(err => console.log(err));
   }
 
-  if (decoded.userType == "admin") {
-    axios
-      .get(`/api/admin/${decoded.id}`)
-      .then(res => {
-        store.dispatch(setCurrentUser(res.data));
-      })
-      .catch(err => console.log(err));
-  }
+
 
   // set user and isAuthenticated
   // store.dispatch(setCurrentUser(decoded));
@@ -151,8 +154,8 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/paciente/:id/registo/adicionar"
-                  component={AddTherapeuticNote}
+                  path="/recurso/adicionar"
+                  component={AddResource}
                 />
                 <Route component={NotFound} />
               </Switch>

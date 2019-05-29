@@ -129,7 +129,13 @@ router.get(
   "/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Therapist.findById(req.params.therapist_id)
+    Therapist.findById(req.params.therapist_id).populate('patient').populate({ 
+      path: 'patient',
+      populate: {
+        path: 'therapist',
+        model: 'base'
+      } 
+   })
       .then(therapist => {
         if (!therapist) {
           res
@@ -148,7 +154,7 @@ router.get(
 // @access Private
 
 router.get(
-  "/therapist/name/:therapist_name",
+  `/therapist/name/${encodeURI(':therapist_name')}`,
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Therapist.findOne({ name: req.params.therapist_name })
@@ -156,9 +162,32 @@ router.get(
         if (!therapist) {
           res
             .status(404)
-            .json({ error: "Não há nenhum terapeuta com esse id" });
+            .json({ error: "Não há nenhum terapeuta com esse nome" });
         } else {
           res.json(therapist);
+        }
+      })
+      .catch(err => res.json(err));
+  }
+);
+
+
+// @route GET api/users/parent/:parent_name
+// @desc Return parent
+// @access Private
+
+router.get(
+  `/parent/name/${encodeURI(':parent_name')}`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Parent.findOne({ name: req.params.parent_name })
+      .then(parent => {
+        if (!parent) {
+          res
+            .status(404)
+            .json({ error: "Não há nenhum parente com esse nome" });
+        } else {
+          res.json(parent);
         }
       })
       .catch(err => res.json(err));

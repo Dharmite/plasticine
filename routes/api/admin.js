@@ -17,6 +17,8 @@ const validatePatientInput = require("../../Validation/createPatient");
 
 const validatePasswordInput = require("../../Validation/changePassword");
 
+const Base = require("../../models/Base");
+
 // @route GET api/admin/dashboard
 // @desc admin dashboard
 // @access Private
@@ -34,6 +36,18 @@ router.get(
     });
   }
 );
+
+// @route GET api/admin/:admin_id
+// @desc admin dashboard
+// @access Private
+
+router.get("/:admin_id", (req, res) => {
+  Base.findById(req.params.admin_id)
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => res.json(err));
+});
 
 // @route POST api/admin/therapist
 // @desc create therapist account

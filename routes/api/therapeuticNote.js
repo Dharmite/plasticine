@@ -74,24 +74,27 @@ router.post(
             res.status(400).json({ msg: "Not authorized" });
           } else {
             upload(req, res, err => {
+              let availableTo;
+
+              if (req.body.availableTo == "") {
+                availableTo = [req.user.id];
+              } else {
+                availableTo = req.body.availableTo.split(" ");
+                availableTo.push(req.user.id);
+              }
+
+
               if (err) throw err;
               const newTherapeuticNote = {
                 user: req.user.id,
                 patient: req.params.patient_id,
                 title: req.body.title,
                 observation: req.body.observation,
-                availableTo: [],
+                availableTo: availableTo,
                 files: []
               };
 
-              let users = req.body.availableTo.split(";");
-
-              if (users[0] == "") {
-                users[0] = req.user.id;
-                newTherapeuticNote.availableTo = users[0];
-              }
-
-              newTherapeuticNote.availableTo = users;
+              console.log(req.files, "req.files");
 
               req.files.forEach(file => {
                 let fileObj = {
@@ -105,21 +108,22 @@ router.post(
               new TherapeuticNote(newTherapeuticNote)
                 .save()
                 .then(note => {
-                  res.json(note);
                   note.availableTo.forEach(user => {
                     Base.findById(user)
                       .then(user => {
                         user.notes.push(note.id);
-                        user
-                          .save()
-                          .then(user => {
-                            patient.therapeuticNote.push(note);
-                            patient
-                              .save()
-                              .then(patient => res.json(patient))
-                              .catch(err => res.json(err));
-                          })
-                          .catch(err => res.json(err));
+                        user.save();
+
+                        patient.therapeuticNote.push(note);
+                        patient.save();
+                        res.json(patient);
+                        
+                        // .then(user => {
+
+                        //   patient.therapeuticNote.push(note);
+                        //   patient.save().then(patient => res.json(patient)).catch(err => res.json(err));
+                        // })
+                        // .catch(err => res.json(err));
                       })
                       .catch(err => res.json(err));
                   });
@@ -150,14 +154,14 @@ router.post(
                 files: []
               };
 
-              let users = req.body.availableTo.split(";");
+              // let users = req.body.availableTo.split(";");
 
-              if (users[0] == "") {
-                users[0] = req.user.id;
-                newTherapeuticNote.availableTo = users[0];
-              }
+              // if (users[0] == "") {
+              //   users[0] = req.user.id;
+              //   newTherapeuticNote.availableTo = users[0];
+              // }
 
-              newTherapeuticNote.availableTo = users;
+              // newTherapeuticNote.availableTo = users;
 
               req.files.forEach(file => {
                 let fileObj = {
