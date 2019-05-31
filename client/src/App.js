@@ -4,6 +4,9 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
+import PrivateRoute from "./components/common/PrivateRoute";
+import AccessRoute from "./components/common/AccessRoute";
+
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 
@@ -33,53 +36,19 @@ import EditMedicine from "./components/patient/EditMedicine";
 
 import PatientProfile from "./components/patient/PatientProfile";
 
-import AddTherapeuticNote from './components/therapist/AddTherapeuticNote';
-import AddResource from './components/therapist/AddResource';
+import AddTherapeuticNote from "./components/therapist/AddTherapeuticNote";
+import AddResource from "./components/therapist/AddResource";
 
 import "./App.css";
 
-import axios from "axios";
-
-// check for token
-
+// Check for token
 if (localStorage.jwtToken) {
-  // set auth token header auth
+  // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
-
-  // decode token and get user info and exp
-
+  // Decode token and get user info and exp
   const decoded = jwt_decode(localStorage.jwtToken);
-
-  if (decoded.userType == "admin") {
-    axios
-      .get(`/api/admin/${decoded.id}`)
-      .then(res => {
-        store.dispatch(setCurrentUser(res.data));
-      })
-      .catch(err => console.log(err));
-  }
-
-  if (decoded.userType == "therapist") {
-    axios
-      .get(`/api/users/therapist/${decoded.id}`)
-      .then(res => {
-        store.dispatch(setCurrentUser(res.data));
-      })
-      .catch(err => console.log(err));
-  }
-  if (decoded.userType == "parent") {
-    axios
-      .get(`/api/users/parent/${decoded.id}`)
-      .then(res => {
-        store.dispatch(setCurrentUser(res.data));
-      })
-      .catch(err => console.log(err));
-  }
-
-
-
-  // set user and isAuthenticated
-  // store.dispatch(setCurrentUser(decoded));
+  // Set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
 }
 
 class App extends Component {
@@ -96,7 +65,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
-                <Route
+                <PrivateRoute
                   exact
                   path="/admin-dashboard"
                   component={DashboardAdmin}
@@ -137,7 +106,7 @@ class App extends Component {
                   path="/paciente/editar/:id"
                   component={EditPatient}
                 />
-                <Route
+                <PrivateRoute
                   exact
                   path="/paciente/ver/:id"
                   component={PatientProfile}
@@ -156,6 +125,11 @@ class App extends Component {
                   exact
                   path="/recurso/adicionar"
                   component={AddResource}
+                />
+                <Route
+                  exact
+                  path="/paciente/:id/registo/adicionar"
+                  component={AddTherapeuticNote}
                 />
                 <Route component={NotFound} />
               </Switch>

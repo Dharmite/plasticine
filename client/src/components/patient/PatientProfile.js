@@ -15,7 +15,9 @@ import { getParents } from "../../actions/parentActions";
 import { deleteMedicine } from "../../actions/patientActions";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+
+import TherapeuticNote from "../therapist/TherapeuticNote";
 
 class PatientProfile extends Component {
   state = {
@@ -25,6 +27,7 @@ class PatientProfile extends Component {
     selectedParent: "",
     patientTherapists: "",
     patientParents: "",
+    availableTo: "",
     errors: {}
   };
 
@@ -66,6 +69,21 @@ class PatientProfile extends Component {
     this.props.getPatientTherapists(id);
     this.props.getPatientParents(id);
     this.props.getPatientMedicine(id);
+  }
+
+  componentDidUpdate() {
+    let allNotes;
+    console.log(this.props.auth.user._id, "entrei 1");
+    axios
+      .get(`/api/therapeuticNote/notesAvailable/${this.props.auth.user._id}`)
+      .then(res => {
+        console.log("entrei 2");
+        console.log(res.data, "allNotes");
+
+        allNotes = res.data;
+        this.setState({ availableTo: allNotes });
+      })
+      .catch(err => console.log(err));
   }
 
   onSubmitTherapist = e => {
@@ -163,288 +181,402 @@ class PatientProfile extends Component {
     const { patientTherapists } = this.props;
     const { patientParents } = this.props;
 
+    const { notes } = this.props.auth.user;
+
+    console.log(this.props.availableTo, "availableTo");
+
     return (
-      <div className="profile">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="card card-body bg-info text-white mb-3">
-                    <div className="row">
-                      <div className="col-4 col-md-3 m-auto">
-                        <img
-                          className="rounded-circle"
-                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                          alt=""
-                        />
+      <div>
+        {isAdmin ? (
+          <div className="col-md-8 mt-3 mb-3">
+            <Link to="/admin-dashboard" className="btn btn-light">
+              Voltar
+            </Link>
+          </div>
+        ) : null}
+
+        {isTherapist ? (
+          <div className="col-md-8 mt-3 mb-3">
+            <Link to="/terapeuta-dashboard" className="btn btn-light">
+              Voltar
+            </Link>
+          </div>
+        ) : null}
+        {isParent ? (
+          <div className="col-md-8 mt-3 mb-3">
+            <Link to="/parente-dashboard" className="btn btn-light">
+              Voltar
+            </Link>
+          </div>
+        ) : null}
+        <div className="profile">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card card-body bg-info text-white mb-3">
+                      <div className="row">
+                        <div className="col-4 col-md-3 m-auto">
+                          <img
+                            className="rounded-circle"
+                            src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <h1 className="display-4 text-center">{name}</h1>
+                        <p className="lead text-center">Idade: {age}</p>
+                        <p>{schoolName}</p>
                       </div>
                     </div>
-                    <div className="text-center">
-                      <h1 className="display-4 text-center">{name}</h1>
-                      <p className="lead text-center">Idade: {age}</p>
-                      <p>{schoolName}</p>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card card-body bg-light mb-3">
+                      <h3 className="text-center text-info">
+                        Estado clinico de {name}
+                      </h3>
+                      <p className="lead">{clinicalStatus}</p>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="card card-body bg-light mb-3">
-                    <h3 className="text-center text-info">
-                      Estado clinico de {name}
-                    </h3>
-                    <p className="lead">{clinicalStatus}</p>
+                {isTherapist ? (
+                  <div className="mb-5">
+                    <ul className="nav nav-tabs" id="myTab" role="tablist">
+                      <li className="nav-item">
+                        <a
+                          className="nav-link active"
+                          id="mynotes-tab"
+                          data-toggle="tab"
+                          href="#mynotes"
+                          role="tab"
+                          aria-controls="mynotes"
+                          aria-selected="true"
+                        >
+                          Minhas notas
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          id="availableTo-tab"
+                          data-toggle="tab"
+                          href="#availableTo"
+                          role="tab"
+                          aria-controls="availableTo"
+                          aria-selected="false"
+                        >
+                          Partilhado comigo
+                        </a>
+                      </li>
+                    </ul>
+
+                    <div className="tab-content" id="myTabContent">
+                      <div
+                        className="tab-pane fade show active"
+                        id="mynotes"
+                        role="tabpanel"
+                        aria-labelledby="mynotes-tab"
+                      >
+                        {notes.length > 0 ? (
+                          notes.map(note =>
+                            note.user == this.props.auth.user._id ? (
+                              <TherapeuticNote
+                                key={note.id}
+                                TherapeuticNote={note}
+                              />
+                            ) : null
+                          )
+                        ) : (
+                          <p className="mt-4">Sem notas disponíveis</p>
+                        )}
+                      </div>
+                      <div
+                        className="tab-pane fade"
+                        id="availableTo"
+                        role="tabpanel"
+                        aria-labelledby="availableTo-tab"
+                      >
+                        {this.state.availableTo.length > 0
+                          ? this.state.availableTo.map(note => (
+                              <TherapeuticNote
+                                key={note.id}
+                                TherapeuticNote={note}
+                              />
+                            ))
+                          : null}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ) : null}
 
-              {isAdmin ? (
-                <div className="btn-group mb-4" role="group">
-                  <a
-                    className="btn btn-light"
-                    onClick={() =>
-                      this.setState({
-                        showTherapists: !this.state.showTherapists,
-                        showParents: false
-                      })
-                    }
+                {isAdmin ? (
+                  <div className="btn-group mb-4" role="group">
+                    <a
+                      className="btn btn-light"
+                      onClick={() =>
+                        this.setState({
+                          showTherapists: !this.state.showTherapists,
+                          showParents: false
+                        })
+                      }
+                    >
+                      <i className="fas fa-user-circle text-info mr-1" />{" "}
+                      Associar Terapeuta
+                    </a>
+
+                    <a
+                      className="btn btn-light"
+                      onClick={() =>
+                        this.setState({
+                          showParents: !this.state.showParents,
+                          showTherapists: false
+                        })
+                      }
+                    >
+                      <i className="fas fa-user-circle text-info mr-1" />{" "}
+                      Associar Parente
+                    </a>
+                  </div>
+                ) : null}
+
+                {isTherapist ? (
+                  <div className="btn-group mb-4" role="group">
+                    <a className="btn btn-light">
+                      <i className="far fa-clipboard text-info mr-1" /> Criar
+                      registo
+                    </a>
+                  </div>
+                ) : null}
+
+                {showTherapists && isAdmin ? (
+                  <form
+                    className="form-inline mb-3"
+                    onSubmit={this.onSubmitTherapist}
                   >
-                    <i className="fas fa-user-circle text-info mr-1" /> Associar
-                    Terapeuta
-                  </a>
-
-                  <a
-                    className="btn btn-light"
-                    onClick={() =>
-                      this.setState({
-                        showParents: !this.state.showParents,
-                        showTherapists: false
-                      })
-                    }
-                  >
-                    <i className="fas fa-user-circle text-info mr-1" /> Associar
-                    Parente
-                  </a>
-                </div>
-              ) : null}
-
-              {isTherapist ? (
-                <div className="btn-group mb-4" role="group">
-                  <a
-                    className="btn btn-light">
-                    <i className="far fa-clipboard text-info mr-1" /> Criar
-                    registo
-                  </a>
-                </div>
-              ) : null}
-
-              {showTherapists && isAdmin ? (
-                <form
-                  className="form-inline mb-3"
-                  onSubmit={this.onSubmitTherapist}
-                >
-                  <div
-                    className="form-group mb-2 mr-3"
-                    style={{ marginRight: "5px" }}
-                  >
-                    <label
-                      htmlFor="exampleFormControlSelect1"
+                    <div
+                      className="form-group mb-2 mr-3"
                       style={{ marginRight: "5px" }}
                     >
-                      Selecione o terapeuta
-                    </label>
-                    <select
-                      className="form-control ml-3"
-                      id="exampleFormControlSelect1"
-                      onChange={this.handleTherapistSelectionChanged}
-                    >
-                      <option id="option">Escolha um terapeuta</option>
-                      {therapists
-                        ? therapists.map(elem => (
-                            <option id="option">{elem.name}</option>
-                          ))
-                        : null}
-                    </select>
-                  </div>
+                      <label
+                        htmlFor="exampleFormControlSelect1"
+                        style={{ marginRight: "5px" }}
+                      >
+                        Selecione o terapeuta
+                      </label>
+                      <select
+                        className="form-control ml-3"
+                        id="exampleFormControlSelect1"
+                        onChange={this.handleTherapistSelectionChanged}
+                      >
+                        <option id="option">Escolha um terapeuta</option>
+                        {therapists
+                          ? therapists.map(elem => (
+                              <option id="option">{elem.name}</option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
 
-                  <button
-                    type="submit"
-                    className="btn btn-primary mb-2"
-                    style={{ marginRight: "5px;" }}
-                  >
-                    {" "}
-                    Associar terapeuta
-                  </button>
-                </form>
-              ) : null}
-
-              {showParents ? (
-                <form
-                  className="form-inline mb-3"
-                  onSubmit={this.onSubmitParent}
-                >
-                  <div
-                    className="form-group mb-2 mr-3"
-                    style={{ marginRight: "5px;" }}
-                  >
-                    <label
-                      for="exampleFormControlSelect1"
+                    <button
+                      type="submit"
+                      className="btn btn-primary mb-2"
                       style={{ marginRight: "5px;" }}
                     >
-                      Selecione o parente
-                    </label>
-                    <select
-                      className="form-control ml-3"
-                      id="exampleFormControlSelect1"
-                      onChange={this.handleParentSelectionChanged}
+                      {" "}
+                      Associar terapeuta
+                    </button>
+                  </form>
+                ) : null}
+
+                {showParents ? (
+                  <form
+                    className="form-inline mb-3"
+                    onSubmit={this.onSubmitParent}
+                  >
+                    <div
+                      className="form-group mb-2 mr-3"
+                      style={{ marginRight: "5px;" }}
                     >
-                      <option id="option">Escolha um parente</option>
-                      {parents
-                        ? parents.map(elem => (
-                            <option id="option">{elem.name}</option>
-                          ))
-                        : null}
-                    </select>
+                      <label
+                        for="exampleFormControlSelect1"
+                        style={{ marginRight: "5px;" }}
+                      >
+                        Selecione o parente
+                      </label>
+                      <select
+                        className="form-control ml-3"
+                        id="exampleFormControlSelect1"
+                        onChange={this.handleParentSelectionChanged}
+                      >
+                        <option id="option">Escolha um parente</option>
+                        {parents
+                          ? parents.map(elem => (
+                              <option id="option">{elem.name}</option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="btn btn-primary mb-2"
+                      style={{ marginRight: "5px;" }}
+                    >
+                      {" "}
+                      Associar parente
+                    </button>
+                  </form>
+                ) : null}
+
+                {errors.err ? (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: "block" }}
+                  >
+                    {errors.err}
                   </div>
-
-                  <button
-                    type="submit"
-                    className="btn btn-primary mb-2"
-                    style={{ marginRight: "5px;" }}
-                  >
-                    {" "}
-                    Associar parente
-                  </button>
-                </form>
-              ) : null}
-
-              {errors.err ? (
-                <div className="invalid-feedback" style={{ display: "block" }}>
-                  {errors.err}
-                </div>
-              ) : null}
-              <div className="row mb-4">
-                <div className="col-md-6">
-                  <h3 className="text-center text-info">Parentes</h3>
-                  <ul className="list-group">
-                    {patientParents.length > 0 ? (
-                      patientParents.map(elem => (
-                        <li className="list-group-item">
-                          <i
-                            className="fas fa-times"
-                            style={{
-                              cursor: "pointer",
-                              float: "right",
-                              color: "red"
-                            }}
-                            onClick={this.removeParent.bind(this, elem._id)}
-                          />
-                          <h4>{elem.name}</h4>
-                          <p>{elem.email}</p>
-                        </li>
-                      ))
-                    ) : (
-                      <p> Sem parentes associados </p>
-                    )}
-                  </ul>
-                </div>
-                <div className="col-md-6">
-                  <h3 className="text-center text-info">Terapeutas</h3>{" "}
-                  <ul className="list-group">
-                    {patientTherapists.length > 0 ? (
-                      patientTherapists.map(elem => (
-                        <li className="list-group-item">
-                          <i
-                            className="fas fa-times"
-                            style={{
-                              cursor: "pointer",
-                              float: "right",
-                              color: "red"
-                            }}
-                            onClick={this.removeTherapist.bind(this, elem._id)}
-                          />
-                          <h4>{elem.name}</h4>
-                          <p>{elem.email}</p>
-                          <p>{elem.specialty}</p>
-                        </li>
-                      ))
-                    ) : (
-                      <p> Sem terapeutas associados </p>
-                    )}
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <hr />
-
-                <h3 className="mb-4">Medicamentos</h3>
-                <div className="btn-group mb-4" role="group">
-                  <Link
-                    to={`/paciente/${_id}/medicamento/adicionar`}
-                    className="btn btn-light"
-                  >
-                    <i className="far fa-clipboard text-info mr-1" /> Adicionar
-                    medicamento
-                  </Link>
-                </div>
-                <div className="card card-body mb-2">
-                  <div className="row">
-                    {medicine ? (
-                      medicine.map(elem => (
-                        <div className="col-md-6">
-                          <h4>
-                            {elem.name}{" "}
-                            <Link to={`/paciente/${_id}/ver/medicamento/editar/${elem._id}`}>
-                              <i
-                                className="fas fa-pencil-alt"
-                                style={{
-                                  cursor: "pointer",
-                                  float: "right",
-                                  color: "black",
-                                }}
-                              /> 
-                            </Link>
+                ) : null}
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <h3 className="text-center text-info">Parentes</h3>
+                    <ul className="list-group">
+                      {patientParents.length > 0 ? (
+                        patientParents.map(elem => (
+                          <li className="list-group-item">
                             <i
                               className="fas fa-times"
                               style={{
                                 cursor: "pointer",
                                 float: "right",
-                                color: "red",
-                                fontSize: "12px"
+                                color: "red"
                               }}
-                              onClick={this.onDeleteClick.bind(this, elem._id)}
-                            >
-                              {" "}
-                              Apagar
-                            </i>
-                          </h4>
-                          <p>
-                            <b>Observações:</b> {elem.observation}
-                          </p>
-                          <p>
-                            <b>Dosagem:</b> {elem.dosage}
-                          </p>
-                          <p>
-                            <b>Horario:</b> {elem.time}
-                          </p>
-                          {elem.startingDate ? (
+                              onClick={this.removeParent.bind(this, elem._id)}
+                            />
+                            <h4>{elem.name}</h4>
+                            <p>{elem.email}</p>
+                          </li>
+                        ))
+                      ) : (
+                        <p> Sem parentes associados </p>
+                      )}
+                    </ul>
+                  </div>
+                  <div className="col-md-6">
+                    <h3 className="text-center text-info">Terapeutas</h3>{" "}
+                    <ul className="list-group">
+                      {patientTherapists.length > 0 ? (
+                        patientTherapists.map(elem => (
+                          <li className="list-group-item">
+                            {isAdmin ? (
+                              <i
+                                className="fas fa-times"
+                                style={{
+                                  cursor: "pointer",
+                                  float: "right",
+                                  color: "red"
+                                }}
+                                onClick={this.removeTherapist.bind(
+                                  this,
+                                  elem._id
+                                )}
+                              />
+                            ) : null}
+
+                            <h4>{elem.name}</h4>
+                            <p>{elem.email}</p>
+                            <p>{elem.specialty}</p>
+                          </li>
+                        ))
+                      ) : (
+                        <p> Sem terapeutas associados </p>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <hr />
+
+                  <h3 className="mb-4">Medicamentos</h3>
+                  <div className="btn-group mb-4" role="group">
+                    <Link
+                      to={`/paciente/${_id}/medicamento/adicionar`}
+                      className="btn btn-light"
+                    >
+                      <i className="far fa-clipboard text-info mr-1" />{" "}
+                      Adicionar medicamento
+                    </Link>
+                  </div>
+                  <div className="card card-body mb-2">
+                    <div className="row">
+                      {typeof medicine !== "undefined" &&
+                      medicine.length > 0 ? (
+                        medicine.map(elem => (
+                          <div className="col-md-6">
+                            <h4>
+                              {elem.name}{" "}
+                              <Link
+                                to={`/paciente/${_id}/ver/medicamento/editar/${
+                                  elem._id
+                                }`}
+                              >
+                                <i
+                                  className="fas fa-pencil-alt"
+                                  style={{
+                                    cursor: "pointer",
+                                    float: "right",
+                                    color: "black"
+                                  }}
+                                />
+                              </Link>
+                              <i
+                                className="fas fa-times"
+                                style={{
+                                  cursor: "pointer",
+                                  float: "right",
+                                  color: "red",
+                                  fontSize: "12px"
+                                }}
+                                onClick={this.onDeleteClick.bind(
+                                  this,
+                                  elem._id
+                                )}
+                              >
+                                {" "}
+                                Apagar
+                              </i>
+                            </h4>
                             <p>
-                              <b>Inicio:</b> {elem.startingDate.slice(0, 10)}
+                              <b>Observações:</b> {elem.observation}
                             </p>
-                          ) : null}
-                          {elem.finishedDate ? (
                             <p>
-                              <b>Inicio:</b> {elem.finishedDate.slice(0, 10)}
+                              <b>Dosagem:</b> {elem.dosage}
                             </p>
-                          ) : null}
-                        </div>
-                      ))
-                    ) : (
-                      <p> Sem medicamentos para mostrar </p>
-                    )}
+                            <p>
+                              <b>Horario:</b> {elem.time}
+                            </p>
+                            {elem.startingDate ? (
+                              <p>
+                                <b>Inicio:</b> {elem.startingDate.slice(0, 10)}
+                              </p>
+                            ) : null}
+                            {elem.finishedDate ? (
+                              <p>
+                                <b>Inicio:</b> {elem.finishedDate.slice(0, 10)}
+                              </p>
+                            ) : null}
+                          </div>
+                        ))
+                      ) : (
+                        <p> Sem medicamentos para mostrar </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -491,4 +623,4 @@ export default connect(
     deleteMedicine,
     getPatientMedicine
   }
-)(PatientProfile);
+)(withRouter(PatientProfile));

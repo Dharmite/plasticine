@@ -8,7 +8,7 @@ import {
 
   const initialState = {
     resources: [],
-    resource: {}
+    resource: {},
   };
   
   export default function(state = initialState, action) {

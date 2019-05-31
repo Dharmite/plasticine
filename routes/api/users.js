@@ -65,44 +65,81 @@ router.post("/login", (req, res) => {
 
   // Find user by email
 
-  Base.findOne({ email: email }).then(user => {
-    // check for user
-
-    if (!user) {
-      errors.email = "User not found";
-      return res.status(404).json(errors.email);
-    }
-
-    // check user password
-    // User password is plain text but in the db the password is encrypted
-
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        //User matched
-
-        // Logged in user information
-        const payload = {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          userType: user.userType
-        }; // Create JWT Payload
-
-        // Sign the token
-        jwt.sign(payload, keys.secretOrKey, (err, token) => {
-          if (err) throw err;
-
-          res.json({
-            success: true,
-            token: "Bearer " + token
-          });
-        });
-      } else {
-        errors.password = "Incorrect password";
-        return res.status(400).json({ password: errors.password });
+  Base.findOne({ email: email })
+    .populate("patient")
+    .populate("previousPatients")
+    .populate("notes")
+    .populate({
+      path: "patient",
+      populate: {
+        path: "therapist",
+        model: "base"
       }
+    })
+    .then(user => {
+      // check for user
+
+      if (!user) {
+        errors.email = "User not found";
+        return res.status(404).json(errors.email);
+      }
+
+      // check user password
+      // User password is plain text but in the db the password is encrypted
+
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          //User matched
+
+          let payload;
+
+          if (user.userType == "therapist") {
+            payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              userType: user.userType,
+              specialty: user.specialty,
+              patient: user.patient,
+              previousPatients: user.previousPatients,
+              notes: user.notes
+            };
+          }
+          if (user.userType == "admin") {
+            payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              userType: user.userType
+            };
+          }
+          if (user.userType == "parent") {
+            payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              userType: user.userType,
+              patient: user.patient,
+              notes: user.notes
+            };
+          }
+          // Create JWT Payload
+
+          // Sign the token
+          jwt.sign(payload, keys.secretOrKey, (err, token) => {
+            if (err) throw err;
+
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          });
+        } else {
+          errors.password = "Incorrect password";
+          return res.status(400).json({ password: errors.password });
+        }
+      });
     });
-  });
 });
 
 // @route GET api/users/current
@@ -129,13 +166,16 @@ router.get(
   "/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Therapist.findById(req.params.therapist_id).populate('patient').populate({ 
-      path: 'patient',
-      populate: {
-        path: 'therapist',
-        model: 'base'
-      } 
-   })
+    Therapist.findById(req.params.therapist_id)
+      .populate("patient")
+      .populate("notes")
+      .populate({
+        path: "patient",
+        populate: {
+          path: "therapist",
+          model: "base"
+        }
+      })
       .then(therapist => {
         if (!therapist) {
           res
@@ -154,7 +194,7 @@ router.get(
 // @access Private
 
 router.get(
-  `/therapist/name/${encodeURI(':therapist_name')}`,
+  `/therapist/name/${encodeURI(":therapist_name")}`,
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Therapist.findOne({ name: req.params.therapist_name })
@@ -171,13 +211,12 @@ router.get(
   }
 );
 
-
 // @route GET api/users/parent/:parent_name
 // @desc Return parent
 // @access Private
 
 router.get(
-  `/parent/name/${encodeURI(':parent_name')}`,
+  `/parent/name/${encodeURI(":parent_name")}`,
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Parent.findOne({ name: req.params.parent_name })

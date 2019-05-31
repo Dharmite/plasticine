@@ -46,12 +46,9 @@ class AddTherapeuticNote extends Component {
       formData.append("activity", activity);
       formData.append("behavior", behavior);
       formData.append("availableTo", availableTo);
-      for(var x = 0; x<this.state.files.length; x++) {
-        formData.append('files', this.state.files[x])
-    }
-      // formData.append("files", files);
-
-      console.log(files, "files add component");
+      for (var x = 0; x < this.state.files.length; x++) {
+        formData.append("files", this.state.files[x]);
+      }
 
       const newTherapeuticNote = {
         title,
@@ -62,12 +59,9 @@ class AddTherapeuticNote extends Component {
         files
       };
 
-      console.log(newTherapeuticNote.files, "newTherapeuticNote");
-
       const { id } = this.props.match.params;
       this.props.addTherapeuticNote(id, formData);
 
-      // Clear State
       this.setState({
         title: "",
         observation: "",
@@ -85,30 +79,22 @@ class AddTherapeuticNote extends Component {
       formData.append("observation", observation);
       formData.append("activity", activity);
       formData.append("behavior", behavior);
-      formData.append("availableTo", availableTo);
-      for(var x = 0; x<this.state.files.length; x++) {
-        formData.append('files', this.state.files[x])
-    }
-      // formData.append("files", files);
-      console.log(files, "files add component");
-
-
+      formData.append("availableTo", availableTo2);
+      for (var x = 0; x < this.state.files.length; x++) {
+        formData.append("files", this.state.files[x]);
+      }
       const newTherapeuticNote = {
         title,
         observation,
         activity,
         behavior,
-        availableTo,
+        availableTo2,
         files
       };
-
-      console.log(newTherapeuticNote.files, "newTherapeuticNote");
-
 
       const { id } = this.props.match.params;
       this.props.addTherapeuticNote(id, formData);
 
-      // Clear State
       this.setState({
         title: "",
         observation: "",
@@ -137,14 +123,12 @@ class AddTherapeuticNote extends Component {
   };
 
   componentWillMount() {
-
     const { id } = this.props.match.params;
     this.props.getPatient(id);
   }
 
   onChange = e => {
     if (e.target.name == "files") {
-
       console.log(this.state.files, "this.state.files");
       console.log(e.target.files, "e.target.files");
       // let upload_files = [...e.target.files[]];

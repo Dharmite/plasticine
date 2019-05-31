@@ -3,7 +3,7 @@ import TextInputGroup from "../layout/TextInputGroup";
 import { connect } from "react-redux";
 import { addTherapist } from "../../actions/therapistActions";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from 'react-router-dom';
 // import axios from 'axios';
 
 class AddTherapist extends Component {
@@ -19,7 +19,6 @@ class AddTherapist extends Component {
     e.preventDefault();
 
     const { name, email, password, specialty } = this.state;
-    
 
     const newTherapist = {
       name,
@@ -51,68 +50,72 @@ class AddTherapist extends Component {
     });
   };
 
-
   render() {
     const { name, email, password, specialty, errors } = this.state;
 
     return (
-      <div className="card mb-3 mt-4">
-        <div className="card-header">Adicionar terapeuta</div>
-        <div className="card-body">
-          <form onSubmit={this.onSubmit}>
-            <TextInputGroup
-              label="Nome"
-              name="name"
-              placeholder="Introduza o nome"
-              value={name}
-              onChange={this.onChange}
-              error={errors.name}
-            />
-            <TextInputGroup
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="Introduza o Email"
-              value={email}
-              onChange={this.onChange}
-              error={errors.email}
-            />
-            <TextInputGroup
-              label="password"
-              name="password"
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={this.onChange}
-              error={errors.password}
-            />
+      <div>
+        <div className="col-md-8 mt-3 ml-0 pl-0">
+          <Link to="/admin-dashboard" className="btn btn-light">
+            Voltar
+          </Link>
+        </div>
+        <div className="card mb-3 mt-4">
+          <div className="card-header">Adicionar terapeuta</div>
+          <div className="card-body">
+            <form onSubmit={this.onSubmit}>
+              <TextInputGroup
+                label="Nome"
+                name="name"
+                placeholder="Introduza o nome"
+                value={name}
+                onChange={this.onChange}
+                error={errors.name}
+              />
+              <TextInputGroup
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="Introduza o Email"
+                value={email}
+                onChange={this.onChange}
+                error={errors.email}
+              />
+              <TextInputGroup
+                label="password"
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={this.onChange}
+                error={errors.password}
+              />
 
-            <label>Especialidade clínica</label>
+              <label>Especialidade clínica</label>
 
-            <select
-              className="form-control form-control-lg"
-              id="exampleFormControlSelect1"
-              error={errors.specialty}
-              value={specialty}
-              name="specialty"
+              <select
+                className="form-control form-control-lg"
+                id="exampleFormControlSelect1"
+                error={errors.specialty}
+                value={specialty}
+                name="specialty"
+                onChange={this.handleSelectionChanged}
+              >
+                <option>Escolha uma especialidade</option>
+                <option>Psicologia</option>
+                <option>Terapia da Fala</option>
+                <option>Psicomotricidade</option>
+                <option>Fisioterapia</option>
+                <option>Terapia Ocupacional</option>
+              </select>
 
-              onChange={this.handleSelectionChanged}>
-
-              <option>Escolha uma especialidade</option>
-              <option>Psicologia</option>
-              <option>Terapia da Fala</option>
-              <option>Psicomotricidade</option>
-              <option>Fisioterapia</option>
-              <option>Terapia Ocupacional</option>
-
-            </select>
-
-            <input
-              type="submit"
-              value="Adicionar terapeuta"
-              className="btn btn-info btn-block mt-4"
-            />
-          </form>
+              <input
+                type="submit"
+                value="Adicionar terapeuta"
+                className="btn btn-info btn-block mt-4"
+              />
+            </form>
+          </div>
         </div>
       </div>
     );

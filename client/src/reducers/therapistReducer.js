@@ -2,20 +2,29 @@ import {
   GET_THERAPISTS,
   ADD_THERAPIST,
   GET_THERAPIST,
-  UPDATE_THERAPIST
+  UPDATE_THERAPIST,
+  THERAPISTS_LOADING
 } from "../actions/types";
 
 const initialState = {
   therapists: [],
-  therapist: {}
+  therapist: {},
+  loading: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case THERAPISTS_LOADING:
+      return {
+        ...state,
+        loading: true
+      };
+
     case GET_THERAPISTS:
       return {
         ...state,
-        therapists: action.payload
+        therapists: action.payload,
+        loading: false
       };
 
     case ADD_THERAPIST:

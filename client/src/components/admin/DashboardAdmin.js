@@ -11,6 +11,8 @@ import Therapist from "../therapist/Therapist";
 import Parent from "../parent/Parent";
 import Patient from "../patient/Patient";
 
+import Spinner from "../common/Spinner";
+
 class DashboardAdmin extends Component {
   componentDidMount() {
     this.props.getTherapists();
@@ -20,6 +22,23 @@ class DashboardAdmin extends Component {
 
   render() {
     const { therapists, parents, patients } = this.props;
+    const { loading } = this.props;
+
+    let therapistContent;
+
+    if (loading == true) {
+      console.log("entrei");
+      therapistContent = <Spinner />;
+    } else {
+      therapistContent =
+        therapists.length > 0 ? (
+          therapists.map(therapist => (
+            <Therapist key={therapist.id} therapist={therapist} />
+          ))
+        ) : (
+          <h4 className="mt-4">Sem terapeutas para mostrar</h4>
+        );
+    }
 
     return (
       <div className="dashboard">
@@ -27,7 +46,9 @@ class DashboardAdmin extends Component {
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4">Perfil de administrador</h1>
-              <p className="lead text-muted">Bem vindo {this.props.user.name}</p>
+              <p className="lead text-muted">
+                Bem vindo {this.props.user.name}
+              </p>
             </div>
           </div>
 
@@ -92,13 +113,14 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="therapist-tab"
             >
-              {therapists.length > 0 ? (
+              {/* {therapists.length > 0 ? (
                 therapists.map(therapist => (
                   <Therapist key={therapist.id} therapist={therapist} />
                 ))
               ) : (
                 <h4 className="mt-4">Sem terapeutas para mostrar</h4>
-              )}
+              )} */}
+              {therapistContent}
             </div>
             <div
               className="tab-pane fade"
@@ -147,6 +169,7 @@ DashboardAdmin.propTypes = {
 const mapStateToProps = state => ({
   user: state.auth.user,
   therapists: state.therapist.therapists,
+  loading: state.therapist.loading,
   parents: state.parent.parents,
   patients: state.patient.patients
 });

@@ -3,7 +3,8 @@ import TextInputGroup from "../layout/TextInputGroup";
 import { connect } from "react-redux";
 import { getTherapist, updateTherapist } from "../../actions/therapistActions";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from 'react-router-dom';
+
 
 class EditTherapist extends Component {
   state = {
@@ -60,51 +61,56 @@ class EditTherapist extends Component {
     const { name, email, specialty, errors } = this.state;
 
     return (
-      <div className="card mb-3 mt-4">
-        <div className="card-header">Adicionar terapeuta</div>
-        <div className="card-body">
-          <form onSubmit={this.onSubmit}>
-            <TextInputGroup
-              label="Nome"
-              name="name"
-              placeholder="Introduza o nome"
-              value={name}
-              onChange={this.onChange}
-              error={errors.name}
-            />
-            <TextInputGroup
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="Introduza o Email"
-              value={email}
-              onChange={this.onChange}
-              error={errors.email}
-            />
-            <select
-              className="form-control form-control-lg"
-              id="exampleFormControlSelect1"
-              error={errors.specialty}
-              value={specialty}
-              name="specialty"
+      <div>
+        <div className="col-md-8 mt-3 ml-0 pl-0">
+          <Link to="/admin-dashboard" className="btn btn-light">
+            Voltar
+          </Link>
+        </div>
+        <div className="card mb-3 mt-4">
+          <div className="card-header">Adicionar terapeuta</div>
+          <div className="card-body">
+            <form onSubmit={this.onSubmit}>
+              <TextInputGroup
+                label="Nome"
+                name="name"
+                placeholder="Introduza o nome"
+                value={name}
+                onChange={this.onChange}
+                error={errors.name}
+              />
+              <TextInputGroup
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="Introduza o Email"
+                value={email}
+                onChange={this.onChange}
+                error={errors.email}
+              />
+              <select
+                className="form-control form-control-lg"
+                id="exampleFormControlSelect1"
+                error={errors.specialty}
+                value={specialty}
+                name="specialty"
+                onChange={this.handleSelectionChanged}
+              >
+                <option>Escolha uma especialidade</option>
+                <option>Psicologia</option>
+                <option>Terapia da Fala</option>
+                <option>Psicomotricidade</option>
+                <option>Fisioterapia</option>
+                <option>Terapia Ocupacional</option>
+              </select>
 
-              onChange={this.handleSelectionChanged}>
-
-              <option>Escolha uma especialidade</option>
-              <option>Psicologia</option>
-              <option>Terapia da Fala</option>
-              <option>Psicomotricidade</option>
-              <option>Fisioterapia</option>
-              <option>Terapia Ocupacional</option>
-
-            </select>
-
-            <input
-              type="submit"
-              value="Editar terapeuta"
-              className="btn btn-info btn-block mt-4"
-            />
-          </form>
+              <input
+                type="submit"
+                value="Editar terapeuta"
+                className="btn btn-info btn-block mt-4"
+              />
+            </form>
+          </div>
         </div>
       </div>
     );

@@ -83,13 +83,14 @@ router.post(
                 availableTo.push(req.user.id);
               }
 
-
               if (err) throw err;
               const newTherapeuticNote = {
                 user: req.user.id,
                 patient: req.params.patient_id,
                 title: req.body.title,
                 observation: req.body.observation,
+                activity: req.body.activity,
+                behavior: req.body.behavior,
                 availableTo: availableTo,
                 files: []
               };
@@ -117,7 +118,7 @@ router.post(
                         patient.therapeuticNote.push(note);
                         patient.save();
                         res.json(patient);
-                        
+
                         // .then(user => {
 
                         //   patient.therapeuticNote.push(note);
@@ -150,6 +151,8 @@ router.post(
                 patient: req.params.patient_id,
                 title: req.body.title,
                 observation: req.body.observation,
+                activity: req.body.activity,
+                behavior: req.body.behavior,
                 availableTo: [],
                 files: []
               };
@@ -205,6 +208,42 @@ router.post(
   }
 );
 
+// @route GET api/therapeuticNote/notesAvailable/:user_id
+// @desc GET Therapeutic Note
+// @access Private
+
+router.get(
+  "/notesAvailable/:user_id",
+  passport.authenticate("jwt", { session: false }),
+  auth_middleware.isTherapistOrParent,
+  (req, res) => {
+    TherapeuticNote.find()
+      .then(notes => {
+        if (!notes) {
+          return res.status(400).json({ err: "Nenhum registo encontrado" });
+        } else {
+          let availableNotes = [];
+
+          Base.findById(req.params.user_id).then(user => {
+            notes.forEach(note => {
+              note.availableTo.forEach(elem => {
+                if (
+                  elem == req.params.user_id &&
+                  JSON.stringify(note.user) !==
+                    JSON.stringify(req.params.user_id)
+                ) {
+                  availableNotes.push(note);
+                }
+              });
+            });
+            res.json(availableNotes);
+          });
+        }
+      })
+      .catch(err => res.json(err));
+  }
+);
+
 // @route GET api/therapeuticNote/notes/:note_id
 // @desc GET Therapeutic Note
 // @access Private
@@ -220,6 +259,27 @@ router.get(
           return res.status(400).json({ err: "Nenhum registo encontrado" });
         } else {
           res.json(note);
+        }
+      })
+      .catch(err => res.json(err));
+  }
+);
+
+// @route GET api/therapeuticNote/notes
+// @desc GET Therapeutic Note
+// @access Private
+
+router.get(
+  "/notes",
+  passport.authenticate("jwt", { session: false }),
+  auth_middleware.isTherapistOrParent,
+  (req, res) => {
+    TherapeuticNote.find()
+      .then(notes => {
+        if (!notes) {
+          return res.status(400).json({ err: "Nenhum registo encontrado" });
+        } else {
+          res.json(notes);
         }
       })
       .catch(err => res.json(err));

@@ -2,12 +2,21 @@ import {
   GET_THERAPISTS,
   ADD_THERAPIST,
   GET_THERAPIST,
-  UPDATE_THERAPIST
+  UPDATE_THERAPIST,
+  THERAPISTS_LOADING
 } from "./types";
 
 import axios from "axios";
 
+export const setTherapistLoading = () => {
+  return {
+    type: THERAPISTS_LOADING
+  };
+};
+
 export const getTherapists = () => async dispatch => {
+  dispatch(setTherapistLoading());
+
   const res = await axios.get("/api/users/therapists");
 
   dispatch({

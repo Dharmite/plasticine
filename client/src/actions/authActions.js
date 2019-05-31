@@ -25,53 +25,23 @@ export const loginUser = userData => dispatch => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
-      // save to location storage
+      // Save to localStorage
       const { token } = res.data;
-
-      // set token to local storage
+      // Set token to ls
       localStorage.setItem("jwtToken", token);
-
-      // set to Auth header
+      // Set token to Auth header
       setAuthToken(token);
-
-      // decode token to get user data
+      // Decode token to get user data
       const decoded = jwt_decode(token);
-
-      // set current user´
-      // console.log(decoded, "decoded")
-
-      if (decoded.userType == "therapist") {
-        axios
-          .get(`/api/users/therapist/${decoded.id}`)
-          .then(res => {
-            dispatch(setCurrentUser(res.data));
-          })
-          .catch(err => console.log(err));
-      } if(decoded.userType == "parent") {
-        axios
-        .get(`/api/users/parent/${decoded.id}`)
-        .then(res => {
-          dispatch(setCurrentUser(res.data));
-        })
-        .catch(err => console.log(err));
-      }
-
-
-      if(decoded.userType == "admin") {
-        axios
-        .get(`/api/admin/${decoded.id}`)
-        .then(res => {
-          dispatch(setCurrentUser(res.data));
-        })
-        .catch(err => console.log(err));
-      }
+      // Set current user
+      dispatch(setCurrentUser(decoded));
     })
-    .catch(err => {
+    .catch(err =>
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      });
-    });
+      })
+    );
 };
 
 // set the current user

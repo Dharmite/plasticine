@@ -125,6 +125,7 @@ class AddResource extends Component {
     } = this.state;
 
     return (
+      
       <div className="card mb-3 mt-4">
         <div className="card-header">Adicionar recurso</div>
         <div className="card-body">
@@ -158,7 +159,7 @@ class AddResource extends Component {
                   aria-expanded="false"
                   name="subCategory"
                 >
-                  Escolha uma categoria
+                  Categorias
                 </button>
                 <ul
                   class="dropdown-menu multi-level"
