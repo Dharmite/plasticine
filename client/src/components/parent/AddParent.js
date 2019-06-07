@@ -1,17 +1,32 @@
 import React, { Component } from "react";
-import TextInputGroup from "../layout/TextInputGroup";
+import TextInputGroup from "../common/TextInputGroup";
 import { connect } from "react-redux";
 import { addParent } from "../../actions/parentActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
+import $ from "jquery";
 
 class AddParent extends Component {
+  componentWillUnmount() {
+    if ($(".modal-backdrop")[0]) {
+      document.getElementsByClassName("modal-backdrop")[0].remove();
+      document.body.classList.remove("modal-open");
+      document.body.style = "";
+    }
+  }
+
   state = {
     name: "",
     email: "",
     password: "",
     errors: {}
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -26,17 +41,15 @@ class AddParent extends Component {
       password
     };
 
-    this.props.addParent(newParent);
+    this.props.addParent(newParent, this.props.history);
 
     // Clear State
-    this.setState({
-      name: "",
-      email: "",
-      password: "",
-      errors: {}
-    });
-
-    this.props.history.push("/admin-dashboard");
+    // this.setState({
+    //   name: "",
+    //   email: "",
+    //   password: "",
+    //   errors: {}
+    // });
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -46,13 +59,60 @@ class AddParent extends Component {
 
     return (
       <div>
-        <div className="col-md-8 mt-3 ml-0 pl-0">
-          <Link to="/admin-dashboard" className="btn btn-light">
-            Voltar
-          </Link>
+        <button
+          type="button"
+          class="btn btn-light mt-3"
+          data-toggle="modal"
+          data-target="#backModal"
+        >
+          Voltar
+        </button>
+        <div
+          class="modal fade"
+          id="backModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja voltar à pagina anterior? As alterações não serão
+                guardadas
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <Link to="/admin-dashboard" className="btn btn-light">
+                  Voltar
+                </Link>{" "}
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className="card mb-3 mt-4">
           <div className="card-header">Adicionar parente</div>
+          <small class="text-muted ml-3 mt-3">Todos os campos são obrigatórios</small>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <TextInputGroup
@@ -99,7 +159,12 @@ AddParent.propTypes = {
   addParent: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { addParent }
 )(withRouter(AddParent));

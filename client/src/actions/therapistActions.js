@@ -3,7 +3,9 @@ import {
   ADD_THERAPIST,
   GET_THERAPIST,
   UPDATE_THERAPIST,
-  THERAPISTS_LOADING
+  THERAPISTS_LOADING,
+  GET_ERRORS,
+  CLEAR_ERRORS
 } from "./types";
 
 import axios from "axios";
@@ -25,13 +27,25 @@ export const getTherapists = () => async dispatch => {
   });
 };
 
-export const addTherapist = newTherapist => async dispatch => {
-  const res = await axios.post("/api/admin/therapist", newTherapist);
+export const addTherapist = (newTherapist, history) => async dispatch => {
+  try {
+    const res = await axios.post("/api/admin/therapist", newTherapist);
 
-  dispatch({
-    type: ADD_THERAPIST,
-    payload: res.data
-  });
+    dispatch({
+      type: ADD_THERAPIST,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+
+
+    history.push("/admin-dashboard");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
 
 export const getTherapist = id => async dispatch => {
@@ -42,14 +56,33 @@ export const getTherapist = id => async dispatch => {
   });
 };
 
-export const updateTherapist = therapist => async dispatch => {
-  const res = await axios.post(
-    `/api/users/therapist/${therapist.id}`,
-    therapist
-  );
+export const updateTherapist = (therapist, history) => async dispatch => {
 
-  dispatch({
-    type: UPDATE_THERAPIST,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post(
+      `/api/users/therapist/${therapist.id}`,
+      therapist
+    );
+
+    dispatch({
+      type: UPDATE_THERAPIST,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+
+    history.push("/admin-dashboard");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+// Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
 };

@@ -21,6 +21,7 @@ import Login from "./components/auth/Login";
 
 import DashboardAdmin from "./components/admin/DashboardAdmin";
 import DashboardTherapist from "./components/therapist/DashboardTherapist";
+import TherapistProfile from "./components/therapist/TherapistProfile"
 import DashboardParent from "./components/parent/DashboardParent";
 
 import AddTherapist from "./components/therapist/AddTherapist";
@@ -37,6 +38,9 @@ import EditMedicine from "./components/patient/EditMedicine";
 import PatientProfile from "./components/patient/PatientProfile";
 
 import AddTherapeuticNote from "./components/therapist/AddTherapeuticNote";
+import TherapeuticNoteDetails from "./components/therapist/TherapeuticNoteDetails";
+
+import AddNote from "./components/parent/AddNote";
 import AddResource from "./components/therapist/AddResource";
 
 import "./App.css";
@@ -52,6 +56,7 @@ if (localStorage.jwtToken) {
 }
 
 class App extends Component {
+
   render() {
     return (
       <Provider store={store}>
@@ -106,7 +111,7 @@ class App extends Component {
                   path="/paciente/editar/:id"
                   component={EditPatient}
                 />
-                <PrivateRoute
+                <Route
                   exact
                   path="/paciente/ver/:id"
                   component={PatientProfile}
@@ -130,6 +135,21 @@ class App extends Component {
                   exact
                   path="/paciente/:id/registo/adicionar"
                   component={AddTherapeuticNote}
+                />
+                <Route
+                  exact
+                  path="/paciente/:id/observação/adicionar"
+                  component={AddNote}
+                />
+                <Route
+                  exact
+                  path="/terapeuta/:id"
+                  component={TherapistProfile}
+                />
+                <Route
+                  exact
+                  path="/paciente/:patient_id/registo/:note_id"
+                  component={TherapeuticNoteDetails}
                 />
                 <Route component={NotFound} />
               </Switch>

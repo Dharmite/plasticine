@@ -10,6 +10,8 @@ const Base = require("../../models/Base");
 
 const auth_middleware = require("../../middlewares/auth");
 
+const validateTherapeuticNoteInput = require("../../Validation/createTherapeuticNote");
+
 // Set Storage Engine
 const storage = multer.diskStorage({
   destination: "./uploads/",
@@ -22,7 +24,6 @@ const storage = multer.diskStorage({
 });
 
 // Init upload
-
 const upload = multer({
   storage: storage,
   fileFilter: function(req, file, cb) {
@@ -74,6 +75,12 @@ router.post(
             res.status(400).json({ msg: "Not authorized" });
           } else {
             upload(req, res, err => {
+              const { errors, isValid } = validateTherapeuticNoteInput(
+                req.body
+              );
+              if (!isValid) {
+                return res.status(400).json(errors);
+              }
               let availableTo;
 
               if (req.body.availableTo == "") {
@@ -95,7 +102,64 @@ router.post(
                 files: []
               };
 
-              console.log(req.files, "req.files");
+              req.files.forEach(file => {
+                let fileObj = {
+                  filename: file.filename,
+                  destination: file.destination,
+                  src: file.destination + file.filename
+                };
+                newTherapeuticNote.files.push(fileObj);
+              });
+
+              new TherapeuticNote(newTherapeuticNote)
+                .save()
+                .then(note => {
+                  note.availableTo.forEach(user => {
+                    Base.findById(user)
+                      .then(user => {
+                        user.notes.push(note.id);
+                        user.save();
+
+                        patient.therapeuticNote.push(note);
+                        patient.save();
+                        res.json(note);
+                      })
+                      .catch(err => res.json(err));
+                  });
+                })
+                .catch(err => res.json(err));
+            });
+          }
+        } else if (req.user.userType == "parent") {
+          let authorizationParent = false;
+
+          patient.parent.forEach(parent => {
+            if (req.user.id == parent) {
+              authorizationParent = true;
+            }
+          });
+
+          if (!authorizationParent) {
+            res.status(400).json({ msg: "Not authorized" });
+          } else {
+            upload(req, res, err => {
+              let availableTo;
+              if (req.body.availableTo == "") {
+                availableTo = [req.user.id];
+              } else {
+                availableTo = req.body.availableTo.split(" ");
+                availableTo.push(req.user.id);
+              }
+
+              if (err) throw err;
+              const newTherapeuticNote = {
+                user: req.user.id,
+                patient: req.params.patient_id,
+                title: req.body.title,
+                observation: req.body.observation,
+                availableTo: availableTo,
+                files: []
+              };
 
               req.files.forEach(file => {
                 let fileObj = {
@@ -117,14 +181,7 @@ router.post(
 
                         patient.therapeuticNote.push(note);
                         patient.save();
-                        res.json(patient);
-
-                        // .then(user => {
-
-                        //   patient.therapeuticNote.push(note);
-                        //   patient.save().then(patient => res.json(patient)).catch(err => res.json(err));
-                        // })
-                        // .catch(err => res.json(err));
+                        res.json(note);
                       })
                       .catch(err => res.json(err));
                   });
@@ -132,76 +189,6 @@ router.post(
                 .catch(err => res.json(err));
             });
           }
-        } else if (req.user.userType == "parent") {
-          let authorizationParent = false;
-
-          patient.parent.forEach(parent => {
-            if (req.user.id == parent) {
-              authorizationParent = true;
-            }
-          });
-
-          if (!authorizationParent) {
-            res.status(400).json({ msg: "Not authorized" });
-          } else {
-            upload(req, res, err => {
-              if (err) throw err;
-              const newTherapeuticNote = {
-                user: req.user.id,
-                patient: req.params.patient_id,
-                title: req.body.title,
-                observation: req.body.observation,
-                activity: req.body.activity,
-                behavior: req.body.behavior,
-                availableTo: [],
-                files: []
-              };
-
-              // let users = req.body.availableTo.split(";");
-
-              // if (users[0] == "") {
-              //   users[0] = req.user.id;
-              //   newTherapeuticNote.availableTo = users[0];
-              // }
-
-              // newTherapeuticNote.availableTo = users;
-
-              req.files.forEach(file => {
-                let fileObj = {
-                  filename: file.filename,
-                  destination: file.destination,
-                  src: file.destination + file.filename
-                };
-                newTherapeuticNote.files.push(fileObj);
-              });
-
-              new TherapeuticNote(newTherapeuticNote)
-                .save()
-                .then(note => {
-                  res.json(note);
-                  note.availableTo.forEach(user => {
-                    Base.findById(user)
-                      .then(user => {
-                        user.notes.push(note.id);
-                        user
-                          .save()
-                          .then(user => {
-                            patient.therapeuticNote.push(note);
-                            patient
-                              .save()
-                              .then(patient => res.json(patient))
-                              .catch(err => res.json(err));
-                          })
-                          .catch(err => res.json(err));
-                      })
-                      .catch(err => res.json(err));
-                  });
-                })
-                .catch(err => res.json(err));
-            });
-          }
-
-          // aqui!!!
         }
       })
       .catch(err => res.json(err));
@@ -212,37 +199,37 @@ router.post(
 // @desc GET Therapeutic Note
 // @access Private
 
-router.get(
-  "/notesAvailable/:user_id",
-  passport.authenticate("jwt", { session: false }),
-  auth_middleware.isTherapistOrParent,
-  (req, res) => {
-    TherapeuticNote.find()
-      .then(notes => {
-        if (!notes) {
-          return res.status(400).json({ err: "Nenhum registo encontrado" });
-        } else {
-          let availableNotes = [];
+// router.get(
+//   "/notesAvailable/:user_id",
+//   passport.authenticate("jwt", { session: false }),
+//   auth_middleware.isTherapistOrParent,
+//   (req, res) => {
+//     TherapeuticNote.find()
+//       .then(notes => {
+//         if (!notes) {
+//           return res.status(400).json({ err: "Nenhum registo encontrado" });
+//         } else {
+//           let availableNotes = [];
 
-          Base.findById(req.params.user_id).then(user => {
-            notes.forEach(note => {
-              note.availableTo.forEach(elem => {
-                if (
-                  elem == req.params.user_id &&
-                  JSON.stringify(note.user) !==
-                    JSON.stringify(req.params.user_id)
-                ) {
-                  availableNotes.push(note);
-                }
-              });
-            });
-            res.json(availableNotes);
-          });
-        }
-      })
-      .catch(err => res.json(err));
-  }
-);
+//           Base.findById(req.params.user_id).then(user => {
+//             notes.forEach(note => {
+//               note.availableTo.forEach(elem => {
+//                 if (
+//                   elem == req.params.user_id &&
+//                   JSON.stringify(note.user) !==
+//                     JSON.stringify(req.params.user_id)
+//                 ) {
+//                   availableNotes.push(note);
+//                 }
+//               });
+//             });
+//             res.json(availableNotes);
+//           });
+//         }
+//       })
+//       .catch(err => res.json(err));
+//   }
+// );
 
 // @route GET api/therapeuticNote/notes/:note_id
 // @desc GET Therapeutic Note
@@ -254,6 +241,7 @@ router.get(
   auth_middleware.isTherapistOrParent,
   (req, res) => {
     TherapeuticNote.findById(req.params.note_id)
+      .populate("user").populate("patient").populate("availableTo")
       .then(note => {
         if (!note) {
           return res.status(400).json({ err: "Nenhum registo encontrado" });
@@ -266,7 +254,7 @@ router.get(
 );
 
 // @route GET api/therapeuticNote/notes
-// @desc GET Therapeutic Note
+// @desc GET all Therapeutic Note
 // @access Private
 
 router.get(
@@ -372,6 +360,24 @@ router.delete(
             });
           });
         }
+      })
+      .catch(err => res.json(err));
+  }
+);
+
+// @route GET api/therapeuticNote/patient/:patient_id/notes
+// @desc GET Therapeutic Note by Patient
+// @access Private
+
+router.get(
+  "/patient/:patient_id/notes",
+  passport.authenticate("jwt", { session: false }),
+  auth_middleware.isTherapistOrParent,
+  (req, res) => {
+    Patient.findById(req.params.patient_id)
+      .populate("therapeuticNote")
+      .then(patient => {
+        res.json(patient.therapeuticNote);
       })
       .catch(err => res.json(err));
   }

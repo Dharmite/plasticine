@@ -4,8 +4,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 class TherapeuticNote extends Component {
+
+  componentDidMount(){
+    
+  }
+
   render() {
     const {
+      _id,
       user,
       patient,
       title,
@@ -22,9 +28,9 @@ class TherapeuticNote extends Component {
         <div class="row">
           <div class="col-lg-6 col-md-12 col-12">
             <h3>{title}</h3>
-            <p>{observation}</p>
-            <p>{date}</p>
-            <a href="#">Detalhes</a>
+            <p><b>Observação:</b> {observation}</p>
+            <p>{date.slice(0, 10)}</p>
+            <Link to={`/paciente/${patient}/registo/${_id}`}>Detalhes</Link>
           </div>
         </div>
       </div>
@@ -37,7 +43,8 @@ TherapeuticNote.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+
 });
 
 export default connect(

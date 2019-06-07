@@ -21,19 +21,20 @@ class Therapist extends Component {
             />
           </div>
           <div class="col-lg-6 col-md-12 col-12">
-            <h3>{name}</h3>
-            <p>{email}</p>
-            <p>{specialty}</p>
+            <h3 style ={{marginBottom: "16px"}}>{name}</h3>
+            <p><b>Email:</b> {email}</p>
+            <p><b>Especialidade clínica:</b> {specialty}</p>
 
             <div className="row">
               <div className="col-4">
-                <a
+                <Link
+                  to = {`/terapeuta/${_id}`}
                   href="profile.html"
                   class="btn btn-info"
                   style={{ width: "100%" }}
                 >
                   Ver
-                </a>
+                </Link>
               </div>
 
               <div className="col-4">

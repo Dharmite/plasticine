@@ -3,36 +3,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-
 class DashboardTherapist extends Component {
 
   render() {
-    const { name, email, specialty, patient } = this.props.user;
+    const { name, patient } = this.props.user;
 
     return (
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-body bg-info text-white mb-3">
-              <div class="row">
-                <div class="col-4 col-md-3 m-auto">
-                  <img
-                    class="rounded-circle"
-                    src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                    alt=""
-                  />
-                </div>
-              </div>
-
-              <div class="text-center">
-                <h1 class="display-4 text-center">{name}</h1>
-                <p class="lead text-center">{email}</p>
-                <p class="lead text-center">{specialty}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <h1 className="mt-3 mb-3">Dashboard {name}</h1>
         {patient.length > 0 ? (
           patient.map(patient => (
             <div className="card card-body bg-light mb-3">
@@ -105,9 +83,6 @@ DashboardTherapist.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  therapists: state.therapist.therapists,
-  parents: state.parent.parents,
-  patients: state.patient.patients
 });
 
 export default connect(

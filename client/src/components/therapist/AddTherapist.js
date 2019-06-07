@@ -1,12 +1,21 @@
 import React, { Component } from "react";
-import TextInputGroup from "../layout/TextInputGroup";
+import TextInputGroup from "../common/TextInputGroup";
+import SelectListGroup from "../common/SelectListGroup";
 import { connect } from "react-redux";
 import { addTherapist } from "../../actions/therapistActions";
 import PropTypes from "prop-types";
-import { Link, withRouter } from 'react-router-dom';
-// import axios from 'axios';
+import { Link, withRouter } from "react-router-dom";
+import $ from "jquery";
 
 class AddTherapist extends Component {
+  componentWillUnmount() {
+    if ($(".modal-backdrop")[0]) {
+      document.getElementsByClassName("modal-backdrop")[0].remove();
+      document.body.classList.remove("modal-open");
+      document.body.style = "";
+    }
+  }
+
   state = {
     name: "",
     email: "",
@@ -15,6 +24,11 @@ class AddTherapist extends Component {
     errors: {}
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
   onSubmit = e => {
     e.preventDefault();
 
@@ -28,9 +42,9 @@ class AddTherapist extends Component {
     };
 
     //// SUBMIT Therapist ////
-    this.props.addTherapist(newTherapist);
+    this.props.addTherapist(newTherapist, this.props.history);
 
-    // Clear State
+    // // Clear State
     this.setState({
       name: "",
       email: "",
@@ -39,7 +53,6 @@ class AddTherapist extends Component {
       errors: {}
     });
 
-    this.props.history.push("/admin-dashboard");
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -53,15 +66,74 @@ class AddTherapist extends Component {
   render() {
     const { name, email, password, specialty, errors } = this.state;
 
+    // Select options for status
+    const options = [
+      { label: "* Escolha uma especialidade", value: 0 },
+      { label: "Psicologia", value: "Psicologia" },
+      { label: "Terapia da Fala", value: "Terapia da Fala" },
+      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Fisioterapia", value: "Fisioterapia" },
+      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" }
+    ];
+
     return (
       <div>
-        <div className="col-md-8 mt-3 ml-0 pl-0">
-          <Link to="/admin-dashboard" className="btn btn-light">
-            Voltar
-          </Link>
+        <button
+          type="button"
+          class="btn btn-light mt-3"
+          data-toggle="modal"
+          data-target="#backModal"
+        >
+          Voltar
+        </button>
+        <div
+          class="modal fade"
+          id="backModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja voltar à pagina anterior? As alterações não serão
+                guardadas
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <Link to="/admin-dashboard" className="btn btn-light">
+                  Voltar
+                </Link>{" "}
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className="card mb-3 mt-4">
           <div className="card-header">Adicionar terapeuta</div>
+          <small class="text-muted ml-3 mt-3">
+            Todos os campos são obrigatórios
+          </small>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <TextInputGroup
@@ -81,8 +153,9 @@ class AddTherapist extends Component {
                 onChange={this.onChange}
                 error={errors.email}
               />
+
               <TextInputGroup
-                label="password"
+                label="Password"
                 name="password"
                 type="password"
                 placeholder="Enter password"
@@ -91,23 +164,37 @@ class AddTherapist extends Component {
                 error={errors.password}
               />
 
-              <label>Especialidade clínica</label>
-
-              <select
-                className="form-control form-control-lg"
-                id="exampleFormControlSelect1"
-                error={errors.specialty}
-                value={specialty}
+              <SelectListGroup
                 name="specialty"
+                value={specialty}
+                error={errors.specialty}
+                label="Especialidade clínica"
                 onChange={this.handleSelectionChanged}
-              >
-                <option>Escolha uma especialidade</option>
-                <option>Psicologia</option>
-                <option>Terapia da Fala</option>
-                <option>Psicomotricidade</option>
-                <option>Fisioterapia</option>
-                <option>Terapia Ocupacional</option>
-              </select>
+                options={options}
+              />
+
+              {/* <div className="form-group">
+                <label>Especialidade clínica</label>
+
+                <select
+                  className="form-control form-control-lg"
+                  id="exampleFormControlSelect1"
+                  error={errors.specialty}
+                  value={specialty}
+                  name="specialty"
+                  onChange={this.handleSelectionChanged}
+                >
+                  <option>Escolha uma especialidade</option>
+                  <option>Psicologia</option>
+                  <option>Terapia da Fala</option>
+                  <option>Psicomotricidade</option>
+                  <option>Fisioterapia</option>
+                  <option>Terapia Ocupacional</option>
+                </select>
+                {errors.specialty ? (
+                  <div className="invalid-feedback">{errors.specialty}</div>
+                ) : null}
+              </div> */}
 
               <input
                 type="submit"
@@ -126,7 +213,12 @@ AddTherapist.propTypes = {
   addTherapist: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { addTherapist }
 )(withRouter(AddTherapist));

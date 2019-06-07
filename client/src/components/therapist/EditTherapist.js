@@ -1,12 +1,21 @@
 import React, { Component } from "react";
-import TextInputGroup from "../layout/TextInputGroup";
+import TextInputGroup from "../common/TextInputGroup";
 import { connect } from "react-redux";
 import { getTherapist, updateTherapist } from "../../actions/therapistActions";
 import PropTypes from "prop-types";
-import { Link, withRouter } from 'react-router-dom';
-
+import { Link, withRouter } from "react-router-dom";
+import $ from "jquery";
+import SelectListGroup from "../common/SelectListGroup";
 
 class EditTherapist extends Component {
+  componentWillUnmount() {
+    if ($(".modal-backdrop")[0]) {
+      document.getElementsByClassName("modal-backdrop")[0].remove();
+      document.body.classList.remove("modal-open");
+      document.body.style = "";
+    }
+  }
+
   state = {
     name: "",
     email: "",
@@ -16,17 +25,28 @@ class EditTherapist extends Component {
 
   componentWillReceiveProps(nextProps, nextState) {
     const { name, email, specialty } = nextProps.therapist;
+
     this.setState({
       name,
       email,
       specialty
     });
+
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getTherapist(id);
   }
+
+  handleSelectionChanged = e => {
+    this.setState({
+      specialty: e.target.value
+    });
+  };
 
   onSubmit = e => {
     e.preventDefault();
@@ -41,8 +61,14 @@ class EditTherapist extends Component {
       specialty
     };
 
+    // Check For Errors
+    if (newTherapist.specialty == "0") {
+      console.log("entrei");
+      this.setState({ errors: { specialty: "Este campo tem que ser preenchido com um valor válido" } });
+      return;
+    }
     //// SUBMIT Therapist ////
-    this.props.updateTherapist(newTherapist);
+    this.props.updateTherapist(newTherapist, this.props.history);
 
     // Clear State
     this.setState({
@@ -51,8 +77,6 @@ class EditTherapist extends Component {
       specialty: "",
       errors: {}
     });
-
-    this.props.history.push("/admin-dashboard");
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -60,15 +84,70 @@ class EditTherapist extends Component {
   render() {
     const { name, email, specialty, errors } = this.state;
 
+    // Select options for status
+    const options = [
+      { label: "* Escolha uma especialidade", value: 0 },
+      { label: "Psicologia", value: "Psicologia" },
+      { label: "Terapia da Fala", value: "Terapia da Fala" },
+      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Fisioterapia", value: "Fisioterapia" },
+      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" }
+    ];
+
     return (
       <div>
-        <div className="col-md-8 mt-3 ml-0 pl-0">
-          <Link to="/admin-dashboard" className="btn btn-light">
-            Voltar
-          </Link>
+        <button
+          type="button"
+          class="btn btn-light mt-3"
+          data-toggle="modal"
+          data-target="#backModal"
+        >
+          Voltar
+        </button>
+        <div
+          class="modal fade"
+          id="backModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja voltar à pagina anterior? As alterações não serão
+                guardadas
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <Link to="/admin-dashboard" className="btn btn-light">
+                  Voltar
+                </Link>{" "}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="card mb-3 mt-4">
-          <div className="card-header">Adicionar terapeuta</div>
+          <div className="card-header">Editar terapeuta</div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <TextInputGroup
@@ -82,13 +161,12 @@ class EditTherapist extends Component {
               <TextInputGroup
                 label="Email"
                 name="email"
-                type="email"
-                placeholder="Introduza o Email"
+                placeholder="Introduza um email"
                 value={email}
                 onChange={this.onChange}
-                error={errors.email}
+                error={errors.name}
               />
-              <select
+              {/* <select
                 className="form-control form-control-lg"
                 id="exampleFormControlSelect1"
                 error={errors.specialty}
@@ -102,7 +180,16 @@ class EditTherapist extends Component {
                 <option>Psicomotricidade</option>
                 <option>Fisioterapia</option>
                 <option>Terapia Ocupacional</option>
-              </select>
+              </select> */}
+
+              <SelectListGroup
+                name="specialty"
+                value={specialty}
+                error={errors.specialty}
+                label="Especialidade clínica"
+                onChange={this.handleSelectionChanged}
+                options={options}
+              />
 
               <input
                 type="submit"
@@ -123,7 +210,8 @@ EditTherapist.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  therapist: state.therapist.therapist
+  therapist: state.therapist.therapist,
+  errors: state.errors
 });
 
 export default connect(

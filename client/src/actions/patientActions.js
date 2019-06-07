@@ -19,31 +19,44 @@ import {
   ADD_THERAPEUTIC_NOTE,
   GET_THERAPEUTIC_NOTE,
   REMOVE_THERAPEUTIC_NOTE,
-  UPDATE_THERAPEUTIC_NOTE
+  UPDATE_THERAPEUTIC_NOTE,
+  PATIENTS_LOADING,
+  CLEAR_ERRORS,
+  PATIENT_THERAPISTS_LOADING
 } from "./types";
 
 import axios from "axios";
 
+export const setPatientLoading = () => {
+  return {
+    type: PATIENTS_LOADING
+  };
+};
 
-export const addTherapeuticNote = (patient_id, newTherapeuticNote) => dispatch => {
+export const setPatientTherapistsLoading = () => {
+  return {
+    type: PATIENT_THERAPISTS_LOADING
+  };
+};
+
+export const addTherapeuticNote = (
+  patient_id,
+  newTherapeuticNote
+) => dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'multipart/form-data'
+      "Content-Type": "multipart/form-data"
     }
-  }
+  };
   axios
     .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
     .then(res => {
-      console.log(patient_id, "patient_id");
-      console.log(newTherapeuticNote, "newTherapeuticNote");
-      console.log(res.data, "res.data");
-      // console.log(config, "config");
-      
+
       dispatch({
         type: ADD_THERAPEUTIC_NOTE,
         payload: res.data
-      });     
-
+      });
+      dispatch(clearErrors());
     })
     .catch(err => {
       dispatch({
@@ -53,18 +66,39 @@ export const addTherapeuticNote = (patient_id, newTherapeuticNote) => dispatch =
     });
 };
 
-
-export const updateMedicine = (patient_id, medicine_id, newMedicine) => dispatch => {
+export const getTherapeuticNote = id => dispatch => {
   axios
-    .post(`/api/patient-profile/${patient_id}/medicine/${medicine_id}`, newMedicine)
+    .get(`/api/therapeuticNote/notes/${id}`)
     .then(res => {
+      dispatch({
+        type: GET_THERAPEUTIC_NOTE,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
 
-
+export const updateMedicine = (
+  patient_id,
+  medicine_id,
+  newMedicine
+) => dispatch => {
+  axios
+    .post(
+      `/api/patient-profile/${patient_id}/medicine/${medicine_id}`,
+      newMedicine
+    )
+    .then(res => {
       dispatch({
         type: UPDATE_MEDICINE,
         payload: res.data
-      });     
-
+      });
+      dispatch(clearErrors());
     })
     .catch(err => {
       dispatch({
@@ -78,12 +112,10 @@ export const deleteMedicine = (patient_id, medicine_id) => dispatch => {
   axios
     .delete(`/api/patient-profile/${patient_id}/medicine/${medicine_id}`)
     .then(res => {
-
       dispatch({
         type: REMOVE_MEDICINE,
         payload: medicine_id
-      });     
-
+      });
     })
     .catch(err => {
       dispatch({
@@ -97,11 +129,11 @@ export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
   axios
     .post(`/api/patient-profile/${patient_id}/medicine`, newMedicine)
     .then(res => {
-
       dispatch({
         type: ADD_MEDICINE,
         payload: res.data.medicine
-      });     
+      });
+      dispatch(clearErrors());
 
       history.push(`/paciente/ver/${patient_id}`);
     })
@@ -113,16 +145,14 @@ export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
     });
 };
 
-export const getPatientMedicine = (patient_id) => dispatch => {
+export const getPatientMedicine = patient_id => dispatch => {
   axios
     .get(`/api/patient-profile/${patient_id}/medicine/all`)
     .then(res => {
-
       dispatch({
         type: GET_MEDICINES,
         payload: res.data
-      });     
-
+      });
     })
     .catch(err => {
       dispatch({
@@ -136,12 +166,10 @@ export const getMedicine = (patient_id, medicine_id) => dispatch => {
   axios
     .get(`/api/patient-profile/${patient_id}/medicine/${medicine_id}`)
     .then(res => {
-
       dispatch({
         type: GET_MEDICINE,
         payload: res.data
-      });     
-
+      });
     })
     .catch(err => {
       dispatch({
@@ -153,6 +181,7 @@ export const getMedicine = (patient_id, medicine_id) => dispatch => {
 
 export const getPatientTherapists = id => async dispatch => {
   const res = await axios.get(`/api/patient-profile/patient/${id}`);
+  dispatch(setPatientTherapistsLoading());
 
   dispatch({
     type: GET_PATIENT_THERAPISTS,
@@ -238,6 +267,8 @@ export const removeParentPatient = (id, parent_id) => dispatch => {
 };
 
 export const getPatients = () => async dispatch => {
+  dispatch(setPatientLoading());
+
   const res = await axios.get("/api/patient-profile/all");
 
   dispatch({
@@ -246,13 +277,23 @@ export const getPatients = () => async dispatch => {
   });
 };
 
-export const addPatient = newPatient => async dispatch => {
-  const res = await await axios.post("/api/admin/patient", newPatient);
+export const addPatient = (newPatient, history) => async dispatch => {
+  try {
+    const res = await await axios.post("/api/admin/patient", newPatient);
 
-  dispatch({
-    type: ADD_PATIENT,
-    payload: res.data
-  });
+    dispatch({
+      type: ADD_PATIENT,
+      payload: res.data
+    });
+    dispatch(clearErrors());
+
+    history.push("/admin-dashboard");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
 
 export const getPatient = id => async dispatch => {
@@ -263,13 +304,31 @@ export const getPatient = id => async dispatch => {
   });
 };
 
-export const updatePatient = patient => async dispatch => {
-  const res = await axios.post(
-    `/api/patient-profile/patient/${patient.id}`,
-    patient
-  );
-  dispatch({
-    type: UPDATE_PATIENT,
-    payload: res.data
-  });
+export const updatePatient = (patient, history) => async dispatch => {
+  try {
+    const res = await axios.post(
+      `/api/patient-profile/patient/${patient.id}`,
+      patient
+    );
+    dispatch({
+      type: UPDATE_PATIENT,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+
+    history.push("/admin-dashboard");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+// Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
 };

@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 
 class Landing extends Component {
-  // componentDidMount() {
-  //   if (document.getElementsByClassName("pageNotFound").length == 1) {
-  //     document.getElementsByClassName("pageNotFound")[0].remove();
-  //   }
-  // }
-
   render() {
     return (
       <div
@@ -27,7 +21,8 @@ class Landing extends Component {
             <div className="carousel-caption d-md-block">
               <h2>Registo de dados</h2>
               <p>
-                Esta funcionalidade permite que os terapeutas registem os dados.
+                Com esta aplicação poderá realizar registos terapeuticos e
+                partilhar recursos com todos os terapeutas.
               </p>
             </div>
           </div>

@@ -18,7 +18,9 @@ import {
   ADD_THERAPEUTIC_NOTE,
   GET_THERAPEUTIC_NOTE,
   REMOVE_THERAPEUTIC_NOTE,
-  UPDATE_THERAPEUTIC_NOTE
+  UPDATE_THERAPEUTIC_NOTE,
+  PATIENTS_LOADING,
+  PATIENT_THERAPISTS_LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -29,11 +31,24 @@ const initialState = {
   medicines: [],
   medicine: {},
   notes: [],
-  note: {}
+  note: {},
+  loading_patients: false,
+  loading_patientTherapists: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case PATIENTS_LOADING:
+      return {
+        ...state,
+        loading_patients: true
+      };
+
+      case PATIENT_THERAPISTS_LOADING:
+        return {
+          ...state,
+          loading_patients: true
+        };
 
     case GET_THERAPEUTIC_NOTES:
     return {
@@ -74,7 +89,8 @@ export default function(state = initialState, action) {
     case GET_PATIENTS:
       return {
         ...state,
-        patients: action.payload
+        patients: action.payload,
+        loading_patients: false
       };
     case GET_MEDICINES:
       return {
@@ -114,7 +130,8 @@ export default function(state = initialState, action) {
     case GET_PATIENT_THERAPISTS:
       return {
         ...state,
-        patientTherapists: action.payload
+        patientTherapists: action.payload,
+        loading_patientTherapists: false
       };
 
     case GET_PATIENT_PARENTS:

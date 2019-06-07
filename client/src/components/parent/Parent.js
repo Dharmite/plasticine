@@ -19,8 +19,8 @@ class Parent extends Component {
             />
           </div>
           <div class="col-lg-6 col-md-12 col-12">
-            <h3>{name}</h3>
-            <p>{email}</p>
+            <h3 style ={{marginBottom: "16px"}}>{name}</h3>
+            <p><b>Email:</b> {email}</p>
 
             <div className="row">
               <div className="col-4">
@@ -45,7 +45,7 @@ class Parent extends Component {
               <div className="col-4">
                 <a
                   href="profile.html"
-                  class="btn btn-info"
+                  class="btn btn-danger"
                   style={{ width: "100%" }}
                 >
                   Apagar

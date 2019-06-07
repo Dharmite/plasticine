@@ -22,6 +22,10 @@ const Patient = require("../../models/Patient");
 
 const auth_middleware = require("../../middlewares/auth");
 
+const validateEditTherapistInput = require("../../Validation/editTherapist");
+const validateEditParentInput = require("../../Validation/editParent");
+
+
 // @route POST api/admin/register
 // @desc Register admin
 // @access Public
@@ -33,7 +37,9 @@ router.post("/register", (req, res) => {
   }
   Admin.findOne({ email: req.body.email }).then(admin => {
     if (admin) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res
+        .status(400)
+        .json({ email: "Já existe uma conta com este email" });
     } else {
       const newAdmin = new Admin({
         name: req.body.name,
@@ -80,8 +86,9 @@ router.post("/login", (req, res) => {
       // check for user
 
       if (!user) {
-        errors.email = "User not found";
-        return res.status(404).json(errors.email);
+        return res
+          .status(404)
+          .json({ email: "Não existe nenhuma conta com este email" });
       }
 
       // check user password
@@ -135,7 +142,7 @@ router.post("/login", (req, res) => {
             });
           });
         } else {
-          errors.password = "Incorrect password";
+          errors.password = "Password incorreta";
           return res.status(400).json({ password: errors.password });
         }
       });
@@ -304,6 +311,12 @@ router.post(
   "/parent/:parent_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+
+    const { errors, isValid } = validateEditParentInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const newParent = {
       name: req.body.name,
       email: req.body.email
@@ -327,6 +340,10 @@ router.post(
   "/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateEditTherapistInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     const newTherapist = {
       name: req.body.name,
       email: req.body.email,

@@ -61,6 +61,7 @@ class Login extends Component {
               <p className="lead text-center">
                 Entre na sua conta Plasticine preenchendo o formulário
               </p>
+              <small class="text-muted">Todos os campos são obrigatórios</small>
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input

@@ -14,6 +14,7 @@ import Patient from "../patient/Patient";
 import Spinner from "../common/Spinner";
 
 class DashboardAdmin extends Component {
+
   componentDidMount() {
     this.props.getTherapists();
     this.props.getParents();
@@ -22,12 +23,41 @@ class DashboardAdmin extends Component {
 
   render() {
     const { therapists, parents, patients } = this.props;
-    const { loading } = this.props;
+    const {
+      loading_therapists,
+      loading_patients,
+      loading_parents
+    } = this.props;
 
     let therapistContent;
+    let patientContent;
+    let parentContent;
 
-    if (loading == true) {
-      console.log("entrei");
+    if (loading_parents == true) {
+      parentContent = <Spinner />;
+    } else {
+      parentContent =
+        parents.length > 0 ? (
+          parents.map(parent => <Parent key={parent.id} parent={parent} />)
+        ) : (
+          <h6 className="mt-4">Nenhum parente disponível</h6>
+        );
+    }
+
+    if (loading_patients == true) {
+      patientContent = <Spinner />;
+    } else {
+      patientContent =
+        patients.length > 0 ? (
+          patients.map(patient => (
+            <Patient key={patient.id} patient={patient} />
+          ))
+        ) : (
+          <h6 className="mt-4">Nenhum paciente disponível</h6>
+        );
+    }
+
+    if (loading_therapists == true) {
       therapistContent = <Spinner />;
     } else {
       therapistContent =
@@ -36,7 +66,7 @@ class DashboardAdmin extends Component {
             <Therapist key={therapist.id} therapist={therapist} />
           ))
         ) : (
-          <h4 className="mt-4">Sem terapeutas para mostrar</h4>
+          <h6 className="mt-4">Nenhum terapeuta disponível</h6>
         );
     }
 
@@ -53,14 +83,26 @@ class DashboardAdmin extends Component {
           </div>
 
           <div className="btn-group mb-4" role="group">
-            <Link to="/terapeuta/adicionar" className="btn btn-light">
+            <Link
+              to="/terapeuta/adicionar"
+              className="btn btn-light"
+              style={{ border: "1px solid black" }}
+            >
               <i className="fas fa-user-circle text-info mr-1" /> Criar
               Terapeuta
             </Link>{" "}
-            <Link to="/paciente/adicionar" className="btn btn-light">
+            <Link
+              to="/paciente/adicionar"
+              className="btn btn-light"
+              style={{ border: "1px solid black" }}
+            >
               <i className="fas fa-user-circle text-info mr-1" /> Criar Paciente
             </Link>
-            <Link to="/parente/adicionar" className="btn btn-light">
+            <Link
+              to="/parente/adicionar"
+              className="btn btn-light"
+              style={{ border: "1px solid black" }}
+            >
               <i className="fas fa-user-circle text-info mr-1" /> Criar Parente
             </Link>
           </div>
@@ -128,13 +170,15 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="patient-tab"
             >
-              {patients.length > 0 ? (
+              {/* {patients.length > 0 ? (
                 patients.map(patient => (
                   <Patient key={patient.id} patient={patient} />
                 ))
               ) : (
                 <h4 className="mt-4">Sem pacientes para mostrar</h4>
-              )}
+              )} */}
+
+              {patientContent}
             </div>
             <div
               className="tab-pane fade"
@@ -142,13 +186,14 @@ class DashboardAdmin extends Component {
               role="tabpanel"
               aria-labelledby="parent-tab"
             >
-              {parents.length > 0 ? (
+              {/* {parents.length > 0 ? (
                 parents.map(parent => (
                   <Parent key={parent.id} parent={parent} />
                 ))
               ) : (
                 <h4 className="mt-4">Sem parentes para mostrar</h4>
-              )}
+              )} */}
+              {parentContent}
             </div>
           </div>
         </div>
@@ -168,8 +213,10 @@ DashboardAdmin.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  loading_therapists: state.therapist.loading_therapists,
+  loading_patients: state.patient.loading_patients,
+  loading_parents: state.parent.loading_parents,
   therapists: state.therapist.therapists,
-  loading: state.therapist.loading,
   parents: state.parent.parents,
   patients: state.patient.patients
 });

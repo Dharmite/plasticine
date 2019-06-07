@@ -19,8 +19,8 @@ class Patient extends Component {
             />
           </div>
           <div className="col-lg-6 col-md-12 col-12">
-            <h3>{name}</h3>
-            <p>Idade: {age}</p>
+            <h3 style ={{marginBottom: "16px"}}>{name}</h3>
+            <p><b>Idade:</b> {age}</p>
 
             <div className="row">
               <div className="col-3">

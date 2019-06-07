@@ -10,7 +10,7 @@ const Patient = require("../../models/Patient");
 const auth_middleware = require("../../middlewares/auth");
 
 const validateMedicineInput = require("../../validation/createMedicine");
-
+const validatePatientInput = require("../../validation/createPatient");
 
 // @route   GET api/patient-profile/all
 // @desc    Get all patient profiles
@@ -22,11 +22,6 @@ router.get("/all", (req, res) => {
   Patient.find()
     .populate("therapist")
     .then(patients => {
-      if (patients.length === 0) {
-        errors.noprofile = "Não há nenhum perfil para mostrar";
-        return res.status(404).json(errors);
-      }
-
       res.json(patients);
     })
     .catch(err =>
@@ -91,6 +86,12 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isAdmin,
   (req, res) => {
+
+    const { errors, isValid } = validatePatientInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const newPatient = {
       name: req.body.name,
       age: req.body.age,
@@ -119,7 +120,6 @@ router.post(
   "/:patient_id/medicine",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-
     const { errors, isValid } = validateMedicineInput(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
@@ -181,7 +181,6 @@ router.post(
           medicines[medicineIndex].startingDate = newMedicine.startingDate;
           medicines[medicineIndex].finishedDate = newMedicine.finishedDate;
 
-
           patient.save().then(patient => res.json(patient));
         }
       })
@@ -231,7 +230,7 @@ router.delete(
 // @desc    Show users medicine
 // @access  Private
 router.get(
-  "/:patient_id/medicine/all",
+  "/:patient_id/medicine/all", 
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Patient.findById({ _id: req.params.patient_id })
@@ -260,13 +259,12 @@ router.get(
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
         } else {
-          let medicineObj = {}
+          let medicineObj = {};
           patient.medicine.forEach(medicine => {
-            
-            if(medicine._id == req.params.medicine_id){
+            if (medicine._id == req.params.medicine_id) {
               medicineObj = medicine;
             }
-          })
+          });
 
           res.json(medicineObj);
         }
@@ -358,7 +356,7 @@ router.delete(
                   .map(parent => parent.id)
                   .indexOf(req.params.parent_id);
 
-                  let removeIndex2 = parent.patient
+                let removeIndex2 = parent.patient
                   .map(patient => patient.id)
                   .indexOf(req.params.patient_id);
 
@@ -397,7 +395,6 @@ router.post(
   "/:patient_id/therapist/:therapist_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    
     Patient.findById({ _id: req.params.patient_id })
       .populate("therapist")
       .then(patient => {
@@ -429,14 +426,10 @@ router.post(
                 });
 
                 if (user_association == false) {
-
-
                   therapist.patient.push(patient._id);
                   therapist
                     .save()
                     .then(therapist => {
-
-
                       let isPreviousTherapist = false;
                       let removeIndex;
 
@@ -455,15 +448,9 @@ router.post(
                       }
 
                       if (isPreviousTherapist) {
-
-                        
-                        patient.previousTherapists.splice(
-                          removeIndex,
-                          1
-                        );
+                        patient.previousTherapists.splice(removeIndex, 1);
 
                         patient.previousTherapists = patient.previousTherapists;
-
                       }
 
                       patient.therapist.push(therapist._id);

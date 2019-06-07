@@ -17,12 +17,12 @@ module.exports = function validateRegisterInput(data) {
       errors.name = "Este campo tem que ser preenchido";
     }
   
-    if (Validator.isEmpty(data.email)) {
-      errors.email = "Este campo tem que ser preenchido";
-    }
-  
     if (!Validator.isEmail(data.email)) {
       errors.email = "Email invalido";
+    }
+
+    if (Validator.isEmpty(data.email)) {
+      errors.email = "Este campo tem que ser preenchido";
     }
   
     if (Validator.isEmpty(data.password)) {

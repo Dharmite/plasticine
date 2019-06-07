@@ -9,7 +9,7 @@ import {
 const initialState = {
   therapists: [],
   therapist: {},
-  loading: false
+  loading_therapists: false
 };
 
 export default function(state = initialState, action) {
@@ -17,14 +17,14 @@ export default function(state = initialState, action) {
     case THERAPISTS_LOADING:
       return {
         ...state,
-        loading: true
+        loading_therapists: true
       };
 
     case GET_THERAPISTS:
       return {
         ...state,
         therapists: action.payload,
-        loading: false
+        loading_therapists: false
       };
 
     case ADD_THERAPIST:

@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import axios from "axios";
+import PropTypes from "prop-types";
+
 import {
   getPatient,
   getPatientMedicine,
+  deleteMedicine,
   getPatientTherapists,
   getPatientParents,
   addTherapistPatient,
@@ -10,16 +15,15 @@ import {
   removeTherapistPatient,
   removeParentPatient
 } from "../../actions/patientActions";
+
 import { getTherapists } from "../../actions/therapistActions";
+
 import { getParents } from "../../actions/parentActions";
-import { deleteMedicine } from "../../actions/patientActions";
-import PropTypes from "prop-types";
-import axios from "axios";
-import { Link, withRouter } from "react-router-dom";
 
 import TherapeuticNote from "../therapist/TherapeuticNote";
 
 class PatientProfile extends Component {
+
   state = {
     showTherapists: true,
     showParents: false,
@@ -27,41 +31,56 @@ class PatientProfile extends Component {
     selectedParent: "",
     patientTherapists: "",
     patientParents: "",
-    availableTo: "",
-    errors: {}
+    errors: {},
+    user_id: ""
+  };
+
+  onRemoveUserClick = id => {
+    this.setState({ user_id: id });
   };
 
   removeTherapist = therapist_id => {
+
     const { id } = this.props.match.params;
 
     this.props.removeTherapistPatient(id, therapist_id);
+
   };
 
   removeParent = parent_id => {
+
     const { id } = this.props.match.params;
 
     this.props.removeParentPatient(id, parent_id);
+
   };
 
   onDeleteClick = medicine_id => {
+
     const { id } = this.props.match.params;
 
     this.props.deleteMedicine(id, medicine_id);
+
   };
 
   handleTherapistSelectionChanged = e => {
+
     this.setState({
       selectedTherapist: e.target.value
     });
+
   };
 
   handleParentSelectionChanged = e => {
+
     this.setState({
       selectedParent: e.target.value
     });
+
   };
 
   componentDidMount() {
+
     const { id } = this.props.match.params;
     this.props.getPatient(id);
     this.props.getTherapists();
@@ -69,24 +88,22 @@ class PatientProfile extends Component {
     this.props.getPatientTherapists(id);
     this.props.getPatientParents(id);
     this.props.getPatientMedicine(id);
+
   }
 
-  componentDidUpdate() {
-    let allNotes;
-    console.log(this.props.auth.user._id, "entrei 1");
-    axios
-      .get(`/api/therapeuticNote/notesAvailable/${this.props.auth.user._id}`)
-      .then(res => {
-        console.log("entrei 2");
-        console.log(res.data, "allNotes");
-
-        allNotes = res.data;
-        this.setState({ availableTo: allNotes });
-      })
-      .catch(err => console.log(err));
-  }
+  // componentDidUpdate() {
+  //   let allNotes;
+  //   axios
+  //     .get(`/api/therapeuticNote/notesAvailable/${this.props.auth.user._id}`)
+  //     .then(res => {
+  //       allNotes = res.data;
+  //       this.setState({ availableTo: allNotes });
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
   onSubmitTherapist = e => {
+
     e.preventDefault();
 
     if (
@@ -159,8 +176,8 @@ class PatientProfile extends Component {
   };
 
   render() {
-    const { isAuthenticated, isAdmin, isTherapist, isParent } = this.props.auth;
 
+    const { isAdmin, isTherapist, isParent } = this.props.auth;
     const { showTherapists } = this.state;
     const { showParents } = this.state;
 
@@ -171,7 +188,8 @@ class PatientProfile extends Component {
       schoolName,
       clinicalStatus,
       parent,
-      medicine
+      medicine,
+      therapeuticNote
     } = this.props.patient;
 
     const { therapists } = this.props;
@@ -181,12 +199,100 @@ class PatientProfile extends Component {
     const { patientTherapists } = this.props;
     const { patientParents } = this.props;
 
-    const { notes } = this.props.auth.user;
-
-    console.log(this.props.availableTo, "availableTo");
-
     return (
       <div>
+        <div
+          class="modal fade"
+          id="removeTherapistModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja mesmo remover este utilizador?
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
+                  onClick={this.removeTherapist.bind(this, this.state.user_id)}
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>{" "}
+        <div
+          class="modal fade"
+          id="removeParentModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja mesmo remover este utilizador?
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  onClick={this.removeParent.bind(this, this.state.user_id)}
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>{" "}
         {isAdmin ? (
           <div className="col-md-8 mt-3 mb-3">
             <Link to="/admin-dashboard" className="btn btn-light">
@@ -194,7 +300,6 @@ class PatientProfile extends Component {
             </Link>
           </div>
         ) : null}
-
         {isTherapist ? (
           <div className="col-md-8 mt-3 mb-3">
             <Link to="/terapeuta-dashboard" className="btn btn-light">
@@ -244,8 +349,16 @@ class PatientProfile extends Component {
                     </div>
                   </div>
                 </div>
-
                 {isTherapist ? (
+                  <div className="btn-group mb-4" role="group">
+                    <a className="btn btn-light">
+                      <i className="far fa-clipboard text-info mr-1" /> Criar
+                      registo
+                    </a>
+                  </div>
+                ) : null}
+
+                {isTherapist || isParent ? (
                   <div className="mb-5">
                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                       <li className="nav-item">
@@ -283,9 +396,9 @@ class PatientProfile extends Component {
                         role="tabpanel"
                         aria-labelledby="mynotes-tab"
                       >
-                        {notes.length > 0 ? (
-                          notes.map(note =>
-                            note.user == this.props.auth.user._id ? (
+                        {therapeuticNote ? (
+                          therapeuticNote.map(note =>
+                            note.user == this.props.auth.user.id ? (
                               <TherapeuticNote
                                 key={note.id}
                                 TherapeuticNote={note}
@@ -302,26 +415,35 @@ class PatientProfile extends Component {
                         role="tabpanel"
                         aria-labelledby="availableTo-tab"
                       >
-                        {this.state.availableTo.length > 0
-                          ? this.state.availableTo.map(note => (
+                        {/* {this.state.availableTo.length ? (
+                          this.state.availableTo.map(note =>
+                            note.user == this.props.auth.user.id ? (
                               <TherapeuticNote
                                 key={note.id}
                                 TherapeuticNote={note}
                               />
-                            ))
-                          : null}
+                            ) : null
+                          )
+                        ) : (
+                          <p className="mt-4">Sem notas disponíveis</p>
+                        )} */}
                       </div>
                     </div>
                   </div>
                 ) : null}
 
                 {isAdmin ? (
-                  <div className="btn-group mb-4" role="group">
+                  <div
+                    className="btn-group mb-4"
+                    role="group"
+                    id="associateUser"
+                  >
                     <a
                       className="btn btn-light"
+                      style={{ border: "1px solid black" }}
                       onClick={() =>
                         this.setState({
-                          showTherapists: !this.state.showTherapists,
+                          showTherapists: true,
                           showParents: false
                         })
                       }
@@ -332,24 +454,16 @@ class PatientProfile extends Component {
 
                     <a
                       className="btn btn-light"
+                      style={{ border: "1px solid black" }}
                       onClick={() =>
                         this.setState({
-                          showParents: !this.state.showParents,
+                          showParents: true,
                           showTherapists: false
                         })
                       }
                     >
                       <i className="fas fa-user-circle text-info mr-1" />{" "}
                       Associar Parente
-                    </a>
-                  </div>
-                ) : null}
-
-                {isTherapist ? (
-                  <div className="btn-group mb-4" role="group">
-                    <a className="btn btn-light">
-                      <i className="far fa-clipboard text-info mr-1" /> Criar
-                      registo
                     </a>
                   </div>
                 ) : null}
@@ -449,15 +563,23 @@ class PatientProfile extends Component {
                       {patientParents.length > 0 ? (
                         patientParents.map(elem => (
                           <li className="list-group-item">
-                            <i
-                              className="fas fa-times"
-                              style={{
-                                cursor: "pointer",
-                                float: "right",
-                                color: "red"
-                              }}
-                              onClick={this.removeParent.bind(this, elem._id)}
-                            />
+                            {isAdmin ? (
+                              <i
+                                onClick={this.onRemoveUserClick.bind(
+                                  this,
+                                  elem._id
+                                )}
+                                className="fas fa-times"
+                                data-toggle="modal"
+                                data-target="#removeParentModal"
+                                style={{
+                                  cursor: "pointer",
+                                  float: "right",
+                                  color: "red"
+                                }}
+                              />
+                            ) : null}
+
                             <h4>{elem.name}</h4>
                             <p>{elem.email}</p>
                           </li>
@@ -475,16 +597,18 @@ class PatientProfile extends Component {
                           <li className="list-group-item">
                             {isAdmin ? (
                               <i
+                                onClick={this.onRemoveUserClick.bind(
+                                  this,
+                                  elem._id
+                                )}
                                 className="fas fa-times"
+                                data-toggle="modal"
+                                data-target="#removeTherapistModal"
                                 style={{
                                   cursor: "pointer",
                                   float: "right",
                                   color: "red"
                                 }}
-                                onClick={this.removeTherapist.bind(
-                                  this,
-                                  elem._id
-                                )}
                               />
                             ) : null}
 
@@ -604,6 +728,7 @@ const mapStateToProps = state => ({
   patientTherapists: state.patient.patientTherapists,
   selectedParent: state.parent.selectedParent,
   patientParents: state.patient.patientParents,
+  loading_patientTherapists: state.patient.loading_patientTherapists,
   auth: state.auth
 });
 

@@ -2,19 +2,29 @@ import {
   GET_PARENTS,
   ADD_PARENT,
   GET_PARENT,
-  UPDATE_PARENT
+  UPDATE_PARENT,
+  PARENTS_LOADING
 } from "../actions/types";
+
 const initialState = {
   parents: [],
-  parent: {}
+  parent: {},
+  loading_parents: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case PARENTS_LOADING:
+      return {
+        ...state,
+        loading_parents: true
+      };
+
     case GET_PARENTS:
       return {
         ...state,
-        parents: action.payload
+        parents: action.payload,
+        loading_parents: false
       };
 
     case ADD_PARENT:
