@@ -167,32 +167,32 @@ class AddResource extends Component {
                   aria-labelledby="dropdownMenu"
                 >
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Percepção
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Visual
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Auditiva
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Espacial
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Contrastes
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Temporal
                         </a>{" "}
                       </li>
@@ -200,27 +200,27 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Motricidade
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Esquema Corporal
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Coordenação óculo-manual
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Coordenação grafo-manual (pré-escrita)
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Precisão Manual
                         </a>{" "}
                       </li>
@@ -228,42 +228,42 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Desenvolvimento Verbal
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Compreensão Verbal
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Raciocínio Verbal
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Consciência Fonológica
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Segmentação Silábica e fonológica
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}> 
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}> 
                           Fluência Verbal
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Leitura
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Escrita
                         </a>{" "}
                       </li>
@@ -271,27 +271,27 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Memória
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Auditiva
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Visual
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Verbal e Numérica Repetitiva
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Verbal e Numérica Significativa
                         </a>{" "}
                       </li>
@@ -299,22 +299,22 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Áreas Numéricas
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Conceitos Numéricos Básicos
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Cálculo
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Raciocínio Abstrato
                         </a>{" "}
                       </li>
@@ -322,17 +322,17 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       Desenvolvimento Emocional-Social
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Área Emocional-Afetiva
                         </a>
                       </li>
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Área Social
                         </a>{" "}
                       </li>
@@ -340,57 +340,57 @@ class AddResource extends Component {
                   </li>
                   <li class="dropdown-divider" />
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">
+                    <a class="dropdown-item" tabIndex="-1" href="#">
                       AVD's
                     </a>
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
-                        <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                        <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                           Autonomia
                         </a>
                       </li>
                       <li class="dropdown-submenu">
-                        <a class="dropdown-item" tabindex="-1" href="#">
+                        <a class="dropdown-item" tabIndex="-1" href="#">
                           Rotinas
                         </a>{" "}
                         <ul class="dropdown-menu">
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Escola
                             </a>
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Supermercado
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Cabeleireiro
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Centro Comercial
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Parque Infantil
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Livraria
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Loja de Roupa
                             </a>{" "}
                           </li>
                           <li class="dropdown-item">
-                            <a class="dropdown-item" tabindex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
+                            <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
                               Hospital / Centro Médico
                             </a>{" "}
                           </li>

@@ -41,17 +41,16 @@ class AddTherapist extends Component {
       specialty
     };
 
-    //// SUBMIT Therapist ////
     this.props.addTherapist(newTherapist, this.props.history);
 
     // // Clear State
-    this.setState({
-      name: "",
-      email: "",
-      password: "",
-      specialty: "",
-      errors: {}
-    });
+    // this.setState({
+    //   name: "",
+    //   email: "",
+    //   password: "",
+    //   specialty: "",
+    //   errors: {}
+    // });
 
   };
 

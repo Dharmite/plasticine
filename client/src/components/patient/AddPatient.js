@@ -42,8 +42,6 @@ class AddPatient extends Component {
       schoolSchedule
     } = this.state;
 
-    // Check For Errors --> Validation
-
     const newPatient = {
       name,
       age,
@@ -52,19 +50,17 @@ class AddPatient extends Component {
       schoolSchedule
     };
 
-    //// SUBMIT Therapist ////
     this.props.addPatient(newPatient, this.props.history);
 
     // Clear State
-    this.setState({
-      name: "",
-      age: "",
-      clinicalStatus: "",
-      schoolName: "",
-      schoolSchedule: "",
-      errors: {}
-    });
-
+    // this.setState({
+    //   name: "",
+    //   age: "",
+    //   clinicalStatus: "",
+    //   schoolName: "",
+    //   schoolSchedule: "",
+    //   errors: {}
+    // });
     
   };
 

@@ -18,7 +18,12 @@ class TherapeuticNoteDetails extends Component {
   componentDidMount() {
     const { note_id } = this.props.match.params;
     this.props.getTherapeuticNote(note_id);
-    this.props.getComments(note_id)
+    this.props.getComments(note_id);
+  }
+
+  componentDidUpdate(){
+    const { note_id } = this.props.match.params;
+    this.props.getComments(note_id);
   }
 
   onSubmit = e => {

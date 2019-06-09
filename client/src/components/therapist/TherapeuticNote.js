@@ -14,9 +14,9 @@ class TherapeuticNote extends Component {
     } = this.props.TherapeuticNote;
 
     return (
-      <div class="card card-body bg-light mb-3">
-        <div class="row">
-          <div class="col-lg-6 col-md-12 col-12">
+      <div className="card card-body bg-light mb-3">
+        <div className="row">
+          <div className="col-lg-6 col-md-12 col-12">
             <h3>{title}</h3>
             <p>
               <b>Observação:</b> {observation}

@@ -98,6 +98,7 @@ export const addTherapeuticNote = (
 export const getComments = note_id => async dispatch => {
   try {
     const res = await axios.get(`/api/therapeuticNote/${note_id}/feedback`);
+    console.log(res.data, "comments")
     dispatch({
       type: GET_COMMENTS,
       payload: res.data

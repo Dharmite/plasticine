@@ -81,7 +81,7 @@ class EditParent extends Component {
         <div
           class="modal fade"
           id="backModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"

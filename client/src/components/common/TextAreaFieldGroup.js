@@ -14,6 +14,7 @@ const TextAreaFieldGroup = ({
     <div className="form-group">
       <label>{label}</label>
       <textarea
+        rows="4"
         className={classnames('form-control form-control-lg', {
           'is-invalid': error
         })}

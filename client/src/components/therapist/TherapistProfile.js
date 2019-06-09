@@ -11,41 +11,41 @@ class TherapistProfile extends Component {
   }
 
   render() {
-    const { name, email, specialty, patient } = this.props.therapist;
+    const { name, email, specialty } = this.props.therapist;
 
     let userType;
 
-    if (this.props.user.userType == "admin") {
+    if (this.props.user.userType === "admin") {
       userType = "admin";
-    } else if (this.props.user.userType == "therapist") {
+    } else if (this.props.user.userType === "therapist") {
       userType = "terapeuta";
     } else {
       userType = "parente";
     }
 
     return (
-      <div class="row">
-        <div class="col-6 mt-3 mb-3">
+      <div className="row">
+        <div className="col-6 mt-3 mb-3">
           <Link to={`/${userType}-dashboard`} className="btn btn-light">
             Voltar
           </Link>{" "}
         </div>
 
-        <div class="col-md-12">
-          <div class="card card-body bg-info text-white mb-3">
-            <div class="row">
-              <div class="col-4 col-md-3 m-auto">
+        <div className="col-md-12">
+          <div className="card card-body bg-info text-white mb-3">
+            <div className="row">
+              <div className="col-4 col-md-3 m-auto">
                 <img
-                  class="rounded-circle"
+                  className="rounded-circle"
                   src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
                   alt=""
                 />
               </div>
             </div>
-            <div class="text-center">
-              <h1 class="display-4 text-center">{name}</h1>
-              <p class="lead text-center">{email}</p>
-              <p class="lead text-center">{specialty}</p>
+            <div className="text-center">
+              <h1 className="display-4 text-center">{name}</h1>
+              <p className="lead text-center">{email}</p>
+              <p className="lead text-center">{specialty}</p>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { getPatient, addTherapeuticNote } from "../../actions/patientActions";
 import $ from "jquery";
+import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 
 class AddTherapeuticNote extends Component {
   componentWillUnmount() {
@@ -163,7 +164,7 @@ class AddTherapeuticNote extends Component {
         <div
           class="modal fade"
           id="backModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
@@ -214,29 +215,26 @@ class AddTherapeuticNote extends Component {
                 onChange={this.onChange}
                 error={errors.title}
               />
-              <TextInputGroup
+              <TextAreaFieldGroup
                 label="Observação"
                 name="observation"
-                type="text"
                 placeholder="Introduza uma observação"
                 value={observation}
                 onChange={this.onChange}
                 error={errors.observation}
               />
-              <TextInputGroup
+              <TextAreaFieldGroup
                 label="Atividade realizada"
                 name="activity"
-                type="text"
                 placeholder="Introduza o nome da atividade"
                 value={activity}
                 onChange={this.onChange}
                 error={errors.activity}
               />
 
-              <TextInputGroup
+              <TextAreaFieldGroup
                 label="Comportamento demonstrado"
                 name="behavior"
-                type="text"
                 placeholder="Descreva o comportamento demostrado"
                 value={behavior}
                 onChange={this.onChange}
@@ -244,7 +242,11 @@ class AddTherapeuticNote extends Component {
               />
 
               <div className="form-group">
-                <label>Disponível para:</label>
+                {therapist || parent ? (
+                  therapist.length > 1 || parent.length > 0 ? (
+                    <label>Disponível para:</label>
+                  ) : null
+                ) : null}
                 {therapist
                   ? therapist.map(elem =>
                       elem._id !== this.props.auth.user.id ? (

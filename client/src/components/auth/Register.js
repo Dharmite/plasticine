@@ -50,10 +50,7 @@ class Register extends Component {
   };
 
   render() {
-
     const { errors } = this.state;
-
-    // const errors = this.state.errors;
 
     return (
       <div className="register">
@@ -64,7 +61,9 @@ class Register extends Component {
               <p className="lead text-center">
                 Registe-se como administrador do seu instituto.
               </p>
-              <small class="text-muted">Todos os campos são obrigatórios</small>
+              <small className="text-muted">
+                Todos os campos são obrigatórios
+              </small>
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
@@ -78,7 +77,7 @@ class Register extends Component {
                     onChange={this.onChange}
                   />
                   {errors.name ? (
-                    <div class="invalid-feedback">{errors.name}</div>
+                    <div className="invalid-feedback">{errors.name}</div>
                   ) : null}
                 </div>
                 <div className="form-group">
@@ -93,7 +92,7 @@ class Register extends Component {
                     onChange={this.onChange}
                   />
                   {errors.email ? (
-                    <div class="invalid-feedback">{errors.email}</div>
+                    <div className="invalid-feedback">{errors.email}</div>
                   ) : null}
                 </div>
                 <div className="form-group">
@@ -108,7 +107,7 @@ class Register extends Component {
                     onChange={this.onChange}
                   />
                   {errors.password ? (
-                    <div class="invalid-feedback">{errors.password}</div>
+                    <div className="invalid-feedback">{errors.password}</div>
                   ) : null}
                 </div>
                 <div className="form-group">
@@ -123,7 +122,7 @@ class Register extends Component {
                     onChange={this.onChange}
                   />
                   {errors.password2 ? (
-                    <div class="invalid-feedback">{errors.password2}</div>
+                    <div className="invalid-feedback">{errors.password2}</div>
                   ) : null}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />

@@ -78,7 +78,6 @@ class PatientProfile extends Component {
     this.props.getPatientMedicine(id);
   }
 
-
   onSubmitTherapist = e => {
     e.preventDefault();
 
@@ -330,10 +329,13 @@ class PatientProfile extends Component {
                 </div>
                 {isTherapist ? (
                   <div className="btn-group mb-4" role="group">
-                    <a className="btn btn-light">
+                    <Link
+                      className="btn btn-light"
+                      to={`/paciente/${_id}/registo/adicionar`}
+                    >
                       <i className="far fa-clipboard text-info mr-1" /> Criar
                       registo
-                    </a>
+                    </Link>
                   </div>
                 ) : null}
 
@@ -376,17 +378,19 @@ class PatientProfile extends Component {
                         aria-labelledby="mynotes-tab"
                       >
                         {therapeuticNote ? (
-                          therapeuticNote.map(note =>
-                            note.user == this.props.auth.user.id ? (
-                              <TherapeuticNote
-                                key={note.id}
-                                TherapeuticNote={note}
-                              />
-                            ) : null
+                          therapeuticNote.length > 0 ? (
+                            therapeuticNote.map(note =>
+                              note.user == this.props.auth.user.id ? (
+                                <TherapeuticNote
+                                  key={note.id}
+                                  TherapeuticNote={note}
+                                />
+                              ) : null
+                            )
+                          ) : (
+                            <p className="mt-4">Sem notas disponíveis</p>
                           )
-                        ) : (
-                          <p className="mt-4">Sem notas disponíveis</p>
-                        )}
+                        ) : null}
                       </div>
                       <div
                         className="tab-pane fade"
@@ -394,33 +398,23 @@ class PatientProfile extends Component {
                         role="tabpanel"
                         aria-labelledby="availableTo-tab"
                       >
-                        {/* {this.state.availableTo.length ? (
-                          this.state.availableTo.map(note =>
-                            note.user == this.props.auth.user.id ? (
-                              <TherapeuticNote
-                                key={note.id}
-                                TherapeuticNote={note}
-                              />
-                            ) : null
-                          )
-                        ) : (
-                          <p className="mt-4">Sem notas disponíveis</p>
-                        )} */}
                         {therapeuticNote ? (
-                          therapeuticNote.map(note =>
-                            note.availableTo.map(elem =>
-                              elem == this.props.auth.user.id &&
-                              note.user !== this.props.auth.user.id ? (
-                                <TherapeuticNote
-                                  key={note.id}
-                                  TherapeuticNote={note}
-                                />
-                              ) : null
+                          therapeuticNote.length > 0 ? (
+                            therapeuticNote.map(note =>
+                              note.availableTo.map(elem =>
+                                elem == this.props.auth.user.id &&
+                                note.user !== this.props.auth.user.id ? (
+                                  <TherapeuticNote
+                                    key={note.id}
+                                    TherapeuticNote={note}
+                                  />
+                                ) : null
+                              )
                             )
+                          ) : (
+                            <p className="mt-4">Sem notas disponíveis</p>
                           )
-                        ) : (
-                          <p className="mt-4">Sem notas disponíveis</p>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </div>
