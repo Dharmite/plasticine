@@ -20,7 +20,9 @@ import {
   REMOVE_THERAPEUTIC_NOTE,
   UPDATE_THERAPEUTIC_NOTE,
   PATIENTS_LOADING,
-  PATIENT_THERAPISTS_LOADING
+  PATIENT_THERAPISTS_LOADING,
+  ADD_COMMENT,
+  GET_COMMENTS
 } from "../actions/types";
 
 const initialState = {
@@ -33,7 +35,8 @@ const initialState = {
   notes: [],
   note: {},
   loading_patients: false,
-  loading_patientTherapists: false
+  loading_patientTherapists: false,
+  comments: []
 };
 
 export default function(state = initialState, action) {
@@ -44,47 +47,55 @@ export default function(state = initialState, action) {
         loading_patients: true
       };
 
-      case PATIENT_THERAPISTS_LOADING:
-        return {
-          ...state,
-          loading_patients: true
-        };
+    case PATIENT_THERAPISTS_LOADING:
+      return {
+        ...state,
+        loading_patients: true
+      };
 
     case GET_THERAPEUTIC_NOTES:
-    return {
-      ...state,
-      notes: action.payload
-    };
+      return {
+        ...state,
+        notes: action.payload
+      };
 
-  case GET_THERAPEUTIC_NOTE:
-    return {
-      ...state,
-      note: action.payload
-    };
+    case GET_THERAPEUTIC_NOTE:
+      return {
+        ...state,
+        note: action.payload
+      };
 
-  case REMOVE_THERAPEUTIC_NOTE:
-    return {
-      ...state,
-      notes: state.notes.filter(
-        note => note._id !== action.payload
-      )
-    };
+    case REMOVE_THERAPEUTIC_NOTE:
+      return {
+        ...state,
+        notes: state.notes.filter(note => note._id !== action.payload)
+      };
 
-  case UPDATE_THERAPEUTIC_NOTE:
-    return {
-      ...state,
-      notes: state.notes.map(note =>
-        note._id !== action.payload.id
-          ? (note = action.payload)
-          : note
-      )
-    };
+    case UPDATE_THERAPEUTIC_NOTE:
+      return {
+        ...state,
+        notes: state.notes.map(note =>
+          note._id !== action.payload.id ? (note = action.payload) : note
+        )
+      };
 
-  case ADD_THERAPEUTIC_NOTE:
-    return {
-      ...state,
-      notes: [...state.notes, action.payload]
-    };
+    case ADD_THERAPEUTIC_NOTE:
+      return {
+        ...state,
+        notes: [...state.notes, action.payload]
+      };
+
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload]
+      };
+
+      case GET_COMMENTS:
+        return {
+          ...state,
+          comments: action.payload
+        }; 
 
     case GET_PATIENTS:
       return {
@@ -125,7 +136,7 @@ export default function(state = initialState, action) {
     case ADD_MEDICINE:
       return {
         ...state,
-        medicines: [ ...state.medicines, action.payload]
+        medicines: [...state.medicines, action.payload]
       };
     case GET_PATIENT_THERAPISTS:
       return {

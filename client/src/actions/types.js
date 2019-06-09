@@ -1,5 +1,5 @@
 export const GET_ERRORS = "GET_ERRORS";
-export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 
@@ -8,7 +8,6 @@ export const GET_THERAPIST = "GET_THERAPIST";
 export const ADD_THERAPIST = "ADD_THERAPIST";
 export const UPDATE_THERAPIST = "UPDATE_THERAPIST";
 export const THERAPISTS_LOADING = "THERAPISTS_LOADING";
-
 
 export const GET_PARENTS = "GET_PARENTS";
 export const GET_PARENT = "GET_PARENT";
@@ -49,3 +48,5 @@ export const GET_RESOURCE = "GET_RESOURCE";
 export const REMOVE_RESOURCE = "REMOVE_RESOURCE";
 export const UPDATE_RESOURCE = "UPDATE_RESOURCE";
 
+export const ADD_COMMENT = "ADD_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";

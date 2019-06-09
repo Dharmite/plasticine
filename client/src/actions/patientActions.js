@@ -22,10 +22,21 @@ import {
   UPDATE_THERAPEUTIC_NOTE,
   PATIENTS_LOADING,
   CLEAR_ERRORS,
-  PATIENT_THERAPISTS_LOADING
+  PATIENT_THERAPISTS_LOADING,
+  ADD_COMMENT,
+  GET_COMMENTS
 } from "./types";
 
 import axios from "axios";
+
+//////////////////////////////////////////////  ERRORS  ////////////////////////////////////////////////////////////////////////
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
+
+//////////////////////////////////////////////  LOADING  ////////////////////////////////////////////////////////////////////////
 
 export const setPatientLoading = () => {
   return {
@@ -37,6 +48,25 @@ export const setPatientTherapistsLoading = () => {
   return {
     type: PATIENT_THERAPISTS_LOADING
   };
+};
+
+//////////////////////////////////////////////  NOTES  ////////////////////////////////////////////////////////////////////////
+
+export const getTherapeuticNote = id => dispatch => {
+  axios
+    .get(`/api/therapeuticNote/notes/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_THERAPEUTIC_NOTE,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
 
 export const addTherapeuticNote = (
@@ -51,7 +81,6 @@ export const addTherapeuticNote = (
   axios
     .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
     .then(res => {
-
       dispatch({
         type: ADD_THERAPEUTIC_NOTE,
         payload: res.data
@@ -66,14 +95,91 @@ export const addTherapeuticNote = (
     });
 };
 
-export const getTherapeuticNote = id => dispatch => {
+export const getComments = note_id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/therapeuticNote/${note_id}/feedback`);
+    dispatch({
+      type: GET_COMMENTS,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+export const addComment = (note_id, newFeedback) => async dispatch => {
+  try {
+    const res = await axios.post(
+      `/api/therapeuticNote/${note_id}/feedback`,
+      newFeedback
+    );
+    console.log("entrei");
+    console.log(newFeedback, "newFeedback");
+    dispatch({
+      type: ADD_COMMENT,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+//////////////////////////////////////////////  MEDICINE  ////////////////////////////////////////////////////////////////////////
+
+export const getMedicine = (patient_id, medicine_id) => dispatch => {
   axios
-    .get(`/api/therapeuticNote/notes/${id}`)
+    .get(`/api/patient-profile/${patient_id}/medicine/${medicine_id}`)
     .then(res => {
       dispatch({
-        type: GET_THERAPEUTIC_NOTE,
+        type: GET_MEDICINE,
         payload: res.data
       });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const getPatientMedicine = patient_id => dispatch => {
+  axios
+    .get(`/api/patient-profile/${patient_id}/medicine/all`)
+    .then(res => {
+      dispatch({
+        type: GET_MEDICINES,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
+  axios
+    .post(`/api/patient-profile/${patient_id}/medicine`, newMedicine)
+    .then(res => {
+      dispatch({
+        type: ADD_MEDICINE,
+        payload: res.data.medicine
+      });
+      dispatch(clearErrors());
+
+      history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
       dispatch({
@@ -125,76 +231,15 @@ export const deleteMedicine = (patient_id, medicine_id) => dispatch => {
     });
 };
 
-export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
-  axios
-    .post(`/api/patient-profile/${patient_id}/medicine`, newMedicine)
-    .then(res => {
-      dispatch({
-        type: ADD_MEDICINE,
-        payload: res.data.medicine
-      });
-      dispatch(clearErrors());
-
-      history.push(`/paciente/ver/${patient_id}`);
-    })
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
-    });
-};
-
-export const getPatientMedicine = patient_id => dispatch => {
-  axios
-    .get(`/api/patient-profile/${patient_id}/medicine/all`)
-    .then(res => {
-      dispatch({
-        type: GET_MEDICINES,
-        payload: res.data
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
-    });
-};
-
-export const getMedicine = (patient_id, medicine_id) => dispatch => {
-  axios
-    .get(`/api/patient-profile/${patient_id}/medicine/${medicine_id}`)
-    .then(res => {
-      dispatch({
-        type: GET_MEDICINE,
-        payload: res.data
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
-    });
-};
+//////////////////////////////////////////////  PATIENT'S THERAPISTS  ////////////////////////////////////////////////////////////////////////
 
 export const getPatientTherapists = id => async dispatch => {
   const res = await axios.get(`/api/patient-profile/patient/${id}`);
-  dispatch(setPatientTherapistsLoading());
+  // dispatch(setPatientTherapistsLoading());
 
   dispatch({
     type: GET_PATIENT_THERAPISTS,
     payload: res.data.therapist
-  });
-};
-
-export const getPatientParents = id => async dispatch => {
-  const res = await axios.get(`/api/patient-profile/patient/${id}`);
-
-  dispatch({
-    type: GET_PATIENT_PARENTS,
-    payload: res.data.parent
   });
 };
 
@@ -220,6 +265,29 @@ export const addTherapistPatient = (therapist_name, patient_id) => dispatch => {
     .catch(err => console.log(err.response.data));
 };
 
+export const removeTherapistPatient = (id, therapist_id) => dispatch => {
+  axios
+    .delete(`/api/patient-profile/${id}/therapist/${therapist_id}`)
+    .then(res => {
+      dispatch({
+        type: REMOVE_THERAPIST_PATIENT,
+        payload: therapist_id
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+//////////////////////////////////////////////  PATIENT'S PARENTS  ////////////////////////////////////////////////////////////////////////
+
+export const getPatientParents = id => async dispatch => {
+  const res = await axios.get(`/api/patient-profile/patient/${id}`);
+
+  dispatch({
+    type: GET_PATIENT_PARENTS,
+    payload: res.data.parent
+  });
+};
+
 export const addParentPatient = (parent_name, patient_id) => dispatch => {
   axios
     .get(`/api/users/parent/name/${parent_name}`)
@@ -242,18 +310,6 @@ export const addParentPatient = (parent_name, patient_id) => dispatch => {
     .catch(err => console.log(err.response.data));
 };
 
-export const removeTherapistPatient = (id, therapist_id) => dispatch => {
-  axios
-    .delete(`/api/patient-profile/${id}/therapist/${therapist_id}`)
-    .then(res => {
-      dispatch({
-        type: REMOVE_THERAPIST_PATIENT,
-        payload: therapist_id
-      });
-    })
-    .catch(err => console.log(err));
-};
-
 export const removeParentPatient = (id, parent_id) => dispatch => {
   axios
     .delete(`/api/patient-profile/${id}/parent/${parent_id}`)
@@ -264,6 +320,23 @@ export const removeParentPatient = (id, parent_id) => dispatch => {
       });
     })
     .catch(err => console.log(err));
+};
+
+//////////////////////////////////////////////  PATIENT'S   ////////////////////////////////////////////////////////////////////////
+
+export const getPatient = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/patient-profile/patient/${id}`);
+    dispatch({
+      type: GET_PATIENT,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
 
 export const getPatients = () => async dispatch => {
@@ -296,14 +369,6 @@ export const addPatient = (newPatient, history) => async dispatch => {
   }
 };
 
-export const getPatient = id => async dispatch => {
-  const res = await axios.get(`/api/patient-profile/patient/${id}`);
-  dispatch({
-    type: GET_PATIENT,
-    payload: res.data
-  });
-};
-
 export const updatePatient = (patient, history) => async dispatch => {
   try {
     const res = await axios.post(
@@ -324,11 +389,4 @@ export const updatePatient = (patient, history) => async dispatch => {
       payload: error.response.data
     });
   }
-};
-
-// Clear errors
-export const clearErrors = () => {
-  return {
-    type: CLEAR_ERRORS
-  };
 };

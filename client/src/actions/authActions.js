@@ -1,12 +1,9 @@
 import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
-
 import axios from "axios";
-import { decode } from "punycode";
 
 // Register
-
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
@@ -20,7 +17,6 @@ export const registerUser = (userData, history) => dispatch => {
 };
 
 // Login - Get User Token
-
 export const loginUser = userData => dispatch => {
   axios
     .post("/api/users/login", userData)

@@ -241,7 +241,9 @@ router.get(
   auth_middleware.isTherapistOrParent,
   (req, res) => {
     TherapeuticNote.findById(req.params.note_id)
-      .populate("user").populate("patient").populate("availableTo")
+      .populate("user")
+      .populate("patient")
+      .populate("availableTo")
       .then(note => {
         if (!note) {
           return res.status(400).json({ err: "Nenhum registo encontrado" });
@@ -380,6 +382,54 @@ router.get(
         res.json(patient.therapeuticNote);
       })
       .catch(err => res.json(err));
+  }
+);
+
+// @route   POST api/therapeuticNote/:note_id/feedback
+// @desc    Add feedback to a note
+// @access  Private
+router.post(
+  "/:note_id/feedback",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    TherapeuticNote.findById(req.params.note_id)
+      .then(note => {
+        if (!note) {
+          return res.status(404).json({ err: "Nenhum registo encontrado" });
+        } else {
+          const newFeedback = {
+            user: req.body.user,
+            observation: req.body.observation
+          };
+
+          note.feedback.unshift(newFeedback);
+          note.save().then(note => res.json(note));
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  }
+);
+
+// @route   GET api/therapeuticNote/:note_id/feedback
+// @desc    GET feedback to a note
+// @access  Private
+router.get(
+  "/:note_id/feedback",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    TherapeuticNote.findById(req.params.note_id)
+      .then(note => {
+        if (!note) {
+          return res.status(404).json({ err: "Nenhum registo encontrado" });
+        } else {
+          res.json(note.feedback);
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
   }
 );
 

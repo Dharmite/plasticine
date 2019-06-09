@@ -23,7 +23,6 @@ import { getParents } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 
 class PatientProfile extends Component {
-
   state = {
     showTherapists: true,
     showParents: false,
@@ -40,47 +39,36 @@ class PatientProfile extends Component {
   };
 
   removeTherapist = therapist_id => {
-
     const { id } = this.props.match.params;
 
     this.props.removeTherapistPatient(id, therapist_id);
-
   };
 
   removeParent = parent_id => {
-
     const { id } = this.props.match.params;
 
     this.props.removeParentPatient(id, parent_id);
-
   };
 
   onDeleteClick = medicine_id => {
-
     const { id } = this.props.match.params;
 
     this.props.deleteMedicine(id, medicine_id);
-
   };
 
   handleTherapistSelectionChanged = e => {
-
     this.setState({
       selectedTherapist: e.target.value
     });
-
   };
 
   handleParentSelectionChanged = e => {
-
     this.setState({
       selectedParent: e.target.value
     });
-
   };
 
   componentDidMount() {
-
     const { id } = this.props.match.params;
     this.props.getPatient(id);
     this.props.getTherapists();
@@ -88,22 +76,10 @@ class PatientProfile extends Component {
     this.props.getPatientTherapists(id);
     this.props.getPatientParents(id);
     this.props.getPatientMedicine(id);
-
   }
 
-  // componentDidUpdate() {
-  //   let allNotes;
-  //   axios
-  //     .get(`/api/therapeuticNote/notesAvailable/${this.props.auth.user._id}`)
-  //     .then(res => {
-  //       allNotes = res.data;
-  //       this.setState({ availableTo: allNotes });
-  //     })
-  //     .catch(err => console.log(err));
-  // }
 
   onSubmitTherapist = e => {
-
     e.preventDefault();
 
     if (
@@ -176,7 +152,6 @@ class PatientProfile extends Component {
   };
 
   render() {
-
     const { isAdmin, isTherapist, isParent } = this.props.auth;
     const { showTherapists } = this.state;
     const { showParents } = this.state;
@@ -202,42 +177,42 @@ class PatientProfile extends Component {
     return (
       <div>
         <div
-          class="modal fade"
+          className="modal fade"
           id="removeTherapistModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Atenção!
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Deseja mesmo remover este utilizador?
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Cancelar
                 </button>
                 <button
                   type="button"
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-dismiss="modal"
                   onClick={this.removeTherapist.bind(this, this.state.user_id)}
                 >
@@ -248,42 +223,42 @@ class PatientProfile extends Component {
           </div>
         </div>{" "}
         <div
-          class="modal fade"
+          className="modal fade"
           id="removeParentModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Atenção!
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Deseja mesmo remover este utilizador?
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Cancelar
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   data-dismiss="modal"
                   onClick={this.removeParent.bind(this, this.state.user_id)}
                 >
@@ -331,9 +306,13 @@ class PatientProfile extends Component {
                         </div>
                       </div>
                       <div className="text-center">
-                        <h1 className="display-4 text-center">{name}</h1>
-                        <p className="lead text-center">Idade: {age}</p>
-                        <p>{schoolName}</p>
+                        {name ? (
+                          <h1 className="display-4 text-center">{name}</h1>
+                        ) : null}
+                        {age ? (
+                          <p className="lead text-center">Idade: {age}</p>
+                        ) : null}
+                        {schoolName ? <p>{schoolName}</p> : null}
                       </div>
                     </div>
                   </div>
@@ -427,6 +406,21 @@ class PatientProfile extends Component {
                         ) : (
                           <p className="mt-4">Sem notas disponíveis</p>
                         )} */}
+                        {therapeuticNote ? (
+                          therapeuticNote.map(note =>
+                            note.availableTo.map(elem =>
+                              elem == this.props.auth.user.id &&
+                              note.user !== this.props.auth.user.id ? (
+                                <TherapeuticNote
+                                  key={note.id}
+                                  TherapeuticNote={note}
+                                />
+                              ) : null
+                            )
+                          )
+                        ) : (
+                          <p className="mt-4">Sem notas disponíveis</p>
+                        )}
                       </div>
                     </div>
                   </div>
