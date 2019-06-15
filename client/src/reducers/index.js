@@ -12,5 +12,5 @@ export default combineReducers({
   therapist: therapistReducer,
   parent: parentReducer,
   patient: patientReducer,
-  resouce: resourceReducer
+  resource: resourceReducer
 });

@@ -8,6 +8,8 @@ const Resource = require("../../models/Resource");
 
 const auth_middleware = require("../../middlewares/auth");
 
+const validateResourceInput = require("../../Validation/createResource");
+
 // Set Storage Engine
 const storage = multer.diskStorage({
   destination: "./uploads/",
@@ -54,6 +56,10 @@ router.post(
   auth_middleware.isTherapist,
   (req, res) => {
     upload(req, res, err => {
+      const { errors, isValid } = validateResourceInput(req.body);
+      if (!isValid) {
+        return res.status(400).json(errors);
+      }
       if (err) {
         res.json(err);
       } else {
@@ -63,6 +69,7 @@ router.post(
           category: req.body.category,
           subCategory: req.body.subCategory,
           observation: req.body.observation,
+          application: req.body.application,
           files: []
         };
         req.files.forEach(file => {
@@ -79,7 +86,11 @@ router.post(
           .then(resource => {
             resource
               .save()
-              .then(val => res.json(val))
+              .then(val => {
+                req.user.resources.push(val._id);
+                req.user.save()
+                res.json(req.user)
+              })
               .catch(err => res.json(err));
           })
           .catch(err => res.json(err));
@@ -144,13 +155,16 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isTherapistOrAdmin,
   (req, res) => {
-    Resource.findById(req.params.resource_id).then(resource => {
-      if (!resource) {
-        res.status(400).json({ error: "Não há nenhum recurso com esse id" });
-      } else {
-        res.json(resource);
-      }
-    });
+    Resource.findById(req.params.resource_id)
+      .populate("user")
+      .populate("feedback.user")
+      .then(resource => {
+        if (!resource) {
+          res.status(400).json({ error: "Não há nenhum recurso com esse id" });
+        } else {
+          res.json(resource);
+        }
+      });
   }
 );
 
@@ -188,7 +202,9 @@ router.get(
     const errors = {};
 
     Resource.find({ category: req.params.category_name })
+      .populate("user")
       .then(resources => {
+        console.log(resources);
         if (resources.length === 0) {
           errors.noresource = "Não há nenhum recurso para mostrar";
           return res.status(404).json(errors);
@@ -199,6 +215,53 @@ router.get(
       .catch(err =>
         res.status(404).json({ resource: "Não há nenhum recurso para mostrar" })
       );
+  }
+);
+
+// @route   POST api/resource/:resource_id/feedback
+// @desc    Add feedback to a resource
+// @access  Private
+router.post(
+  "/:resource_id/feedback",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Resource.findById(req.params.resource_id)
+      .then(resource => {
+        if (!resource) {
+          return res.status(404).json({ err: "Nenhum registo encontrado" });
+        } else {
+          const newFeedback = {
+            user: req.body.user,
+            observation: req.body.observation
+          };
+          resource.feedback.push(newFeedback);
+          resource.save().then(resource => res.json(resource));
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  }
+);
+
+// @route   GET api/therapeuticNote/:resource_id/feedback
+// @desc    GET feedback to a note
+// @access  Private
+router.get(
+  "/:resource_id/feedback",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    TherapeuticNote.findById(req.params.resource_id)
+      .then(resource => {
+        if (!resource) {
+          return res.status(404).json({ err: "Nenhum registo encontrado" });
+        } else {
+          res.json(resource.feedback);
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
   }
 );
 

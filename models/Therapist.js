@@ -7,13 +7,6 @@ const TherapistSchema = new Schema({
     type: String,
     required: true
   },
-  // specialtyList: [
-  //   "Psicologia",
-  //   "Terapia da Fala",
-  //   "Psicomotricidade",
-  //   "Fisioterapia",
-  //   "Terapia Ocupacional"
-  // ],
   patient: [
     {
       type: Schema.Types.ObjectId,
@@ -81,6 +74,12 @@ const TherapistSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "therapeuticnote"
+    }
+  ],
+  resources: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "resource"
     }
   ]
 });

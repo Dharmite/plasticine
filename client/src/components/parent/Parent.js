@@ -24,13 +24,13 @@ class Parent extends Component {
 
             <div className="row">
               <div className="col-4">
-                <a
-                  href="profile.html"
+              <Link
+                  to = {`/parente/${_id}`}
                   class="btn btn-info"
                   style={{ width: "100%" }}
                 >
                   Ver
-                </a>
+                </Link>
               </div>
 
               <div className="col-4">

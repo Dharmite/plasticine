@@ -106,7 +106,8 @@ router.post(
                 let fileObj = {
                   filename: file.filename,
                   destination: file.destination,
-                  src: file.destination + file.filename
+                  src: file.destination + file.filename,
+                  fileType: file.mimetype
                 };
                 newTherapeuticNote.files.push(fileObj);
               });
@@ -244,6 +245,7 @@ router.get(
       .populate("user")
       .populate("patient")
       .populate("availableTo")
+      .populate("feedback.user")
       .then(note => {
         if (!note) {
           return res.status(400).json({ err: "Nenhum registo encontrado" });

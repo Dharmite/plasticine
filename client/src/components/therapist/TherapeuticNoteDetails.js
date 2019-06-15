@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { getTherapeuticNote, addComment, getComments } from "../../actions/patientActions";
+import {
+  getTherapeuticNote,
+  addComment,
+  getComments
+} from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 
 class TherapeuticNoteDetails extends Component {
@@ -21,7 +25,7 @@ class TherapeuticNoteDetails extends Component {
     this.props.getComments(note_id);
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     const { note_id } = this.props.match.params;
     this.props.getComments(note_id);
   }
@@ -58,7 +62,7 @@ class TherapeuticNoteDetails extends Component {
       feedback,
       date
     } = this.props.note;
-    console.log(feedback, "feedback");
+
     const { errors } = this.state;
 
     return (
@@ -77,17 +81,20 @@ class TherapeuticNoteDetails extends Component {
           </div>
           <div class="row">
             <div class="col-md-2">
-              <a href="profile.html">
-                <img
-                  class="rounded-circle d-none d-md-block"
-                  src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                  alt=""
-                  style={{ width: "100%" }}
-                />
-              </a>
-              <br />
+              <img
+                class="rounded-circle d-none d-md-block"
+                src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                alt=""
+                style={{ width: "100%" }}
+              />
 
-              {user ? <p class="text-center">{user.name}</p> : null}
+              <br />
+              {user ? (
+                <Link to={`/terapeuta/${user._id}`}>
+                  <p class="text-center">{user.name}</p>
+                </Link>
+              ) : null}
+              {/* {user ? <p class="text-center">{user.name}</p> : null} */}
               {date ? (
                 <p className="text-center">
                   <small class="text-muted">{date.slice(0, 10)}</small>
@@ -125,6 +132,39 @@ class TherapeuticNoteDetails extends Component {
                   ? availableTo.map(elem => <p> {elem.name} </p>)
                   : null}
               </div>
+              <div className="row justify-content-between">
+                {files
+                  ? files.map(file =>
+                      file.fileType == "image/jpeg" ||
+                      file.fileType == "image/png" ||
+                      file.fileType == "image/gif" ? (
+                        <div className="col-md-4">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              `/uploads/${file.filename}`
+                            }
+                            style={{ width: "280px", height: "280px" }}
+                          />
+                        </div>
+                      ) : null
+                    )
+                  : null}
+                {files
+                  ? files.map(file =>
+                      file.fileType == "application/pdf" ? (
+                        <div className="col-md-12">
+                          <a
+                            href = {process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                          download>
+                            {file.filename}
+                          </a>
+                          {/* <p>{process.env.PUBLIC_URL + `/uploads/${file.filename}`}</p> */}
+                        </div>
+                      ) : null
+                    )
+                  : null}
+              </div>
             </div>
           </div>
         </div>
@@ -143,10 +183,14 @@ class TherapeuticNoteDetails extends Component {
                     </a>
                     <br />
 
-                    {this.props.user.name ? <p class="text-center">{this.props.user.name}</p> : null}
+                    {this.props.user.name ? (
+                      <p class="text-center">{this.props.user.name}</p>
+                    ) : null}
                     {elem.date ? (
                       <p className="text-center">
-                        <small class="text-muted">{elem.date.slice(0, 10)}</small>
+                        <small class="text-muted">
+                          {elem.date.slice(0, 10)}
+                        </small>
                       </p>
                     ) : null}
                   </div>

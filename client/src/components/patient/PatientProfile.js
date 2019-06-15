@@ -625,12 +625,11 @@ class PatientProfile extends Component {
                       Adicionar medicamento
                     </Link>
                   </div>
-                  <div className="card card-body mb-2">
-                    <div className="row">
-                      {typeof medicine !== "undefined" &&
-                      medicine.length > 0 ? (
-                        medicine.map(elem => (
-                          <div className="col-md-6">
+                  <div className="row">
+                    {typeof medicine !== "undefined" && medicine.length > 0 ? (
+                      medicine.map(elem => (
+                        <div className="col-md-6">
+                          <div className="card card-body mb-2">
                             <h4>
                               {elem.name}{" "}
                               <Link
@@ -680,15 +679,15 @@ class PatientProfile extends Component {
                             ) : null}
                             {elem.finishedDate ? (
                               <p>
-                                <b>Inicio:</b> {elem.finishedDate.slice(0, 10)}
+                                <b>Fim:</b> {elem.finishedDate.slice(0, 10)}
                               </p>
                             ) : null}
                           </div>
-                        ))
-                      ) : (
-                        <p> Sem medicamentos para mostrar </p>
-                      )}
-                    </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p> Sem medicamentos para mostrar </p>
+                    )}
                   </div>
                 </div>
               </div>

@@ -29,7 +29,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 // Static folder with uploaded assets
-app.use(express.static('./uploads'));
+app.use("/uploads", express.static(__dirname + '/uploads'));
 
 app.use("/api/users", users);
 app.use("/api/admin", admin);

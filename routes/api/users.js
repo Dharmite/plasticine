@@ -25,7 +25,6 @@ const auth_middleware = require("../../middlewares/auth");
 const validateEditTherapistInput = require("../../Validation/editTherapist");
 const validateEditParentInput = require("../../Validation/editParent");
 
-
 // @route POST api/admin/register
 // @desc Register admin
 // @access Public
@@ -176,6 +175,7 @@ router.get(
     Therapist.findById(req.params.therapist_id)
       .populate("patient")
       .populate("notes")
+      .populate("resources")
       .populate({
         path: "patient",
         populate: {
@@ -249,6 +249,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Parent.findById(req.params.parent_id)
+      .populate("notes")
       .then(parent => {
         if (!parent) {
           res.status(404).json({ error: "Não há nenhum parente com esse id" });
@@ -311,7 +312,6 @@ router.post(
   "/parent/:parent_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-
     const { errors, isValid } = validateEditParentInput(req.body);
     if (!isValid) {
       return res.status(400).json(errors);

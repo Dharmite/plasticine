@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextInputGroup from "../common/TextInputGroup";
+import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -14,6 +15,7 @@ class AddResource extends Component {
     category: "",
     subCategory: "",
     observation: "",
+    application: "",
     files: "",
     filename: "Escolha um ficheiro",
     errors: {}
@@ -22,13 +24,14 @@ class AddResource extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { title, observation, category, subCategory, files } = this.state;
+    const { title, observation, category, subCategory, application ,files } = this.state;
 
     let formData = new FormData();
     formData.append("title", title);
     formData.append("observation", observation);
     formData.append("category", category);
     formData.append("subCategory", subCategory);
+    formData.append("application", application);
     for (var x = 0; x < this.state.files.length; x++) {
       formData.append("files", this.state.files[x]);
     }
@@ -38,6 +41,7 @@ class AddResource extends Component {
       observation,
       category,
       subCategory,
+      application,
       files
     };
 
@@ -48,12 +52,13 @@ class AddResource extends Component {
       category: "",
       subCategory: "",
       observation: "",
+      application: "",
       files: "",
       filename: "Escolha um ficheiro",
       errors: {}
     });
 
-    this.props.history.push("/terapeuta-dashboard");
+    this.props.history.push("/recursos");
   };
 
   handleSubCategorySelectionChanged = e => {
@@ -66,7 +71,7 @@ class AddResource extends Component {
         this.setState({category: "Motricidade"})
       }
 
-      else if(this.state.subCategory == "Visual" || this.state.subCategory == "Auditiva" || this.state.subCategory == "Espacial" || this.state.subCategory == "Contrastes" || this.state.subCategory == "Temporal"){
+      else if(this.state.subCategory == "Percepção Visual" || this.state.subCategory == "Percepção Auditiva" || this.state.subCategory == "Espacial" || this.state.subCategory == "Contrastes" || this.state.subCategory == "Temporal"){
         this.setState({category: "Percepção"})
       }
 
@@ -74,7 +79,7 @@ class AddResource extends Component {
         this.setState({category: "Desenvolvimento Verbal"})
       }
 
-      else if(this.state.subCategory == "Auditiva" || this.state.subCategory == "Visual" || this.state.subCategory == "Verbal e Numérica Repetitiva" || this.state.subCategory == "Verbal e Numérica Significativa"){
+      else if(this.state.subCategory == "Memória Auditiva" || this.state.subCategory == "Memória Visual" || this.state.subCategory == "Verbal e Numérica Repetitiva" || this.state.subCategory == "Verbal e Numérica Significativa"){
         this.setState({category: "Memória"})
       }
 
@@ -119,6 +124,7 @@ class AddResource extends Component {
       observation,
       category,
       subCategory,
+      application,
       files,
       filename,
       errors
@@ -138,10 +144,9 @@ class AddResource extends Component {
               onChange={this.onChange}
               error={errors.title}
             />
-            <TextInputGroup
+            <TextAreaFieldGroup
               label="Observação"
               name="observation"
-              type="text"
               placeholder="Introduza uma observação"
               value={observation}
               onChange={this.onChange}
@@ -173,12 +178,12 @@ class AddResource extends Component {
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
                         <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
-                          Visual
+                          Percepção Visual
                         </a>
                       </li>
                       <li class="dropdown-item">
                         <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
-                          Auditiva
+                        Percepção Auditiva
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
@@ -277,12 +282,12 @@ class AddResource extends Component {
                     <ul class="dropdown-menu">
                       <li class="dropdown-item">
                         <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
-                          Auditiva
+                          Memória Auditiva
                         </a>
                       </li>
                       <li class="dropdown-item">
                         <a class="dropdown-item" tabIndex="-1" href="#" onClick={this.handleSubCategorySelectionChanged}>
-                          Visual
+                        Memória Visual
                         </a>{" "}
                       </li>
                       <li class="dropdown-item">
@@ -401,6 +406,16 @@ class AddResource extends Component {
                 </ul>
               </div>
             </div>
+
+            <TextInputGroup
+              label="Se utilizou alguma aplicação insira o url"
+              name="application"
+              placeholder="Url da aplicação utilizada"
+              value={application}
+              onChange={this.onChange}
+              error={errors.application}
+            />
+            
 
             <div className="custom-file mb-4 mt-2">
               <input

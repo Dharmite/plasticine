@@ -58,6 +58,9 @@ const TherapeuticNoteSchema = new Schema({
       },
       src: {
         type: String
+      },
+      fileType: {
+        type: String
       }
     }
   ],
