@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import {
@@ -49,6 +50,23 @@ class TherapeuticNoteDetails extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  downloadFile = (filename, originalname) => {
+    // axios.get(`/api/therapeuticNote/${filename}/download`);
+    axios({
+      url: `/api/therapeuticNote/${filename}/download`, //your url
+      method: "GET",
+      responseType: "blob" // important
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", originalname); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   render() {
     const {
       user,
@@ -62,8 +80,146 @@ class TherapeuticNoteDetails extends Component {
       feedback,
       date
     } = this.props.note;
-
     const { errors } = this.state;
+    let hasImageFiles;
+    if (files) {
+      hasImageFiles =
+        files.filter(
+          file =>
+            file.fileType == "image/jpeg" ||
+            file.fileType == "image/png" ||
+            file.fileType == "image/gif"
+        ).length > 0;
+    }
+
+    let image_files = files
+      ? files.map(file =>
+          file.fileType == "image/jpeg" ||
+          file.fileType == "image/png" ||
+          file.fileType == "image/gif" ? (
+            <div className="col-md-4">
+              <img
+                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                style={{ width: "280px", height: "280px" }}
+              />
+              <button
+                className="btn btn-light mt-3"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+    let hasAudioFiles;
+    if (files) {
+      hasAudioFiles =
+        files.filter(
+          file =>
+            file.fileType == "audio/aac" ||
+            file.fileType == "audio/ogg" ||
+            file.fileType == "audio/x-wav"
+        ).length > 0;
+    }
+
+    let audio_files = files
+      ? files.map(file =>
+          file.fileType == "audio/aac" ||
+          file.fileType == "audio/ogg" ||
+          file.fileType == "audio/x-wav" ? (
+            <div className="col-md-4">
+              <img
+                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                style={{ width: "280px", height: "280px" }}
+              />
+              <button
+                className="btn btn-light mt-3"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+
+    let hasApplicationFiles;
+    if (files) {
+      hasApplicationFiles =
+        files.filter(
+          file =>
+            file.fileType == "application/pdf" ||
+            file.fileType == "application/msword"
+        ).length > 0;
+    }
+    let application_files = files
+      ? files.map(file =>
+          file.fileType == "application/pdf" ||
+          file.fileType == "application/msword" ? (
+            <div className="col-md-12">
+              <button
+                className="btn btn-light"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+
+    let hasVideoFiles;
+    if (files) {
+      hasVideoFiles =
+        files.filter(
+          file =>
+            file.fileType == "audio/aac" ||
+            file.fileType == "audio/ogg" ||
+            file.fileType == "audio/x-wav"
+        ).length > 0;
+    }
+
+    let video_files = files
+      ? files.map(file =>
+          file.fileType == "video/x-msvideo" ||
+          file.fileType == "video/mpeg" ||
+          file.fileType == "video/ogg" ? (
+            <div className="col-md-4">
+              <img
+                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                style={{ width: "280px", height: "280px" }}
+              />
+              <button
+                className="btn btn-light mt-3"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
 
     return (
       <div>
@@ -132,39 +288,30 @@ class TherapeuticNoteDetails extends Component {
                   ? availableTo.map(elem => <p> {elem.name} </p>)
                   : null}
               </div>
-              <div className="row justify-content-between">
-                {files
-                  ? files.map(file =>
-                      file.fileType == "image/jpeg" ||
-                      file.fileType == "image/png" ||
-                      file.fileType == "image/gif" ? (
-                        <div className="col-md-4">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              `/uploads/${file.filename}`
-                            }
-                            style={{ width: "280px", height: "280px" }}
-                          />
-                        </div>
-                      ) : null
-                    )
-                  : null}
-                {files
-                  ? files.map(file =>
-                      file.fileType == "application/pdf" ? (
-                        <div className="col-md-12">
-                          <a
-                            href = {process.env.PUBLIC_URL + `/uploads/${file.filename}`}
-                          download>
-                            {file.filename}
-                          </a>
-                          {/* <p>{process.env.PUBLIC_URL + `/uploads/${file.filename}`}</p> */}
-                        </div>
-                      ) : null
-                    )
-                  : null}
-              </div>
+              {hasImageFiles ? (
+                <div className="row">
+                  <h1>Imagens</h1>
+                </div>
+              ) : null}
+              <div className="row">{image_files}</div>
+              {hasApplicationFiles ? (
+                <div className="row">
+                  <h1>Ficheiros</h1>
+                </div>
+              ) : null}
+              <div className="row">{application_files}</div>
+              {hasAudioFiles ? (
+                <div className="row">
+                  <h1>Audio</h1>
+                </div>
+              ) : null}
+              <div className="row">{audio_files}</div>
+              {hasVideoFiles ? (
+                <div className="row">
+                  <h1>Video</h1>
+                </div>
+              ) : null}
+              <div className="row">{video_files}</div>
             </div>
           </div>
         </div>

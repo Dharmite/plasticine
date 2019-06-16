@@ -34,7 +34,7 @@ const upload = multer({
 // Check File Type
 function checkFileType(file, cb) {
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif|pdf|mp3|aac|ogg|m4a|wma|flac|wav|m4v|mov|flv|avi|mpg|wmv/;
+  const filetypes = /jpeg|jpg|png|gif|pdf|doc|mp3|aac|ogg|m4a|wma|flac|wav|m4v|mov|flv|avi|mpg|wmv/;
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime
@@ -107,7 +107,8 @@ router.post(
                   filename: file.filename,
                   destination: file.destination,
                   src: file.destination + file.filename,
-                  fileType: file.mimetype
+                  fileType: file.mimetype,
+                  originalname: file.originalname		
                 };
                 newTherapeuticNote.files.push(fileObj);
               });
@@ -434,5 +435,11 @@ router.get(
       });
   }
 );
+
+router.get("/:filename/download", function(req, res, next) {
+
+  res.download(`${path.dirname(req.params.filename)}\\uploads\\${req.params.filename}`, req.params.filename);
+  
+});
 
 module.exports = router;
