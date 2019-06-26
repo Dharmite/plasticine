@@ -97,7 +97,7 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "image/jpeg" ||
           file.fileType == "image/png" ||
           file.fileType == "image/gif" ? (
-            <div className="col-md-4">
+            <div className="col-md-4 mt-4">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                 style={{ width: "280px", height: "280px" }}
@@ -124,7 +124,8 @@ class TherapeuticNoteDetails extends Component {
           file =>
             file.fileType == "audio/aac" ||
             file.fileType == "audio/ogg" ||
-            file.fileType == "audio/x-wav"
+            file.fileType == "audio/x-wav" ||
+            file.fileType == "audio/mp3"
         ).length > 0;
     }
 
@@ -132,7 +133,8 @@ class TherapeuticNoteDetails extends Component {
       ? files.map(file =>
           file.fileType == "audio/aac" ||
           file.fileType == "audio/ogg" ||
-          file.fileType == "audio/x-wav" ? (
+          file.fileType == "audio/x-wav" ||
+          file.fileType == "audio/mp3" ? (
             <div className="col-md-4">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
@@ -189,9 +191,9 @@ class TherapeuticNoteDetails extends Component {
       hasVideoFiles =
         files.filter(
           file =>
-            file.fileType == "audio/aac" ||
-            file.fileType == "audio/ogg" ||
-            file.fileType == "audio/x-wav"
+            file.fileType == "video/x-msvideo" ||
+            file.fileType == "video/mpeg" ||
+            file.fileType == "video/ogg" || file.fileType == "video/mp4"
         ).length > 0;
     }
 
@@ -199,7 +201,7 @@ class TherapeuticNoteDetails extends Component {
       ? files.map(file =>
           file.fileType == "video/x-msvideo" ||
           file.fileType == "video/mpeg" ||
-          file.fileType == "video/ogg" ? (
+          file.fileType == "video/ogg" || file.fileType == "video/mp4" ? (
             <div className="col-md-4">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
@@ -361,7 +363,7 @@ class TherapeuticNoteDetails extends Component {
               </div>
             ))
           : null}
-        <div className="post-form mb-3">
+        <div className="post-form mb-3 mt-3">
           <div className="card card-info">
             <div className="card-header bg-info text-white">
               Faça um comentário...

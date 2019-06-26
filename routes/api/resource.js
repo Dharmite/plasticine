@@ -33,7 +33,7 @@ const upload = multer({
 // Check File Type
 function checkFileType(file, cb) {
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif|pdf|mp3|aac|ogg|m4a|wma|flac|wav|m4v|mov|flv|avi|mpg|wmv/;
+  const filetypes = /jpeg|jpg|png|gif|pdf|doc|mp3|aac|ogg|m4a|wma|flac|wav|m4v|mp4|mov|flv|avi|mpg|wmv/;
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime
@@ -76,7 +76,9 @@ router.post(
           let fileObj = {
             filename: file.filename,
             destination: file.destination,
-            src: file.destination + file.filename
+            src: file.destination + file.filename,
+            fileType: file.mimetype,
+            originalname: file.originalname
           };
           newResoure.files.push(fileObj);
         });
@@ -88,8 +90,8 @@ router.post(
               .save()
               .then(val => {
                 req.user.resources.push(val._id);
-                req.user.save()
-                res.json(req.user)
+                req.user.save();
+                res.json(req.user);
               })
               .catch(err => res.json(err));
           })
@@ -108,22 +110,49 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isTherapistOrAdmin,
   (req, res) => {
-    const newResource = {
-      title: req.body.title,
-      category: req.body.category,
-      subCategory: req.body.subCategory,
-      observation: req.body.observation
-    };
+    // const newResource = {
+    //   title: req.body.title,
+    //   category: req.body.category,
+    //   subCategory: req.body.subCategory,
+    //   observation: req.body.observation
+    // };
 
-    Resource.findByIdAndUpdate(req.params.resource_id, newResource).then(
-      resource => {
-        if (!resource) {
-          res.status(400).json({ error: "Não há nenhum recurso com esse id" });
-        } else {
-          res.json(resource);
-        }
-      }
-    );
+    upload(req, res, err => {
+      let upload_files = [];
+      req.files.forEach(file => {
+        let fileObj = {
+          filename: file.filename,
+          destination: file.destination,
+          src: file.destination + file.filename,
+          fileType: file.mimetype,
+          originalname: file.originalname
+        };
+        upload_files.push(fileObj);
+      });
+      Resource.findByIdAndUpdate(
+        req.params.resource_id,
+        {
+          _id: req.params.resource_id,
+          title: req.body.title,
+          category: req.body.category,
+          subCategory: req.body.subCategory,
+          observation: req.body.observation,
+          application: req.body.application,
+          files: upload_files
+        },
+        { new: true }
+      )
+        .then(resource => {
+          if (!resource) {
+            res
+              .status(400)
+              .json({ error: "Não há nenhum recurso com esse id" });
+          } else {
+            res.json(resource);
+          }
+        })
+        .catch(err => res.json(err));
+    });
   }
 );
 
@@ -264,5 +293,12 @@ router.get(
       });
   }
 );
+
+router.get("/:filename/download", function(req, res, next) {
+  res.download(
+    `${path.dirname(req.params.filename)}\\uploads\\${req.params.filename}`,
+    req.params.filename
+  );
+});
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import {
@@ -12,6 +13,7 @@ import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 class ResourceDetails extends Component {
   state = {
     observation: "",
+    imageName: "",
     errors: {}
   };
   componentWillReceiveProps(newProps) {
@@ -43,6 +45,26 @@ class ResourceDetails extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  getFileName = filename => {
+    this.setState({ imageName: filename });
+  };
+
+  downloadFile = (filename, originalname) => {
+    // axios.get(`/api/therapeuticNote/${filename}/download`);
+    axios({
+      url: `/api/resource/${filename}/download`, //your url
+      method: "GET",
+      responseType: "blob" // important
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", originalname); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   render() {
     const {
       _id,
@@ -58,8 +80,205 @@ class ResourceDetails extends Component {
     } = this.props.resource;
     const { errors } = this.state;
 
+    let hasImageFiles;
+    if (files) {
+      hasImageFiles =
+        files.filter(
+          file =>
+            file.fileType == "image/jpeg" ||
+            file.fileType == "image/png" ||
+            file.fileType == "image/gif"
+        ).length > 0;
+    }
+
+    let image_files = files
+      ? files.map(file =>
+          file.fileType == "image/jpeg" ||
+          file.fileType == "image/png" ||
+          file.fileType == "image/gif" ? (
+            <div className="card col-md-4 mt-4">
+              <img
+                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                class="card-img-top"
+              />
+              <div className="card-body">
+                <button
+                  className="btn btn-light mt-3"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download {file.originalname}{" "}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-light mt-3"
+                  style={{ border: "1px solid black" }}
+                  data-toggle="modal"
+                  data-target="#zoomImageModal"
+                  onClick={this.getFileName.bind(this, file.filename)}
+                >
+                  Ver imagem
+                </button>
+              </div>
+            </div>
+          ) : null
+        )
+      : null;
+    let hasAudioFiles;
+    if (files) {
+      hasAudioFiles =
+        files.filter(
+          file =>
+            file.fileType == "audio/aac" ||
+            file.fileType == "audio/ogg" ||
+            file.fileType == "audio/x-wav" ||
+            file.fileType == "audio/mp3"
+        ).length > 0;
+    }
+
+    let audio_files = files
+      ? files.map(file =>
+          file.fileType == "audio/aac" ||
+          file.fileType == "audio/ogg" ||
+          file.fileType == "audio/x-wav" ||
+          file.fileType == "audio/mp3" ? (
+            <div className="col-md-12 mt-3">
+              <p>
+                <audio controls>
+                  <source
+                    src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                    type="audio/mpeg"
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </p>
+              <button
+                className="btn btn-light"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+
+    let hasApplicationFiles;
+    if (files) {
+      hasApplicationFiles =
+        files.filter(
+          file =>
+            file.fileType == "application/pdf" ||
+            file.fileType == "application/msword"
+        ).length > 0;
+    }
+    let application_files = files
+      ? files.map(file =>
+          file.fileType == "application/pdf" ||
+          file.fileType == "application/msword" ? (
+            <div className="col-md-12 mt-3">
+              <button
+                className="btn btn-light"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+
+    let hasVideoFiles;
+    if (files) {
+      hasVideoFiles =
+        files.filter(
+          file =>
+            file.fileType == "video/x-msvideo" ||
+            file.fileType == "video/mpeg" ||
+            file.fileType == "video/ogg" ||
+            file.fileType == "video/mp4"
+        ).length > 0;
+    }
+
+    let video_files = files
+      ? files.map(file =>
+          file.fileType == "video/x-msvideo" ||
+          file.fileType == "video/mpeg" ||
+          file.fileType == "video/ogg" ||
+          file.fileType == "video/mp4" ? (
+            <div className="col-md-12 mt-3">
+              <p>
+                <video controls style={{ width: "50%", height: "50%" }}>
+                  <source
+                    src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                    type="audio/mpeg"
+                  />
+                  Your browser does not support the audio element.
+                </video>
+              </p>
+              <button
+                className="btn btn-light"
+                style={{ border: "1px solid black" }}
+                onClick={this.downloadFile.bind(
+                  this,
+                  file.filename,
+                  file.originalname
+                )}
+              >
+                Download {file.originalname}{" "}
+              </button>
+            </div>
+          ) : null
+        )
+      : null;
+
     return (
       <div>
+        <div
+          class="modal fade"
+          id="zoomImageModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + `/uploads/${this.state.imageName}`
+                  }
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {this.props.resource ? (
           <div className="col-md-8 mt-3 mb-3">
             <Link to={`/recursos`} className="btn btn-light">
@@ -127,6 +346,31 @@ class ResourceDetails extends Component {
             </div>
           </div>
         </div>
+        {hasImageFiles ? (
+          <div className="container row">
+            <h1>Imagens</h1>
+          </div>
+        ) : null}
+        <div className="row">{image_files}</div>
+        {hasApplicationFiles ? (
+          <div className="container row">
+            <h1>Ficheiros</h1>
+          </div>
+        ) : null}
+        <div className="row">{application_files}</div>
+        {hasAudioFiles ? (
+          <div className="container row">
+            <h1>Audio</h1>
+          </div>
+        ) : null}
+        <div className="row">{audio_files}</div>
+        {hasVideoFiles ? (
+          <div className="container row">
+            <h1>Video</h1>
+          </div>
+        ) : null}
+        <div className="row">{video_files}</div>
+
         {feedback
           ? feedback.map(elem => (
               <div className="card card-body mb-3">
@@ -173,7 +417,7 @@ class ResourceDetails extends Component {
               </div>
             ))
           : null}
-        <div className="post-form mb-3">
+        <div className="post-form mb-3 mt-3">
           <div className="card card-info">
             <div className="card-header bg-info text-white">
               Faça um comentário...

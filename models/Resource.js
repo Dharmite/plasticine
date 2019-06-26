@@ -51,6 +51,12 @@ const resourceSchema = new Schema({
       },
       src: {
         type: String
+      },
+      fileType: {
+        type: String
+      },
+      originalname: {
+        type: String
       }
     }
   ],

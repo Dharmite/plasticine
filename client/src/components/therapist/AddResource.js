@@ -3,13 +3,20 @@ import TextInputGroup from "../common/TextInputGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { addResource } from "../../actions/resourceActions";
 import $ from "jquery";
 
 import "./AddResource.css";
 
 class AddResource extends Component {
+  componentWillUnmount() {
+    if ($(".modal-backdrop")[0]) {
+      document.getElementsByClassName("modal-backdrop")[0].remove();
+      document.body.classList.remove("modal-open");
+      document.body.style = "";
+    }
+  }
   state = {
     title: "",
     category: "",
@@ -17,7 +24,7 @@ class AddResource extends Component {
     observation: "",
     application: "",
     files: "",
-    filename: "Escolha um ficheiro",
+    filename: "Selecione os ficheiros",
     errors: {}
   };
 
@@ -36,16 +43,7 @@ class AddResource extends Component {
       formData.append("files", this.state.files[x]);
     }
 
-    const newResource = {
-      title,
-      observation,
-      category,
-      subCategory,
-      application,
-      files
-    };
-
-    this.props.addResource(formData);
+    this.props.addResource(formData, this.props.history);
 
     this.setState({
       title: "",
@@ -54,11 +52,10 @@ class AddResource extends Component {
       observation: "",
       application: "",
       files: "",
-      filename: "Escolha um ficheiro",
+      filename: "Selecione os ficheiros",
       errors: {}
     });
 
-    this.props.history.push("/recursos");
   };
 
   handleSubCategorySelectionChanged = e => {
@@ -131,7 +128,57 @@ class AddResource extends Component {
     } = this.state;
 
     return (
-      
+      <div>
+        <button
+          type="button"
+          class="btn btn-light mt-3"
+          data-toggle="modal"
+          data-target="#backModal"
+        >
+          Voltar
+        </button>
+        <div
+          class="modal fade"
+          id="backModal"
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Atenção!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Deseja voltar à pagina anterior? As alterações não serão
+                guardadas
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <Link to="/terapeuta-dashboard" className="btn btn-light">
+                  Voltar
+                </Link>{" "}
+              </div>
+            </div>
+          </div>
+        </div>
       <div className="card mb-3 mt-4">
         <div className="card-header">Adicionar recurso</div>
         <div className="card-body">
@@ -441,6 +488,7 @@ class AddResource extends Component {
             />
           </form>
         </div>
+      </div>
       </div>
     );
   }

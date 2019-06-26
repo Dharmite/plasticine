@@ -11,6 +11,40 @@ class ResourcePercepcao extends Component {
   }
 
   render() {
+    let visual;
+    let auditiva;
+    let espacial;
+    let contrastes;
+    let temporal;
+
+    if (this.props.percepcao) {
+      visual = this.props.percepcao.filter(
+        resource => resource.subCategory == "Percepção Visual"
+      );
+    }
+    if (this.props.percepcao) {
+      auditiva = this.props.percepcao.filter(
+        resource => resource.subCategory == "Percepção Auditiva"
+      );
+    }
+
+    if (this.props.percepcao) {
+      espacial = this.props.percepcao.filter(
+        resource => resource.subCategory == "Espacial"
+      );
+    }
+    if (this.props.percepcao) {
+      contrastes = this.props.percepcao.filter(
+        resource => resource.subCategory == "Contrastes"
+      );
+    }
+
+    if (this.props.percepcao) {
+      temporal = this.props.percepcao.filter(
+        resource => resource.subCategory == "Temporal"
+      );
+    }
+
     return (
       <div class="resources">
         <div class="container">
@@ -21,11 +55,180 @@ class ResourcePercepcao extends Component {
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <h1 class="display-6">Percepção</h1>
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                id="visual-tab"
+                data-toggle="tab"
+                href="#visual"
+                role="tab"
+                aria-controls="visual"
+                aria-selected="true"
+                style={{ fontSize: "14px" }}
+              >
+                Percepção Visual (
+                {this.props.percepcao ? (
+                  <small className="text-muted">{visual.length}</small>
+                ) : null}
+                )
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="auditiva-tab"
+                data-toggle="tab"
+                href="#auditiva"
+                role="tab"
+                aria-controls="auditiva"
+                aria-selected="false"
+                style={{ fontSize: "14px" }}
+              >
+                Percepção Auditiva (
+                {this.props.percepcao ? (
+                  <small className="text-muted">{auditiva.length}</small>
+                ) : null}
+                ){" "}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="espacial-tab"
+                data-toggle="tab"
+                href="#espacial"
+                role="tab"
+                aria-controls="espacial"
+                aria-selected="false"
+                style={{ fontSize: "14px" }}
+              >
+                Espacial (
+                {this.props.percepcao ? (
+                  <small className="text-muted">{espacial.length}</small>
+                ) : null}
+                ){" "}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="contrastes-tab"
+                data-toggle="tab"
+                href="#contrastes"
+                role="tab"
+                aria-controls="contrastes"
+                aria-selected="false"
+                style={{ fontSize: "14px" }}
+              >
+                Contrastes (
+                {this.props.percepcao ? (
+                  <small className="text-muted">{contrastes.length}</small>
+                ) : null}
+                ){" "}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="temporal-tab"
+                data-toggle="tab"
+                href="#temporal"
+                role="tab"
+                aria-controls="temporal"
+                aria-selected="false"
+                style={{ fontSize: "14px" }}
+              >
+                Temporal (
+                {this.props.percepcao ? (
+                  <small className="text-muted">{temporal.length}</small>
+                ) : null}
+                ){" "}
+              </a>
+            </li>
+          </ul>
+          <div className="tab-content" id="myTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="visual"
+              role="tabpanel"
+              aria-labelledby="visual-tab"
+            >
+              {this.props.percepcao ? (
+                visual.length > 0 ? null : (
+                  <h6 className="mt-3">Sem recursos desta área</h6>
+                )
+              ) : null}
               {this.props.percepcao
-                ? this.props.percepcao.map(resource => (
+                ? visual.map(resource => (
+                    <Resource key={resource._id} resource={resource} />
+                  ))
+                : null}
+            </div>
+            <div
+              class="tab-pane fade"
+              id="auditiva"
+              role="tabpanel"
+              aria-labelledby="auditiva-tab"
+            >
+              {this.props.percepcao ? (
+                auditiva.length > 0 ? null : (
+                  <h6 className="mt-3">Sem recursos desta área</h6>
+                )
+              ) : null}
+              {this.props.percepcao
+                ? auditiva.map(resource => (
+                    <Resource key={resource._id} resource={resource} />
+                  ))
+                : null}
+            </div>
+            <div
+              class="tab-pane fade"
+              id="espacial"
+              role="tabpanel"
+              aria-labelledby="espacial-tab"
+            >
+              {this.props.percepcao ? (
+                espacial.length > 0 ? null : (
+                  <h6 className="mt-3">Sem recursos desta área</h6>
+                )
+              ) : null}
+              {this.props.percepcao
+                ? espacial.map(resource => (
+                    <Resource key={resource._id} resource={resource} />
+                  ))
+                : null}
+            </div>
+            <div
+              class="tab-pane fade"
+              id="contrastes"
+              role="tabpanel"
+              aria-labelledby="contrastes-tab"
+            >
+              {this.props.percepcao ? (
+                contrastes.length > 0 ? null : (
+                  <h6 className="mt-3">Sem recursos desta área</h6>
+                )
+              ) : null}
+              {this.props.percepcao
+                ? contrastes.map(resource => (
+                    <Resource key={resource._id} resource={resource} />
+                  ))
+                : null}
+            </div>
+            <div
+              class="tab-pane fade"
+              id="temporal"
+              role="tabpanel"
+              aria-labelledby="temporal-tab"
+            >
+              {this.props.percepcao ? (
+                temporal.length > 0 ? null : (
+                  <h6 className="mt-3">Sem recursos desta área</h6>
+                )
+              ) : null}
+              {this.props.percepcao
+                ? temporal.map(resource => (
                     <Resource key={resource._id} resource={resource} />
                   ))
                 : null}

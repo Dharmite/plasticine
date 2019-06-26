@@ -42,8 +42,8 @@ export const getResource = id => async dispatch => {
   });
 };
 
-export const addResource = newResource => async dispatch => {
-  const res = await axios.post("api/resource/new", newResource);
+export const addResource = (newResource, history) => async dispatch => {
+  const res = await axios.post("/api/resource/new", newResource);
 
   if (newResource.category == "Percepção") {
     dispatch({
@@ -86,14 +86,29 @@ export const addResource = newResource => async dispatch => {
     type: ADD_RESOURCE,
     payload: res.data
   });
+  history.push("/recursos");
 };
 
-export const updateResource = (resource_id, newResource) => async dispatch => {
-  const res = await axios.post(`/api/resource/${resource_id}`, newResource);
-  dispatch({
-    type: UPDATE_RESOURCE,
-    payload: res.data
-  });
+export const updateResource = (
+  resource_id,
+  newResource,
+  history
+) => async dispatch => {
+  try {
+    const res = await axios.post(`/api/resource/${resource_id}`, newResource);
+    dispatch({
+      type: UPDATE_RESOURCE,
+      payload: res.data
+    });
+    dispatch(clearErrors());
+
+    history.push("/recursos");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
 
 export const removeResource = resource_id => async dispatch => {

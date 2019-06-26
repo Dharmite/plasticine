@@ -33,6 +33,7 @@ import AddPatient from "./components/patient/AddPatient";
 import EditTherapist from "./components/therapist/EditTherapist";
 import EditParent from "./components/parent/EditParent";
 import EditPatient from "./components/patient/EditPatient";
+import EditResource from "./components/resources/EditResource";
 
 import AddMedicine from "./components/patient/AddMedicine";
 import EditMedicine from "./components/patient/EditMedicine";
@@ -140,6 +141,11 @@ class App extends Component {
                   exact
                   path="/recurso/adicionar"
                   component={AddResource}
+                />
+                <Route
+                  exact
+                  path="/recurso/editar/:id"
+                  component={EditResource}
                 />
                 <Route
                   exact
