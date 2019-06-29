@@ -9,6 +9,7 @@ import {
   getComments
 } from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+import avatar from "../../img/user.png";
 
 class TherapeuticNoteDetails extends Component {
   state = {
@@ -49,6 +50,9 @@ class TherapeuticNoteDetails extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+  getFileName = filename => {
+    this.setState({ imageName: filename });
   };
 
   downloadFile = (filename, originalname) => {
@@ -97,22 +101,34 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "image/jpeg" ||
           file.fileType == "image/png" ||
           file.fileType == "image/gif" ? (
-            <div className="col-md-4 mt-4">
+            <div className="card col-md-4 mt-4">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
-                style={{ width: "280px", height: "280px" }}
+                class="card-img-top"
               />
-              <button
-                className="btn btn-light mt-3"
-                style={{ border: "1px solid black" }}
-                onClick={this.downloadFile.bind(
-                  this,
-                  file.filename,
-                  file.originalname
-                )}
-              >
-                Download {file.originalname}{" "}
-              </button>
+              <div className="card-body">
+                <button
+                  className="btn btn-light mt-3"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download {file.originalname}{" "}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-light mt-3"
+                  style={{ border: "1px solid black" }}
+                  data-toggle="modal"
+                  data-target="#zoomImageModal"
+                  onClick={this.getFileName.bind(this, file.filename)}
+                >
+                  Ver imagem
+                </button>
+              </div>
             </div>
           ) : null
         )
@@ -135,13 +151,18 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "audio/ogg" ||
           file.fileType == "audio/x-wav" ||
           file.fileType == "audio/mp3" ? (
-            <div className="col-md-4">
-              <img
-                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
-                style={{ width: "280px", height: "280px" }}
-              />
+            <div className="col-md-12 mt-3">
+              <p>
+                <audio controls>
+                  <source
+                    src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                    type="audio/mpeg"
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </p>
               <button
-                className="btn btn-light mt-3"
+                className="btn btn-light"
                 style={{ border: "1px solid black" }}
                 onClick={this.downloadFile.bind(
                   this,
@@ -169,7 +190,7 @@ class TherapeuticNoteDetails extends Component {
       ? files.map(file =>
           file.fileType == "application/pdf" ||
           file.fileType == "application/msword" ? (
-            <div className="col-md-12">
+            <div className="col-md-12 mt-3">
               <button
                 className="btn btn-light"
                 style={{ border: "1px solid black" }}
@@ -193,7 +214,8 @@ class TherapeuticNoteDetails extends Component {
           file =>
             file.fileType == "video/x-msvideo" ||
             file.fileType == "video/mpeg" ||
-            file.fileType == "video/ogg" || file.fileType == "video/mp4"
+            file.fileType == "video/ogg" ||
+            file.fileType == "video/mp4"
         ).length > 0;
     }
 
@@ -201,14 +223,20 @@ class TherapeuticNoteDetails extends Component {
       ? files.map(file =>
           file.fileType == "video/x-msvideo" ||
           file.fileType == "video/mpeg" ||
-          file.fileType == "video/ogg" || file.fileType == "video/mp4" ? (
-            <div className="col-md-4">
-              <img
-                src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
-                style={{ width: "280px", height: "280px" }}
-              />
+          file.fileType == "video/ogg" ||
+          file.fileType == "video/mp4" ? (
+            <div className="col-md-12 mt-3">
+              <p>
+                <video controls style={{ width: "50%", height: "50%" }}>
+                  <source
+                    src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                    type="audio/mpeg"
+                  />
+                  Your browser does not support the audio element.
+                </video>
+              </p>
               <button
-                className="btn btn-light mt-3"
+                className="btn btn-light"
                 style={{ border: "1px solid black" }}
                 onClick={this.downloadFile.bind(
                   this,
@@ -222,7 +250,6 @@ class TherapeuticNoteDetails extends Component {
           ) : null
         )
       : null;
-
     return (
       <div>
         {patient ? (
@@ -232,6 +259,37 @@ class TherapeuticNoteDetails extends Component {
             </Link>
           </div>
         ) : null}
+        <div
+          class="modal fade"
+          id="zoomImageModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + `/uploads/${this.state.imageName}`
+                  }
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="card card-body mb-3 mt-3">
           <div className="row d-flex justify-content-center">
             {" "}
@@ -284,32 +342,53 @@ class TherapeuticNoteDetails extends Component {
                   </p>
                 ) : null}
               </div>
+              <hr />
               <div className="row">
-                {availableTo ? <p>Disponível para:</p> : null}
+                {availableTo ? (
+                  <div className="col-md-12">
+                    <p>
+                      <b>Disponível para:</b>
+                    </p>
+                  </div>
+                ) : null}
                 {availableTo
-                  ? availableTo.map(elem => <p> {elem.name} </p>)
+                  ? availableTo.map(elem => (
+                      <div className="col-md-3">
+                        <img
+                          src={avatar}
+                          alt=""
+                          style={{ height: "45%", width: "45%" }}
+                        />
+                        <p>
+                          <Link to={`/terapeuta/${elem._id}`}>
+                            {" "}
+                            {elem.name}{" "}
+                          </Link>
+                        </p>
+                      </div>
+                    ))
                   : null}
               </div>
               {hasImageFiles ? (
-                <div className="row">
+                <div className="container row">
                   <h1>Imagens</h1>
                 </div>
               ) : null}
               <div className="row">{image_files}</div>
               {hasApplicationFiles ? (
-                <div className="row">
+                <div className="container row">
                   <h1>Ficheiros</h1>
                 </div>
               ) : null}
               <div className="row">{application_files}</div>
               {hasAudioFiles ? (
-                <div className="row">
+                <div className="container row">
                   <h1>Audio</h1>
                 </div>
               ) : null}
               <div className="row">{audio_files}</div>
               {hasVideoFiles ? (
-                <div className="row">
+                <div className="container row">
                   <h1>Video</h1>
                 </div>
               ) : null}

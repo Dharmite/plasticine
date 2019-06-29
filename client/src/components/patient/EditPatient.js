@@ -104,43 +104,43 @@ class EditPatient extends Component {
       <div>
         <button
           type="button"
-          class="btn btn-light mt-3"
+          className="btn btn-light mt-3"
           data-toggle="modal"
           data-target="#backModal"
         >
           Voltar
         </button>
         <div
-          class="modal fade"
+          className="modal fade"
           id="backModal"
           tabindex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Atenção!
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Deseja voltar à pagina anterior? As alterações não serão
                 guardadas
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Cancelar
@@ -154,7 +154,7 @@ class EditPatient extends Component {
         </div>{" "}
         <div className="card mb-3 mt-4">
           <div className="card-header">Editar parente</div>
-          <small class="text-muted ml-3 mt-3">
+          <small className="text-muted ml-3 mt-3">
             Todos os campos são obrigatórios
           </small>
           <div className="card-body">

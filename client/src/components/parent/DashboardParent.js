@@ -8,10 +8,10 @@ class DashboardParent extends Component {
     const { name, patient } = this.props.user;
 
     return (
-      <div class="container">
+      <div className="container">
         <h1 className="mt-3 mb-3">Dashboard {name}</h1>
-        <div class="row">
-          <div class="col-md-12">
+        <div className="row">
+          <div className="col-md-12">
             {patient.length > 0 ? (
               patient.map(patient => (
                 <div className="card card-body bg-light mb-3">
@@ -33,7 +33,7 @@ class DashboardParent extends Component {
                         <div className="col-3">
                           <Link
                             to={`/paciente/ver/${patient._id}`}
-                            class="btn btn-info"
+                            className="btn btn-info"
                             style={{ width: "100%" }}
                           >
                             Ver
@@ -51,7 +51,7 @@ class DashboardParent extends Component {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-4 d-lg-block">
+                    <div className="col-md-4 d-lg-block">
                       <h4>Terapeutas</h4>
                       <ul className="list-group">
                         {patient.therapist.map(user => (

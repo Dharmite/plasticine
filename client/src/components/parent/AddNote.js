@@ -146,43 +146,43 @@ class AddNote extends Component {
       <div>
         <button
           type="button"
-          class="btn btn-light mt-3"
+          className="btn btn-light mt-3"
           data-toggle="modal"
           data-target="#backModal"
         >
           Voltar
         </button>
         <div
-          class="modal fade"
+          className="modal fade"
           id="backModal"
           tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Atenção!
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Deseja voltar à pagina anterior? As alterações não serão
                 guardadas
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Cancelar
@@ -221,9 +221,9 @@ class AddNote extends Component {
                 {therapist
                   ? therapist.map(elem =>
                       elem._id !== this.props.auth.user.id ? (
-                        <div class="form-check mb-1">
+                        <div className="form-check mb-1">
                           <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             name="availableTo2"
                             id="defaultCheck1"
@@ -231,7 +231,10 @@ class AddNote extends Component {
                             onChange={this.handleSelectionChanged}
                             error={errors.availableTo2}
                           />
-                          <label class="form-check-label" for="defaultCheck1">
+                          <label
+                            className="form-check-label"
+                            for="defaultCheck1"
+                          >
                             {elem.name}
                           </label>
                         </div>
@@ -242,9 +245,9 @@ class AddNote extends Component {
                 {parent
                   ? parent.map(elem =>
                       elem._id !== this.props.auth.user.id ? (
-                        <div class="form-check mb-1">
+                        <div className="form-check mb-1">
                           <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             name="availableTo2"
                             id="defaultCheck1"
@@ -252,7 +255,10 @@ class AddNote extends Component {
                             onChange={this.handleSelectionChanged}
                             error={errors.availableTo2}
                           />
-                          <label class="form-check-label" for="defaultCheck1">
+                          <label
+                            className="form-check-label"
+                            for="defaultCheck1"
+                          >
                             {elem.name}
                           </label>
                         </div>

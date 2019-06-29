@@ -51,13 +51,13 @@ class ParentProfile extends Component {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <h1 class="display-6">Notas</h1>
+        <div className="row">
+          <div className="col-md-12">
+            <h1 className="display-6">Notas</h1>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
+        <div className="row">
+          <div className="col-md-12">
             {notes
               ? notes.map(note => (
                   <TherapeuticNote key={note._id} TherapeuticNote={note} />

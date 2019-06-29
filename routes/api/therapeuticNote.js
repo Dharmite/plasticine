@@ -108,7 +108,7 @@ router.post(
                   destination: file.destination,
                   src: file.destination + file.filename,
                   fileType: file.mimetype,
-                  originalname: file.originalname		
+                  originalname: file.originalname
                 };
                 newTherapeuticNote.files.push(fileObj);
               });
@@ -121,13 +121,12 @@ router.post(
                       .then(user => {
                         user.notes.push(note.id);
                         user.save();
-
-                        patient.therapeuticNote.push(note);
-                        patient.save();
-                        res.json(note);
                       })
                       .catch(err => res.json(err));
                   });
+                  patient.therapeuticNote.push(note);
+                  patient.save();
+                  res.json(note);
                 })
                 .catch(err => res.json(err));
             });
@@ -180,13 +179,12 @@ router.post(
                       .then(user => {
                         user.notes.push(note.id);
                         user.save();
-
-                        patient.therapeuticNote.push(note);
-                        patient.save();
-                        res.json(note);
                       })
                       .catch(err => res.json(err));
                   });
+                  patient.therapeuticNote.push(note);
+                  patient.save();
+                  res.json(note);
                 })
                 .catch(err => res.json(err));
             });
@@ -268,6 +266,7 @@ router.get(
   auth_middleware.isTherapistOrParent,
   (req, res) => {
     TherapeuticNote.find()
+      .populate("user")
       .then(notes => {
         if (!notes) {
           return res.status(400).json({ err: "Nenhum registo encontrado" });
@@ -304,7 +303,7 @@ router.post(
   }
 );
 
-// @route DELETE api/therapeuticNote/:patient_id
+// @route DELETE api/therapeuticNote/notes/:note_id
 // @desc DELETE Therapeutic Note
 // @access Private
 
@@ -358,7 +357,7 @@ router.delete(
                   baseUser.notes.splice(removeIndex, 1);
                   baseUser
                     .save()
-                    .then(user => res.json(user))
+                    .then(user => res.json(note))
                     .catch(err => res.json(err));
                 });
               });
@@ -437,9 +436,10 @@ router.get(
 );
 
 router.get("/:filename/download", function(req, res, next) {
-
-  res.download(`${path.dirname(req.params.filename)}\\uploads\\${req.params.filename}`, req.params.filename);
-  
+  res.download(
+    `${path.dirname(req.params.filename)}\\uploads\\${req.params.filename}`,
+    req.params.filename
+  );
 });
 
 module.exports = router;

@@ -173,6 +173,22 @@ class PatientProfile extends Component {
     const { patientTherapists } = this.props;
     const { patientParents } = this.props;
 
+    let shared_notes = [];
+    let shared = false;
+    if (therapeuticNote) {
+      therapeuticNote.forEach(note => {
+        note.availableTo.forEach(elem => {
+          if (
+            elem == this.props.auth.user.id &&
+            note.user._id !== this.props.auth.user.id
+          ) {
+            shared_notes.push(note);
+            shared = true;
+          }
+        });
+      });
+    }
+
     return (
       <div>
         <div
@@ -380,7 +396,7 @@ class PatientProfile extends Component {
                         {therapeuticNote ? (
                           therapeuticNote.length > 0 ? (
                             therapeuticNote.map(note =>
-                              note.user == this.props.auth.user.id ? (
+                              note.user._id == this.props.auth.user.id ? (
                                 <TherapeuticNote
                                   key={note.id}
                                   TherapeuticNote={note}
@@ -399,11 +415,11 @@ class PatientProfile extends Component {
                         aria-labelledby="availableTo-tab"
                       >
                         {therapeuticNote ? (
-                          therapeuticNote.length > 0 ? (
+                          shared == true ? (
                             therapeuticNote.map(note =>
                               note.availableTo.map(elem =>
                                 elem == this.props.auth.user.id &&
-                                note.user !== this.props.auth.user.id ? (
+                                note.user._id !== this.props.auth.user.id ? (
                                   <TherapeuticNote
                                     key={note.id}
                                     TherapeuticNote={note}

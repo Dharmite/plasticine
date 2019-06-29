@@ -54,6 +54,7 @@ import ResourceVerbal from "./components/resources/ResourceVerbal";
 import ResourceMemoria from "./components/resources/ResourceMemoria";
 import ResourceEmocional from "./components/resources/ResourceEmocional";
 import ResourceAVD from "./components/resources/ResourceAVD";
+import Password from './components/pages/Password'
 
 import "./App.css";
 
@@ -201,6 +202,7 @@ class App extends Component {
                   component={ResourceEmocional}
                 />
                 <Route exact path="/recursos/avd" component={ResourceAVD} />
+                <Route exact path="/password" component={Password} />
                 <Route component={NotFound} />
               </Switch>
             </div>

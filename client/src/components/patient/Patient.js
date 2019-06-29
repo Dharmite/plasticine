@@ -26,7 +26,7 @@ class Patient extends Component {
               <div className="col-3">
                 <Link
                   to={`/paciente/ver/${_id}`}
-                  class="btn btn-info"
+                  className="btn btn-info"
                   style={{ width: "100%"}}
                 >
                   Ver
@@ -54,7 +54,7 @@ class Patient extends Component {
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-lg-block">
+          <div className="col-md-4 d-lg-block">
             <h4>Terapeutas</h4>
             <ul className="list-group">
               {therapist.map(user => (

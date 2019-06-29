@@ -71,34 +71,55 @@ export const getTherapeuticNote = id => dispatch => {
 
 export const addTherapeuticNote = (
   patient_id,
-  newTherapeuticNote
-) => dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  };
-  axios
-    .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
-    .then(res => {
-      dispatch({
-        type: ADD_THERAPEUTIC_NOTE,
-        payload: res.data
-      });
-      dispatch(clearErrors());
-    })
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+  newTherapeuticNote,
+  history
+) => async dispatch => {
+  try {
+    console.log("entrei no try");
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    };
+    const res = await axios.post(
+      `/api/therapeuticNote/new/${patient_id}`,
+      newTherapeuticNote,
+      config
+    );
+    dispatch({
+      type: ADD_THERAPEUTIC_NOTE,
+      payload: res.data
     });
+    dispatch(clearErrors());
+    history.push("/terapeuta-dashboard");
+  } catch (error) {
+    console.log(error.response);
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+export const removeTherapeuticNote = note_id => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/therapeuticNote/notes/${note_id}`);
+    dispatch({
+      type: REMOVE_THERAPEUTIC_NOTE,
+      payload: res.data._id
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
 
 export const getComments = note_id => async dispatch => {
   try {
     const res = await axios.get(`/api/therapeuticNote/${note_id}/feedback`);
-    console.log(res.data, "comments")
+    console.log(res.data, "comments");
     dispatch({
       type: GET_COMMENTS,
       payload: res.data

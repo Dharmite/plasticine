@@ -25,6 +25,8 @@ const auth_middleware = require("../../middlewares/auth");
 const validateEditTherapistInput = require("../../Validation/editTherapist");
 const validateEditParentInput = require("../../Validation/editParent");
 
+const validatePasswordInput = require("../../Validation/changePassword");
+
 // @route POST api/admin/register
 // @desc Register admin
 // @access Public
@@ -369,10 +371,14 @@ router.post(
 // @access Private
 
 router.post(
-  "/therapist/password",
+  "/therapist/change/password",
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isTherapist,
   (req, res) => {
+    const { errors, isValid } = validatePasswordInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     Therapist.findById(req.user.id).then(therapist => {
       if (!therapist) {
         return res.status(400).json({ email: "Email already exists" });
@@ -388,12 +394,17 @@ router.post(
 
                   therapist
                     .save()
-                    .then(therapist => res.json(therapist))
+                    .then(therapist => {
+                      res.json(therapist);
+                    })
                     .catch(err => console.log(err));
                 });
               });
             } else {
-              error: "A password adicionada não corresponde à password atual";
+              res.status(400).json({
+                oldpassword:
+                  "A password adicionada não corresponde à password atual"
+              });
             }
           });
       }
@@ -406,10 +417,14 @@ router.post(
 // @access Private
 
 router.post(
-  "/parent/password",
+  "/parent/change/password",
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isParent,
   (req, res) => {
+    const { errors, isValid } = validatePasswordInput(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     Parent.findById(req.user.id).then(parent => {
       if (!parent) {
         return res.status(400).json({ email: "Email already exists" });
@@ -417,7 +432,7 @@ router.post(
         bcrypt
           .compare(req.body.oldpassword, req.user.password)
           .then(isMatch => {
-            if (isMath) {
+            if (isMatch) {
               bcrypt.genSalt(10, function(err, salt) {
                 bcrypt.hash(req.body.newpassword, salt, function(err, hash) {
                   // res.json(parent.password);
@@ -430,8 +445,9 @@ router.post(
                 });
               });
             } else {
-              res.json({
-                error: "A password adicionada não corresponde à password atual"
+              res.status(400).json({
+                oldpassword:
+                  "A password adicionada não corresponde à password atual"
               });
             }
           });

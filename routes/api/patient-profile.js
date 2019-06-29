@@ -41,7 +41,13 @@ router.get("/patient/:patient_id", (req, res) => {
     .populate("parent")
     .populate("therapist")
     .populate("previousTherapists")
-    .populate("therapeuticNote")
+    .populate({
+      path: "therapeuticNote",
+      populate: {
+        path: "user",
+        model: "base"
+      }
+    })
     .then(patient => {
       if (!patient) {
         errors.noprofile = "Nenhum perfil encontrado";
@@ -86,7 +92,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isAdmin,
   (req, res) => {
-
     const { errors, isValid } = validatePatientInput(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
@@ -230,7 +235,7 @@ router.delete(
 // @desc    Show users medicine
 // @access  Private
 router.get(
-  "/:patient_id/medicine/all", 
+  "/:patient_id/medicine/all",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Patient.findById({ _id: req.params.patient_id })

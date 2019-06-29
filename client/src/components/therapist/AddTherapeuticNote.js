@@ -84,17 +84,8 @@ class AddTherapeuticNote extends Component {
         formData.append("files", this.state.files[x]);
       }
 
-      const newTherapeuticNote = {
-        title,
-        observation,
-        activity,
-        behavior,
-        availableTo2,
-        files
-      };
-
       const { id } = this.props.match.params;
-      this.props.addTherapeuticNote(id, formData);
+      this.props.addTherapeuticNote(id, formData, this.props.history);
 
       this.setState({
         title: "",
@@ -105,8 +96,6 @@ class AddTherapeuticNote extends Component {
         availableTo2: "",
         errors: {}
       });
-
-      this.props.history.push("/terapeuta-dashboard");
     }
   };
 
@@ -289,16 +278,6 @@ class AddTherapeuticNote extends Component {
                     )
                   : null}
               </div>
-
-              {/* <TextInputGroup
-              label="Ficheiros"
-              name="files"
-              type="file"
-              placeholder="Faça upload dos ficheiros"
-              value={files}
-              onChange={this.onChange}
-              error={errors.files}
-            /> */}
 
               <div className="custom-file mb-4">
                 <input

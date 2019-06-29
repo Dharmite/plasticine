@@ -60,6 +60,47 @@ export const logoutUser = history => dispatch => {
   history.push("/login");
 };
 
+export const adminChangePassword = (data, history) => async dispatch => {
+  try {
+    const res = axios.post("/api/admin/password", data);
+    dispatch(clearErrors());
+    history.push("/admin-dashboard");
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+export const therapistChangePassword = (passwordData, history) => dispatch => {
+  axios
+    .post("/api/users/therapist/change/password", passwordData)
+    .then(res => {
+      dispatch(clearErrors());
+      history.push("/terapeuta-dashboard");
+    })
+    .catch(error =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: error.response.data
+      })
+    );
+};
+export const parentChangePassword = (passwordData, history) => async dispatch => {
+  axios
+    .post("/api/users/parent/change/password", passwordData)
+    .then(res => {
+      dispatch(clearErrors());
+      history.push("/parente-dashboard");
+    })
+    .catch(error =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: error.response.data
+      })
+    );
+};
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
