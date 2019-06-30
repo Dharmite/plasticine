@@ -193,7 +193,7 @@ class EditTherapist extends Component {
 
               <input
                 type="submit"
-                value="Editar terapeuta"
+                value="Guardar terapeuta"
                 className="btn btn-info btn-block mt-4"
               />
             </form>

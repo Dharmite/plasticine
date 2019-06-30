@@ -144,7 +144,7 @@ class EditParent extends Component {
 
               <input
                 type="submit"
-                value="Editar parente"
+                value="Guardar parente"
                 className="btn btn-info btn-block mt-4"
               />
             </form>

@@ -46,15 +46,7 @@ class Therapist extends Component {
                   Editar
                 </Link>
               </div>
-              <div className="col-4">
-                <a
-                  href="profile.html"
-                  class="btn btn-danger"
-                  style={{ width: "100%" }}
-                >
-                  Apagar
-                </a>
-              </div>
+ 
             </div>
           </div>
           <div class="col-md-4 d-lg-block">

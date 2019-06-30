@@ -44,15 +44,6 @@ class Parent extends Component {
                   Editar
                 </Link>
               </div>
-              <div className="col-4">
-                <a
-                  href="profile.html"
-                  className="btn btn-danger"
-                  style={{ width: "100%" }}
-                >
-                  Apagar
-                </a>
-              </div>
             </div>
           </div>
           <div className="col-md-4 d-lg-block">

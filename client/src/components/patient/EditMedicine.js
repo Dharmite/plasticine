@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import { updateMedicine, getMedicine } from "../../actions/patientActions";
 
 class EditMedicine extends Component {
-
   state = {
     name: "",
     observation: "",
@@ -18,7 +17,14 @@ class EditMedicine extends Component {
   };
 
   componentWillReceiveProps(nextProps, nextState) {
-    const { name, observation, dosage, time, startingDate, finishedDate } = nextProps.medicine;
+    const {
+      name,
+      observation,
+      dosage,
+      time,
+      startingDate,
+      finishedDate
+    } = nextProps.medicine;
     this.setState({
       name,
       observation,
@@ -31,7 +37,7 @@ class EditMedicine extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    const {medicamento_id} = this.props.match.params;
+    const { medicamento_id } = this.props.match.params;
     this.props.getMedicine(id, medicamento_id);
   }
 
@@ -39,8 +45,7 @@ class EditMedicine extends Component {
     e.preventDefault();
 
     const { id } = this.props.match.params;
-    const {medicamento_id} = this.props.match.params;
-
+    const { medicamento_id } = this.props.match.params;
 
     const {
       name,
@@ -76,7 +81,6 @@ class EditMedicine extends Component {
     });
 
     this.props.history.push(`/paciente/ver/${id}`);
-
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -139,7 +143,7 @@ class EditMedicine extends Component {
               label="Data de ínicio da toma do medicamento"
               name="startingDate"
               type="date"
-              value={startingDate.slice(0,10)}
+              value={startingDate.slice(0, 10)}
               onChange={this.onChange}
             />
 
@@ -147,13 +151,13 @@ class EditMedicine extends Component {
               label="Date de fim da toma do medicamento"
               name="finishedDate"
               type="date"
-              value={finishedDate.slice(0,10)}
+              value={finishedDate.slice(0, 10)}
               onChange={this.onChange}
             />
 
             <input
               type="submit"
-              value="Editar medicamento"
+              value="Guardar medicamento"
               className="btn btn-info btn-block mt-4"
             />
           </form>

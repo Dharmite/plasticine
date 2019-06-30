@@ -585,7 +585,10 @@ class PatientProfile extends Component {
                             ) : null}
 
                             <h4>{elem.name}</h4>
-                            <p>{elem.email}</p>
+                            <p>
+                              <b>Email: </b>
+                              {elem.email}
+                            </p>
                           </li>
                         ))
                       ) : (
@@ -617,8 +620,14 @@ class PatientProfile extends Component {
                             ) : null}
 
                             <h4>{elem.name}</h4>
-                            <p>{elem.email}</p>
-                            <p>{elem.specialty}</p>
+                            <p>
+                              <b>Email: </b>
+                              {elem.email}
+                            </p>
+                            <p>
+                              <b>Especialidade: </b>
+                              {elem.specialty}
+                            </p>
                           </li>
                         ))
                       ) : (
