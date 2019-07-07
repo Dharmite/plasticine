@@ -9,7 +9,6 @@ import {
   getComments
 } from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import avatar from "../../img/user.png";
 import user_img from "../../img/user1.jpg";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
@@ -456,49 +455,6 @@ class TherapeuticNoteDetails extends Component {
                       </div>
                       <p className="card-body">{elem.observation} </p>
                     </div>
-
-                    // <div className="card card-body mb-3">
-                    //   <div className="row">
-                    //     <div class="col-md-2">
-                    //       <a href="profile.html">
-                    //         <img
-                    //           class="rounded-circle d-none d-md-block"
-                    //           src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                    //           alt=""
-                    //           style={{ width: "100%" }}
-                    //         />
-                    //       </a>
-                    //       <br />
-
-                    //       {this.props.user.name ? (
-                    //         <p class="text-center">{this.props.user.name}</p>
-                    //       ) : null}
-                    //       {elem.date ? (
-                    //         <p className="text-center">
-                    //           <small class="text-muted">
-                    //             {elem.date.slice(0, 10)}
-                    //           </small>
-                    //         </p>
-                    //       ) : null}
-                    //     </div>
-                    //     <div className="col-md-10">
-                    //       <p className="lead">{elem.observation}</p>
-                    //       {/* {comment.user === auth.user.id ? (
-                    //         <button
-                    //           onClick={this.onDeleteClick.bind(
-                    //             this,
-                    //             postId,
-                    //             comment._id
-                    //           )}
-                    //           type="button"
-                    //           className="btn btn-danger mr-1"
-                    //         >
-                    //           <i className="fas fa-times" />
-                    //         </button>
-                    //       ) : null} */}
-                    //     </div>
-                    //   </div>
-                    // </div>
                   ))
                 : null}
               <div className="post-form mb-3 mt-3">

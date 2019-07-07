@@ -107,10 +107,10 @@ router.post("/login", (req, res) => {
               name: user.name,
               email: user.email,
               userType: user.userType,
-              specialty: user.specialty,
-              patient: user.patient,
-              previousPatients: user.previousPatients,
-              notes: user.notes
+              specialty: user.specialty
+              // patient: user.patient,
+              // previousPatients: user.previousPatients,
+              // notes: user.notes
             };
           }
           if (user.userType == "admin") {
@@ -178,6 +178,14 @@ router.get(
       .populate("patient")
       .populate("notes")
       .populate("resources")
+      .populate("therapeuticnote")
+      .populate({
+        path: "patient",
+        populate: {
+          path: "therapeuticNote",
+          model: "therapeuticnote"
+        }
+      })
       .populate({
         path: "patient",
         populate: {

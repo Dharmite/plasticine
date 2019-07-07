@@ -4,10 +4,19 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import { getTherapist } from "../../actions/therapistActions";
+
 
 class DashboardTherapist extends Component {
+
+  componentDidMount(){
+    this.props.getTherapist(this.props.user.id);
+  }
+
   render() {
-    const { name, patient } = this.props.user;
+    const { name } = this.props.user;
+    const { patient } = this.props.therapist;
+    console.log(patient);
 
     return (
       <div>
@@ -17,7 +26,7 @@ class DashboardTherapist extends Component {
             <div class="container-fluid">
               <Sidebar />
               <h1 className="mt-3 mb-3">Dashboard {name}</h1>
-              {patient.length > 0 ? (
+              {patient ? patient.length > 0 ? (
                 patient.map(patient => (
                   <div className="card card-body bg-light mb-3">
                     <div className="row">
@@ -72,7 +81,7 @@ class DashboardTherapist extends Component {
                 ))
               ) : (
                 <p>Sem pacientes</p>
-              )}
+              ): null}
             </div>
           </section>
         </div>
@@ -91,10 +100,11 @@ DashboardTherapist.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  therapist: state.therapist.therapist
 });
 
 export default connect(
   mapStateToProps,
-  null
+  {getTherapist}
 )(withRouter(DashboardTherapist));

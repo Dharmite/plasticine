@@ -16,55 +16,55 @@ class NavbarGuest extends Component {
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#" style={{marginBottom:"20px"}}>
+        <li className="nav-item dropdown">
+          <a className="nav-link" data-toggle="dropdown" href="#" style={{marginBottom:"20px"}}>
             <span
-              class="badge badge-warning navbar-badge"
+              className="badge badge-warning navbar-badge"
               style={{ fontSize: "15px",marginBottom:"10px"}}
             >
               {this.props.auth ? this.props.auth.user.name : null}
-              <i class="fas fa-chevron-circle-down ml-2" />
+              <i className="fas fa-chevron-circle-down ml-2" />
             </span>
           </a>
-          <div class="dropdown-menu dropdown-menu-right">
+          <div className="dropdown-menu dropdown-menu-right">
             {isTherapist ? (
               <Link to="/recursos" className="nav-link">
-                <span class="dropdown-item dropdown-header">Recursos</span>
+                <span className="dropdown-item dropdown-header">Recursos</span>
               </Link>
             ) : null}
-            <div class="dropdown-divider" />
+            <div className="dropdown-divider" />
             {isTherapist ? (
               <Link to="/recurso/adicionar" className="nav-link">
-                <span class="dropdown-item dropdown-header">Criar recurso</span>
+                <span className="dropdown-item dropdown-header">Criar recurso</span>
               </Link>
             ) : null}{" "}
-            <div class="dropdown-divider" />
+            <div className="dropdown-divider" />
             {isAdmin ? (
               <Link to="/admin-dashboard" className="nav-link">
-                <span class="dropdown-item dropdown-header">Perfil</span>
+                <span className="dropdown-item dropdown-header">Perfil</span>
               </Link>
             ) : null}
             {isTherapist ? (
               <Link to="/terapeuta-dashboard" className="nav-link">
-                <span class="dropdown-item dropdown-header">Perfil</span>
+                <span className="dropdown-item dropdown-header">Perfil</span>
               </Link>
             ) : null}
             {isParent ? (
               <Link to="/parente-dashboard" className="nav-link">
-                <span class="dropdown-item dropdown-header">Perfil</span>
+                <span className="dropdown-item dropdown-header">Perfil</span>
               </Link>
             ) : null}
-            <div class="dropdown-divider" />
+            <div className="dropdown-divider" />
             <Link to="/password" className="nav-link">
-              <span class="dropdown-item dropdown-header">Mudar password</span>
+              <span className="dropdown-item dropdown-header">Mudar password</span>
             </Link>
-            <div class="dropdown-divider" />
+            <div className="dropdown-divider" />
             <Link
               to=""
               onClick={this.onLogoutClick.bind(this)}
               className="nav-link"
             >
-              <span class="dropdown-item dropdown-header">Sair</span>
+              <span className="dropdown-item dropdown-header">Sair</span>
             </Link>
           </div>
         </li>

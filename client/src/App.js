@@ -55,7 +55,6 @@ import ResourceMemoria from "./components/resources/ResourceMemoria";
 import ResourceEmocional from "./components/resources/ResourceEmocional";
 import ResourceAVD from "./components/resources/ResourceAVD";
 import Password from "./components/pages/Password";
-import Navbar from "./components/layout/Navbar";
 
 import "./App.css";
 
@@ -84,106 +83,142 @@ class App extends Component {
                 path="/admin-dashboard"
                 component={DashboardAdmin}
               />{" "}
-              <Route
+              <PrivateRoute
                 exact
                 path="/terapeuta-dashboard"
                 component={DashboardTherapist}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/parente-dashboard"
                 component={DashboardParent}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/terapeuta/adicionar"
                 component={AddTherapist}
               />
-              <Route exact path="/parente/adicionar" component={AddParent} />
-              <Route exact path="/paciente/adicionar" component={AddPatient} />
-              <Route
+              <PrivateRoute
+                exact
+                path="/parente/adicionar"
+                component={AddParent}
+              />
+              <PrivateRoute
+                exact
+                path="/paciente/adicionar"
+                component={AddPatient}
+              />
+              <PrivateRoute
                 exact
                 path="/terapeuta/editar/:id"
                 component={EditTherapist}
               />
-              <Route exact path="/parente/editar/:id" component={EditParent} />
-              <Route
+              <PrivateRoute
+                exact
+                path="/parente/editar/:id"
+                component={EditParent}
+              />
+              <PrivateRoute
                 exact
                 path="/paciente/editar/:id"
                 component={EditPatient}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/paciente/ver/:id"
                 component={PatientProfile}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/paciente/:id/medicamento/adicionar"
                 component={AddMedicine}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/paciente/:id/ver/medicamento/editar/:medicamento_id"
                 component={EditMedicine}
               />
-              <Route exact path="/recurso/adicionar" component={AddResource} />
-              <Route
+              <PrivateRoute
+                exact
+                path="/recurso/adicionar"
+                component={AddResource}
+              />
+              <PrivateRoute
                 exact
                 path="/recurso/editar/:id"
                 component={EditResource}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/paciente/:id/registo/adicionar"
                 component={AddTherapeuticNote}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/paciente/:id/observação/adicionar"
                 component={AddNote}
               />
-              <Route exact path="/terapeuta/:id" component={TherapistProfile} />
-              <Route exact path="/parente/:id" component={ParentProfile} />
-              <Route
+              <PrivateRoute
+                exact
+                path="/terapeuta/:id"
+                component={TherapistProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/parente/:id"
+                component={ParentProfile}
+              />
+              <PrivateRoute
                 exact
                 path="/paciente/:patient_id/registo/:note_id"
                 component={TherapeuticNoteDetails}
               />
-              <Route exact path="/recursos" component={DashboardResources} />
-              <Route exact path="/recurso/:id" component={ResourceDetails} />
-              <Route
+              <PrivateRoute
+                exact
+                path="/recursos"
+                component={DashboardResources}
+              />
+              <PrivateRoute
+                exact
+                path="/recurso/:id"
+                component={ResourceDetails}
+              />
+              <PrivateRoute
                 exact
                 path="/recursos/percepcao"
                 component={ResourcePercepcao}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/recursos/a.numericas"
                 component={ResourceNumerica}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/recursos/motricidade"
                 component={ResourceMotricidade}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/recursos/d.verbal"
                 component={ResourceVerbal}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/recursos/memoria"
                 component={ResourceMemoria}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/recursos/d.emocional-social"
                 component={ResourceEmocional}
               />
-              <Route exact path="/recursos/avd" component={ResourceAVD} />
-              <Route exact path="/password" component={Password} />
+              <PrivateRoute
+                exact
+                path="/recursos/avd"
+                component={ResourceAVD}
+              />
+              <PrivateRoute exact path="/password" component={Password} />
               <Route component={NotFound} />
             </Switch>
           </div>

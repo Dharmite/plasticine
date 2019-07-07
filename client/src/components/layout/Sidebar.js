@@ -5,23 +5,8 @@ import Logo from "../../img/logo.png";
 import { connect } from "react-redux";
 
 class Sidebar extends Component {
-  componentDidMount() {
-    if (
-      (this.props.location.pathname != "/") |
-      (this.props.location.pathname != "/register") |
-      (this.props.location.pathname != "/login")
-    ) {
-      return null;
-    }
-  }
+
   render() {
-    if (
-      (this.props.location.pathname == "/") |
-      (this.props.location.pathname == "/register") |
-      (this.props.location.pathname == "/login")
-    ) {
-      return null;
-    }
     return (
       <div>
         <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -83,13 +68,13 @@ class Sidebar extends Component {
                   </li>
                   <li className="nav-item">
                     <Link to="/paciente/adicionar" className="nav-link">
-                    <i class="nav-icon fas fa-child" />
+                      <i class="nav-icon fas fa-child" />
                       <p>Criar paciente</p>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/parente/adicionar" className="nav-link">
-                        <i className="nav-icon fas fa-user-friends" />
+                      <i className="nav-icon fas fa-user-friends" />
                       <p>Criar parente</p>
                     </Link>
                   </li>
@@ -108,23 +93,13 @@ class Sidebar extends Component {
 
                   <li className="nav-item">
                     <Link to="/recursos" className="nav-link">
-                      <span className="info-box-icon bg-info elevation-1">
-                        <i
-                          className="nav-icon far fa-file"
-                          style={{ padding: "5px" }}
-                        />
-                      </span>
+                      <i className="nav-icon far fa-file" />
                       <p>Recursos</p>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/recurso/adicionar" className="nav-link">
-                      <span className="info-box-icon bg-info elevation-1">
-                        <i
-                          className="nav-icon fa fa-edit"
-                          style={{ padding: "5px" }}
-                        />
-                      </span>
+                      <i className="nav-icon fa fa-edit" />
                       <p>Adicionar Recurso</p>
                     </Link>
                   </li>
