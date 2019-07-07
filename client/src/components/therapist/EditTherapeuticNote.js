@@ -6,6 +6,7 @@
 // import { getPatient, addTherapeuticNote } from "../../actions/patientActions";
 // import $ from "jquery";
 // import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+// import Sidebar from "../layout/Sidebar";
 
 // class AddTherapeuticNote extends Component {
 //   componentWillUnmount() {
@@ -142,6 +143,7 @@
 
 //     return (
 //       <div>
+// <Sidebar />
 //         <button
 //           type="button"
 //           class="btn btn-light mt-3"

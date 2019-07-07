@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getTherapist } from "../../actions/therapistActions";
 import Resource from "../resources/Resource";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class TherapistProfile extends Component {
   componentDidMount() {
@@ -26,95 +28,100 @@ class TherapistProfile extends Component {
 
     return (
       <div>
-        <div className="row">
-          <div className="col-6 mt-3 mb-3">
-            <Link to={`/${userType}-dashboard`} className="btn btn-light">
-              Voltar
-            </Link>{" "}
-          </div>
-        </div>
-
-        <div class="container row mb-2">
-          <div class="col-sm-6">
-            <h1>Perfil</h1>
-          </div>
-        </div>
-
-        <section class="content">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="card card-primary card-outline">
-                  <div class="card-body box-profile">
-                    <div class="text-center">
-                      <img
-                        className="rounded-circle"
-                        src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                        alt=""
-                      />{" "}
-                    </div>
-
-                    <h5 class="profile-username text-center">{name}</h5>
-                    <h6 class="text-muted text-center">{email}</h6>
-                    <h6 class="text-muted text-center">{specialty}</h6>
-
-                    <ul class="list-group list-group-unbordered mb-3">
-                      <li class="list-group-item">
-                        <b>Recursos</b>{" "}
-                        <a class="float-right">
-                          {resources ? resources.length : null}
-                        </a>
-                      </li>
-                      <li class="list-group-item">
-                        <b>Crianças</b>{" "}
-                        <a class="float-right">
-                          {patient ? patient.length : null}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+              <div className="row">
+                <div className="col-6 mt-3 mb-3">
+                  <Link to={`/${userType}-dashboard`} className="btn btn-light">
+                    Voltar
+                  </Link>{" "}
                 </div>
               </div>
-              <div class="col-md-9">
-                <div class="card">
-                  <div class="card-header p-2">
-                    <ul class="nav nav-pills">
-                      <li class="nav-item">
-                        <a
-                          class="nav-link active"
-                          href="#resources"
-                          data-toggle="tab"
-                        >
-                          Recursos
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="card-body">
-                    <div class="tab-content">
-                      <div class="active tab-pane" id="resources">
-                        <div class="row">
-                          <div class="col-md-12">
-                            {resources
-                              ? resources.map(resource => (
-                                  <Resource
-                                    key={resource._id}
-                                    resource={resource}
-                                  />
-                                ))
-                              : null}
+
+              <div class="container row mb-2">
+                <div class="col-sm-6">
+                  <h1>Perfil</h1>
+                </div>
+              </div>
+
+              <section class="content">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                          <div class="text-center">
+                            <img
+                              className="rounded-circle"
+                              src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                              alt=""
+                            />{" "}
+                          </div>
+
+                          <h5 class="profile-username text-center">{name}</h5>
+                          <h6 class="text-muted text-center">{email}</h6>
+                          <h6 class="text-muted text-center">{specialty}</h6>
+
+                          <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                              <b>Recursos</b>{" "}
+                              <a class="float-right">
+                                {resources ? resources.length : null}
+                              </a>
+                            </li>
+                            <li class="list-group-item">
+                              <b>Crianças</b>{" "}
+                              <a class="float-right">
+                                {patient ? patient.length : null}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-9">
+                      <div class="card">
+                        <div class="card-header p-2">
+                          <ul class="nav nav-pills">
+                            <li class="nav-item">
+                              <a
+                                class="nav-link active"
+                                href="#resources"
+                                data-toggle="tab"
+                              >
+                                Recursos
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="card-body">
+                          <div class="tab-content">
+                            <div class="active tab-pane" id="resources">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  {resources
+                                    ? resources.map(resource => (
+                                        <Resource
+                                          key={resource._id}
+                                          resource={resource}
+                                        />
+                                      ))
+                                    : null}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
+              </section>
 
-        {/* 
+              {/* 
           <div className="col-md-12">
             <div className="card card-body bg-info text-white mb-3">
               <div className="row">
@@ -133,7 +140,7 @@ class TherapistProfile extends Component {
               </div>
             </div>
           </div> */}
-        {/* <div class="row">
+              {/* <div class="row">
           <div class="col-md-12">
             <h1 class="display-6">Recursos</h1>
           </div>
@@ -147,6 +154,9 @@ class TherapistProfile extends Component {
               : null}
           </div>
         </div> */}
+            </div>
+          </section>
+        </div>
       </div>
     );
   }

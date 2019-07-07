@@ -5,6 +5,8 @@ import { getParent, updateParent } from "../../actions/parentActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import $ from "jquery";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class EditParent extends Component {
   componentWillUnmount() {
@@ -70,85 +72,93 @@ class EditParent extends Component {
 
     return (
       <div>
-        <button
-          type="button"
-          className="btn btn-light mt-3"
-          data-toggle="modal"
-          data-target="#backModal"
-        >
-          Voltar
-        </button>
-        <div
-          className="modal fade"
-          id="backModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Atenção!
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                Deseja voltar à pagina anterior? As alterações não serão
-                guardadas
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <Link to="/admin-dashboard" className="btn btn-light">
-                  Voltar
-                </Link>{" "}
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+              <button
+                type="button"
+                className="btn btn-light mt-3"
+                data-toggle="modal"
+                data-target="#backModal"
+              >
+                Voltar
+              </button>
+              <div
+                className="modal fade"
+                id="backModal"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      Deseja voltar à pagina anterior? As alterações não serão
+                      guardadas
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <Link to="/admin-dashboard" className="btn btn-light">
+                        Voltar
+                      </Link>{" "}
+                    </div>
+                  </div>
+                </div>
+              </div>{" "}
+              <div className="card mb-3 mt-4">
+                <div className="card-header">Editar parente</div>
+                <div className="card-body">
+                  <form onSubmit={this.onSubmit}>
+                    <TextInputGroup
+                      label="Nome"
+                      name="name"
+                      placeholder="Introduza o nome"
+                      value={name}
+                      onChange={this.onChange}
+                      error={errors.name}
+                    />
+                    <TextInputGroup
+                      label="Email"
+                      name="email"
+                      type="email"
+                      placeholder="Introduza o Email"
+                      value={email}
+                      onChange={this.onChange}
+                      error={errors.email}
+                    />
+
+                    <input
+                      type="submit"
+                      value="Guardar parente"
+                      className="btn btn-info btn-block mt-4"
+                    />
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        </div>{" "}
-        <div className="card mb-3 mt-4">
-          <div className="card-header">Editar parente</div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <TextInputGroup
-                label="Nome"
-                name="name"
-                placeholder="Introduza o nome"
-                value={name}
-                onChange={this.onChange}
-                error={errors.name}
-              />
-              <TextInputGroup
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="Introduza o Email"
-                value={email}
-                onChange={this.onChange}
-                error={errors.email}
-              />
-
-              <input
-                type="submit"
-                value="Guardar parente"
-                className="btn btn-info btn-block mt-4"
-              />
-            </form>
-          </div>
+          </section>
         </div>
       </div>
     );

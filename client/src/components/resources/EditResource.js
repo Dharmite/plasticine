@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { updateResource, getResource } from "../../actions/resourceActions";
 import $ from "jquery";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 // import "./AddResource.css";
 
@@ -149,7 +151,12 @@ class EditResource extends Component {
 
     return (
       <div>
-        <button
+      <Navbar />
+      <div class="content-wrapper">
+        <section class="content">
+          <div class="container-fluid">
+            <Sidebar />
+            <button
           type="button"
           class="btn btn-light mt-3"
           data-toggle="modal"
@@ -509,7 +516,14 @@ class EditResource extends Component {
           </form>
         </div>
       </div>
+
+
+</div>
+        </section>
       </div>
+    </div>
+
+
     );
   }
 }

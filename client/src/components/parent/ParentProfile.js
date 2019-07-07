@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getParent } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class ParentProfile extends Component {
   componentDidMount() {
@@ -26,44 +28,56 @@ class ParentProfile extends Component {
 
     return (
       <div>
-        <div className="row">
-          <div className="col-6 mt-3 mb-3">
-            <Link to={`/${userType}-dashboard`} className="btn btn-light">
-              Voltar
-            </Link>{" "}
-          </div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
 
-          <div className="col-md-12">
-            <div className="card card-body bg-info text-white mb-3">
               <div className="row">
-                <div className="col-4 col-md-3 m-auto">
-                  <img
-                    className="rounded-circle"
-                    src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                    alt=""
-                  />
+                <div className="col-6 mt-3 mb-3">
+                  <Link to={`/${userType}-dashboard`} className="btn btn-light">
+                    Voltar
+                  </Link>{" "}
+                </div>
+
+                <div className="col-md-12">
+                  <div className="card card-body bg-info text-white mb-3">
+                    <div className="row">
+                      <div className="col-4 col-md-3 m-auto">
+                        <img
+                          className="rounded-circle"
+                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <h1 className="display-4 text-center">{name}</h1>
+                      <p className="lead text-center">{email}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="text-center">
-                <h1 className="display-4 text-center">{name}</h1>
-                <p className="lead text-center">{email}</p>
+              <div className="row">
+                <div className="col-md-12">
+                  <h1 className="display-6">Notas</h1>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  {notes
+                    ? notes.map(note => (
+                        <TherapeuticNote
+                          key={note._id}
+                          TherapeuticNote={note}
+                        />
+                      ))
+                    : null}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <h1 className="display-6">Notas</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            {notes
-              ? notes.map(note => (
-                  <TherapeuticNote key={note._id} TherapeuticNote={note} />
-                ))
-              : null}
-          </div>
+          </section>
         </div>
       </div>
     );

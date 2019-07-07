@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { addResource } from "../../actions/resourceActions";
 import $ from "jquery";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 import "./AddResource.css";
 
@@ -129,6 +131,11 @@ class AddResource extends Component {
 
     return (
       <div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
         <button
           type="button"
           class="btn btn-light mt-3"
@@ -490,7 +497,9 @@ class AddResource extends Component {
         </div>
       </div>
       </div>
-    );
+          </section>
+        </div>
+      </div>    );
   }
 }
 

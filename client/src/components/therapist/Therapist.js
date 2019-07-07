@@ -10,56 +10,65 @@ class Therapist extends Component {
     const { _id, name, email, specialty, patient } = this.props.therapist;
 
     return (
-      <div class="card card-body bg-light mb-3">
-        <div class="row">
-          <div class="col-2">
-            <img
-              class="rounded-circle"
-              style={{ width: "100%" }}
-              src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-              alt=""
-            />
-          </div>
-          <div class="col-lg-6 col-md-12 col-12">
-            <h3 style ={{marginBottom: "16px"}}>{name}</h3>
-            <p><b>Email:</b> {email}</p>
-            <p><b>Especialidade clínica:</b> {specialty}</p>
-
-            <div className="row">
-              <div className="col-4">
-                <Link
-                  to = {`/terapeuta/${_id}`}
-                  href="profile.html"
-                  class="btn btn-info"
-                  style={{ width: "100%" }}
-                >
-                  Ver
-                </Link>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="card card-widget widget-user-2">
+            <div className="widget-user-header bg-warning">
+              <div className="widget-user-image">
+                <img
+                  className="img-circle elevation-2"
+                  src="../dist/img/user7-128x128.jpg"
+                  alt="User Avatar"
+                />
               </div>
-
-              <div className="col-4">
-                <Link
-                  to={`/terapeuta/editar/${_id}`}
-                  class="btn btn-info"
-                  style={{ width: "100%" }}
-                >
-                  Editar
-                </Link>
+              <h3 className="widget-user-username">{name}</h3>
+              <h6 className="widget-user-desc">{specialty}</h6>
+              <hr />
+              <p style={{ textAlign: "center" }}>
+                <i className="fas fa-envelope-square"> </i> {email}
+              </p>
+            </div>
+            <div className="card-footer bg-white">
+              <div className="row">
+                <div className="col-sm-6 border-right">
+                  <div className="description-block bg-white">
+                    <Link
+                      to={`/terapeuta/${_id}`}
+                      href="profile.html"
+                      className="btn btn bg-white"
+                      style={{ border: "1px solid", width: "100%", height: "100%" }}
+                    >
+                      Ver
+                    </Link>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="description-block bg-white">
+                    <Link
+                      to={`/terapeuta/editar/${_id}`}
+                      className="btn bg-white"
+                      style={{ border: "1px solid", width: "100%", height: "100%"  }}
+                    >
+                      Editar
+                    </Link>
+                  </div>
+                </div>
               </div>
- 
             </div>
           </div>
-          <div class="col-md-4 d-lg-block">
-            <h4>Pacientes</h4>
-            <ul class="list-group">
-              {patient.map(user => (
-                <li class="list-group-item">
-                  <i class="fa fa-check pr-1" />
-                  {user.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+        </div>
+        <div className="col-md-4">
+          {patient.map(user => (
+            <div className="info-box mb-3 bg-success">
+              <span className="info-box-icon">
+                <i className="fas fa-child" />
+              </span>
+              <div style={{ display: "flex" }}>
+                <div style={{ alignSelf: "center" }}>{user.name}</div>
+              </div>
+
+            </div>
+          ))}
         </div>
       </div>
     );

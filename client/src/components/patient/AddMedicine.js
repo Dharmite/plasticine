@@ -6,6 +6,8 @@ import { addMedicine } from "../../actions/patientActions";
 import { Link, withRouter } from "react-router-dom";
 import $ from "jquery";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class AddMedicine extends Component {
   componentWillUnmount() {
@@ -80,119 +82,131 @@ class AddMedicine extends Component {
 
     return (
       <div>
-        <button
-          type="button"
-          className="btn btn-light mt-3"
-          data-toggle="modal"
-          data-target="#backModal"
-        >
-          Voltar
-        </button>
-        <div
-          className="modal fade"
-          id="backModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Atenção!
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+
+              <button
+                type="button"
+                className="btn btn-light mt-3"
+                data-toggle="modal"
+                data-target="#backModal"
+              >
+                Voltar
+              </button>
+              <div
+                className="modal fade"
+                id="backModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      Deseja voltar à pagina anterior? As alterações não serão
+                      guardadas
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <Link
+                        to={`/paciente/ver/${_id}`}
+                        className="btn btn-light"
+                      >
+                        Voltar
+                      </Link>{" "}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="modal-body">
-                Deseja voltar à pagina anterior? As alterações não serão
-                guardadas
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <Link to={`/paciente/ver/${_id}`} className="btn btn-light">
-                  Voltar
-                </Link>{" "}
+              <div className="card mb-3 mt-4">
+                <div className="card-header">Adicionar medicamento</div>
+                <div className="card-body">
+                  <form onSubmit={this.onSubmit}>
+                    <TextInputGroup
+                      label="Nome do medicamento"
+                      name="name"
+                      placeholder="Introduza o nome do medicamento"
+                      value={name}
+                      onChange={this.onChange}
+                      error={errors.name}
+                    />
+                    <TextAreaFieldGroup
+                      label="Observações"
+                      name="observation"
+                      placeholder="Observações"
+                      value={observation}
+                      onChange={this.onChange}
+                      error={errors.observation}
+                    />
+                    <TextInputGroup
+                      label="Dosagem"
+                      name="dosage"
+                      type="text"
+                      placeholder="Dosagem do medicamento"
+                      value={dosage}
+                      onChange={this.onChange}
+                      error={errors.dosage}
+                    />
+
+                    <TextInputGroup
+                      label="Quando é que deve ser tomado o medicamento"
+                      name="time"
+                      type="text"
+                      placeholder="Horário da toma do medicamento"
+                      value={time}
+                      onChange={this.onChange}
+                      error={errors.time}
+                    />
+
+                    <TextInputGroup
+                      label="Data de ínicio da toma do medicamento"
+                      name="startingDate"
+                      type="date"
+                      onChange={this.onChange}
+                      value={startingDate}
+                    />
+
+                    <TextInputGroup
+                      label="Date de fim da toma do medicamento"
+                      name="finishedDate"
+                      type="date"
+                      onChange={this.onChange}
+                      value={finishedDate}
+                    />
+
+                    <input
+                      type="submit"
+                      value="Adicionar medicamento"
+                      className="btn btn-info btn-block mt-4"
+                    />
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="card mb-3 mt-4">
-          <div className="card-header">Adicionar medicamento</div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <TextInputGroup
-                label="Nome do medicamento"
-                name="name"
-                placeholder="Introduza o nome do medicamento"
-                value={name}
-                onChange={this.onChange}
-                error={errors.name}
-              />
-              <TextAreaFieldGroup
-                label="Observações"
-                name="observation"
-                placeholder="Observações"
-                value={observation}
-                onChange={this.onChange}
-                error={errors.observation}
-              />
-              <TextInputGroup
-                label="Dosagem"
-                name="dosage"
-                type="text"
-                placeholder="Dosagem do medicamento"
-                value={dosage}
-                onChange={this.onChange}
-                error={errors.dosage}
-              />
-
-              <TextInputGroup
-                label="Quando é que deve ser tomado o medicamento"
-                name="time"
-                type="text"
-                placeholder="Horário da toma do medicamento"
-                value={time}
-                onChange={this.onChange}
-                error={errors.time}
-              />
-
-              <TextInputGroup
-                label="Data de ínicio da toma do medicamento"
-                name="startingDate"
-                type="date"
-                onChange={this.onChange}
-                value={startingDate}
-              />
-
-              <TextInputGroup
-                label="Date de fim da toma do medicamento"
-                name="finishedDate"
-                type="date"
-                onChange={this.onChange}
-                value={finishedDate}
-              />
-
-              <input
-                type="submit"
-                value="Adicionar medicamento"
-                className="btn btn-info btn-block mt-4"
-              />
-            </form>
-          </div>
+          </section>
         </div>
       </div>
     );

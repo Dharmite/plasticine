@@ -73,32 +73,30 @@ export const addTherapeuticNote = (
   patient_id,
   newTherapeuticNote,
   history
-) => async dispatch => {
-  try {
-    console.log("entrei no try");
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    };
-    const res = await axios.post(
-      `/api/therapeuticNote/new/${patient_id}`,
-      newTherapeuticNote,
-      config
-    );
-    dispatch({
-      type: ADD_THERAPEUTIC_NOTE,
-      payload: res.data
+) => dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+
+  axios
+    .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
+    .then(res => {
+      dispatch({
+        type: ADD_THERAPEUTIC_NOTE,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+      history.push("/terapeuta-dashboard");
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
     });
-    dispatch(clearErrors());
-    history.push("/terapeuta-dashboard");
-  } catch (error) {
-    console.log(error.response);
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
 };
 
 export const removeTherapeuticNote = note_id => async dispatch => {
@@ -184,6 +182,7 @@ export const getPatientMedicine = patient_id => dispatch => {
       });
     })
     .catch(err => {
+      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -346,19 +345,22 @@ export const removeParentPatient = (id, parent_id) => dispatch => {
 
 //////////////////////////////////////////////  PATIENT'S   ////////////////////////////////////////////////////////////////////////
 
-export const getPatient = id => async dispatch => {
-  try {
-    const res = await axios.get(`/api/patient-profile/patient/${id}`);
-    dispatch({
-      type: GET_PATIENT,
-      payload: res.data
+export const getPatient = id => dispatch => {
+  axios
+    .get(`/api/patient-profile/patient/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_PATIENT,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
 };
 
 export const getPatients = () => async dispatch => {

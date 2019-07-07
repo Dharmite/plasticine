@@ -11,9 +11,17 @@ import Therapist from "../therapist/Therapist";
 import Parent from "../parent/Parent";
 import Patient from "../patient/Patient";
 
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
+
 import Spinner from "../common/Spinner";
 
 class DashboardAdmin extends Component {
+  state = {
+    therapist: true,
+    patient: false,
+    parent: false
+  };
 
   componentDidMount() {
     this.props.getTherapists();
@@ -71,131 +79,109 @@ class DashboardAdmin extends Component {
     }
 
     return (
-      <div className="dashboard">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4">Perfil de administrador</h1>
-              <p className="lead text-muted">
-                Bem vindo {this.props.user.name}
-              </p>
-            </div>
-          </div>
+      <div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+              <div className="dashboard">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h1 className="display-4">Perfil de administrador</h1>
+                      <p className="lead text-muted">
+                        Bem vindo {this.props.user.name}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div
+                      className="col-12 col-sm-6 col-md-3"
+                      onClick={() =>
+                        this.setState({
+                          therapist: true,
+                          patient: false,
+                          parent: false
+                        })
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="info-box mb-3">
+                        <span className="info-box-icon bg-warning elevation-1">
+                          <i className="fa fa-users" />
+                        </span>
+                        <div className="info-box-content">
+                          <span className="info-box-text">Terapeutas</span>
+                          <span className="info-box-number">
+                            {therapists ? therapists.length : null}
+                          </span>
+                        </div>
+                      </div>{" "}
+                    </div>
+                    <div
+                      className="col-12 col-sm-6 col-md-3"
+                      onClick={() =>
+                        this.setState({
+                          therapist: false,
+                          patient: true,
+                          parent: false
+                        })
+                      }
+                    >
+                      <div
+                        className="info-box mb-3"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span className="info-box-icon bg-success elevation-1">
+                          <i class="fas fa-child" />{" "}
+                        </span>
+                        <div className="info-box-content">
+                          <span className="info-box-text">Pacientes</span>
+                          <span className="info-box-number">
+                            {patients ? patients.length : null}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="clearfix hidden-md-up" />
+                    <div
+                      className="col-12 col-sm-6 col-md-3"
+                      onClick={() =>
+                        this.setState({
+                          therapist: false,
+                          patient: false,
+                          parent: true
+                        })
+                      }
+                    >
+                      <div
+                        className="info-box mb-3"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span className="info-box-icon bg-info elevation-1">
+                          <i class="fas fa-user-friends" />{" "}
+                        </span>
+                        <div className="info-box-content">
+                          <span className="info-box-text">Parentes</span>
+                          <span className="info-box-number">
+                            {parents ? parents.length : null}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
 
-          <div className="btn-group mb-4" role="group">
-            <Link
-              to="/terapeuta/adicionar"
-              className="btn btn-light"
-              style={{ border: "1px solid black" }}
-            >
-              <i className="fas fa-user-circle text-info mr-1" /> Criar
-              Terapeuta
-            </Link>{" "}
-            <Link
-              to="/paciente/adicionar"
-              className="btn btn-light"
-              style={{ border: "1px solid black" }}
-            >
-              <i className="fas fa-user-circle text-info mr-1" /> Criar Paciente
-            </Link>
-            <Link
-              to="/parente/adicionar"
-              className="btn btn-light"
-              style={{ border: "1px solid black" }}
-            >
-              <i className="fas fa-user-circle text-info mr-1" /> Criar Parente
-            </Link>
-          </div>
+                  {this.state.therapist ? therapistContent : null}
 
-          <ul className="nav nav-tabs" id="myTab" role="tablist">
-            <li className="nav-item">
-              <a
-                className="nav-link active"
-                id="therapist-tab"
-                data-toggle="tab"
-                href="#therapist"
-                role="tab"
-                aria-controls="therapist"
-                aria-selected="true"
-              >
-                Terapeutas
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                id="patient-tab"
-                data-toggle="tab"
-                href="#patient"
-                role="tab"
-                aria-controls="patient"
-                aria-selected="false"
-              >
-                Pacientes
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                id="parent-tab"
-                data-toggle="tab"
-                href="#parent"
-                role="tab"
-                aria-controls="parent"
-                aria-selected="false"
-              >
-                Parentes
-              </a>
-            </li>
-          </ul>
-          <div className="tab-content" id="myTabContent">
-            <div
-              className="tab-pane fade show active"
-              id="therapist"
-              role="tabpanel"
-              aria-labelledby="therapist-tab"
-            >
-              {/* {therapists.length > 0 ? (
-                therapists.map(therapist => (
-                  <Therapist key={therapist.id} therapist={therapist} />
-                ))
-              ) : (
-                <h4 className="mt-4">Sem terapeutas para mostrar</h4>
-              )} */}
-              {therapistContent}
-            </div>
-            <div
-              className="tab-pane fade"
-              id="patient"
-              role="tabpanel"
-              aria-labelledby="patient-tab"
-            >
-              {/* {patients.length > 0 ? (
-                patients.map(patient => (
-                  <Patient key={patient.id} patient={patient} />
-                ))
-              ) : (
-                <h4 className="mt-4">Sem pacientes para mostrar</h4>
-              )} */}
+                  {this.state.patient ? patientContent : null}
 
-              {patientContent}
+                  {this.state.parent ? parentContent : null}
+                </div>
+              </div>
             </div>
-            <div
-              className="tab-pane fade"
-              id="parent"
-              role="tabpanel"
-              aria-labelledby="parent-tab"
-            >
-              {/* {parents.length > 0 ? (
-                parents.map(parent => (
-                  <Parent key={parent.id} parent={parent} />
-                ))
-              ) : (
-                <h4 className="mt-4">Sem parentes para mostrar</h4>
-              )} */}
-              {parentContent}
-            </div>
-          </div>
+          </section>
         </div>
       </div>
     );

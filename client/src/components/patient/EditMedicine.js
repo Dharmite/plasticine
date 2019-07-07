@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { updateMedicine, getMedicine } from "../../actions/patientActions";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class EditMedicine extends Component {
   state = {
@@ -98,69 +100,80 @@ class EditMedicine extends Component {
     const { errors } = this.props;
 
     return (
-      <div className="card mb-3 mt-4">
-        <div className="card-header">Editar medicamento</div>
-        <div className="card-body">
-          <form onSubmit={this.onSubmit}>
-            <TextInputGroup
-              label="Nome do medicamento"
-              name="name"
-              placeholder="Introduza o nome do medicamento"
-              value={name}
-              onChange={this.onChange}
-              error={errors.name}
-            />
-            <TextInputGroup
-              label="Observações"
-              name="observation"
-              type="text"
-              placeholder="Observações"
-              value={observation}
-              onChange={this.onChange}
-              error={errors.observation}
-            />
-            <TextInputGroup
-              label="Dosagem"
-              name="dosage"
-              type="text"
-              placeholder="Dosagem do medicamento"
-              value={dosage}
-              onChange={this.onChange}
-              error={errors.dosage}
-            />
+      <div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
 
-            <TextInputGroup
-              label="Quando é que deve ser tomado o medicamento"
-              name="time"
-              type="text"
-              placeholder="Horário da toma do medicamento"
-              value={time}
-              onChange={this.onChange}
-              error={errors.time}
-            />
+              <div className="card mb-3 mt-4">
+                <div className="card-header">Editar medicamento</div>
+                <div className="card-body">
+                  <form onSubmit={this.onSubmit}>
+                    <TextInputGroup
+                      label="Nome do medicamento"
+                      name="name"
+                      placeholder="Introduza o nome do medicamento"
+                      value={name}
+                      onChange={this.onChange}
+                      error={errors.name}
+                    />
+                    <TextInputGroup
+                      label="Observações"
+                      name="observation"
+                      type="text"
+                      placeholder="Observações"
+                      value={observation}
+                      onChange={this.onChange}
+                      error={errors.observation}
+                    />
+                    <TextInputGroup
+                      label="Dosagem"
+                      name="dosage"
+                      type="text"
+                      placeholder="Dosagem do medicamento"
+                      value={dosage}
+                      onChange={this.onChange}
+                      error={errors.dosage}
+                    />
 
-            <TextInputGroup
-              label="Data de ínicio da toma do medicamento"
-              name="startingDate"
-              type="date"
-              value={startingDate.slice(0, 10)}
-              onChange={this.onChange}
-            />
+                    <TextInputGroup
+                      label="Quando é que deve ser tomado o medicamento"
+                      name="time"
+                      type="text"
+                      placeholder="Horário da toma do medicamento"
+                      value={time}
+                      onChange={this.onChange}
+                      error={errors.time}
+                    />
 
-            <TextInputGroup
-              label="Date de fim da toma do medicamento"
-              name="finishedDate"
-              type="date"
-              value={finishedDate.slice(0, 10)}
-              onChange={this.onChange}
-            />
+                    <TextInputGroup
+                      label="Data de ínicio da toma do medicamento"
+                      name="startingDate"
+                      type="date"
+                      value={startingDate.slice(0, 10)}
+                      onChange={this.onChange}
+                    />
 
-            <input
-              type="submit"
-              value="Guardar medicamento"
-              className="btn btn-info btn-block mt-4"
-            />
-          </form>
+                    <TextInputGroup
+                      label="Date de fim da toma do medicamento"
+                      name="finishedDate"
+                      type="date"
+                      value={finishedDate.slice(0, 10)}
+                      onChange={this.onChange}
+                    />
+
+                    <input
+                      type="submit"
+                      value="Guardar medicamento"
+                      className="btn btn-info btn-block mt-4"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     );

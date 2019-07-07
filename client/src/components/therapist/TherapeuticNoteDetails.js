@@ -11,6 +11,8 @@ import {
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import avatar from "../../img/user.png";
 import user_img from "../../img/user1.jpg";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class TherapeuticNoteDetails extends Component {
   state = {
@@ -253,251 +255,277 @@ class TherapeuticNoteDetails extends Component {
       : null;
     return (
       <div>
-        {patient ? (
-          <div className="col-md-8 mt-3 mb-3">
-            <Link to={`/paciente/ver/${patient._id}`} className="btn btn-light">
-              Voltar
-            </Link>
-          </div>
-        ) : null}
-        <div
-          class="modal fade"
-          id="zoomImageModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-body">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + `/uploads/${this.state.imageName}`
-                  }
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+              {patient ? (
+                <div className="col-md-8 mt-3 mb-3">
+                  <Link
+                    to={`/paciente/ver/${patient._id}`}
+                    className="btn btn-light"
+                  >
+                    Voltar
+                  </Link>
+                </div>
+              ) : null}
 
-        <div class="card card-body mb-3 mt-3">
-          <div className="row d-flex justify-content-center">
-            {" "}
-            {title ? <h2>{title}</h2> : null}
-          </div>
-          <div class="row">
-            <div class="col-md-2">
-              <img
-                class="rounded-circle d-none d-md-block"
-                src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                alt=""
-                style={{ width: "100%" }}
-              />
-
-              <br />
-              {user ? (
-                <Link to={`/terapeuta/${user._id}`}>
-                  <p class="text-center">{user.name}</p>
-                </Link>
-              ) : null}
-              {/* {user ? <p class="text-center">{user.name}</p> : null} */}
-              {date ? (
-                <p className="text-center">
-                  <small class="text-muted">{date.slice(0, 10)}</small>
-                </p>
-              ) : null}
-            </div>
-            <div class="col-md-10">
-              <div className="row">
-                {observation ? (
-                  <p class="lead">
-                    {" "}
-                    <b>Observação</b> {observation}
-                  </p>
-                ) : null}
-              </div>
-              <div className="row">
-                {activity ? (
-                  <p class="lead">
-                    {" "}
-                    <b>Atividade:</b> {activity}
-                  </p>
-                ) : null}
-              </div>
-              <div className="row">
-                {behavior ? (
-                  <p class="lead">
-                    {" "}
-                    <b>Comportamento:</b> {behavior}
-                  </p>
-                ) : null}
-              </div>
-              <hr />
-              <div className="row">
-                {availableTo ? (
-                  <div className="col-md-12">
-                    <p>
-                      <b>Disponível para:</b>
-                    </p>
-                  </div>
-                ) : null}
-                {availableTo
-                  ? availableTo.map(elem => (
-                      <div className="col-md-3">
-                        <img
-                          src={avatar}
-                          alt=""
-                          style={{ height: "45%", width: "45%" }}
-                        />
-                        <p>
-                          <Link to={`/terapeuta/${elem._id}`}>
-                            {" "}
-                            {elem.name}{" "}
-                          </Link>
-                        </p>
-                      </div>
-                    ))
-                  : null}
-              </div>
-              {hasImageFiles ? (
-                <div className="container row">
-                  <h1>Imagens</h1>
-                </div>
-              ) : null}
-              <div className="row">{image_files}</div>
-              {hasApplicationFiles ? (
-                <div className="container row">
-                  <h1>Ficheiros</h1>
-                </div>
-              ) : null}
-              <div className="row">{application_files}</div>
-              {hasAudioFiles ? (
-                <div className="container row">
-                  <h1>Audio</h1>
-                </div>
-              ) : null}
-              <div className="row">{audio_files}</div>
-              {hasVideoFiles ? (
-                <div className="container row">
-                  <h1>Video</h1>
-                </div>
-              ) : null}
-              <div className="row">{video_files}</div>
-            </div>
-          </div>
-        </div>
-        {feedback
-          ? feedback.map(elem => (
-              <div class="post card">
-                <div class="user-block card-header">
-                  <div style={{ display: "flex" }}>
-                    <img
-                      src={user_img}
-                      alt="user image"
-                      style={{ width: "7%", borderRadius: "50%" }}
-                      className="mr-2"
-                    />
-                    <div style={{ flexDirection: "column" }}>
-                      <div class="username">
-                        <a href="#">
-                          {" "}
-                          {this.props.user.name ? (
-                            <p class="text-center">{this.props.user.name}</p>
-                          ) : null}
-                        </a>
-                      </div>
-                      <div class="description">
-                        {elem.date ? (
-                          <p className="text-center">
-                            <small class="text-muted">
-                              {elem.date.slice(0, 10)}
-                            </small>
-                          </p>
-                        ) : null}
-                      </div>
+              <div
+                class="modal fade"
+                id="zoomImageModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/uploads/${this.state.imageName}`
+                        }
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
                     </div>
                   </div>
                 </div>
-                <p className="card-body">{elem.observation} </p>
               </div>
 
-              // <div className="card card-body mb-3">
-              //   <div className="row">
-              //     <div class="col-md-2">
-              //       <a href="profile.html">
-              //         <img
-              //           class="rounded-circle d-none d-md-block"
-              //           src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-              //           alt=""
-              //           style={{ width: "100%" }}
-              //         />
-              //       </a>
-              //       <br />
-
-              //       {this.props.user.name ? (
-              //         <p class="text-center">{this.props.user.name}</p>
-              //       ) : null}
-              //       {elem.date ? (
-              //         <p className="text-center">
-              //           <small class="text-muted">
-              //             {elem.date.slice(0, 10)}
-              //           </small>
-              //         </p>
-              //       ) : null}
-              //     </div>
-              //     <div className="col-md-10">
-              //       <p className="lead">{elem.observation}</p>
-              //       {/* {comment.user === auth.user.id ? (
-              //         <button
-              //           onClick={this.onDeleteClick.bind(
-              //             this,
-              //             postId,
-              //             comment._id
-              //           )}
-              //           type="button"
-              //           className="btn btn-danger mr-1"
-              //         >
-              //           <i className="fas fa-times" />
-              //         </button>
-              //       ) : null} */}
-              //     </div>
-              //   </div>
-              // </div>
-            ))
-          : null}
-        <div className="post-form mb-3 mt-3">
-          <div className="card card-info">
-            <div className="card-header bg-info text-white">
-              Faça um comentário...
-            </div>
-            <div className="card-body">
-              <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <TextAreaFieldGroup
-                    placeholder="Dê feedback a este registo"
-                    name="observation"
-                    value={this.state.observation}
-                    onChange={this.onChange}
-                    error={errors.observation}
-                  />
+              <div class="card card-body mb-3 mt-3">
+                <div className="row d-flex justify-content-center">
+                  {" "}
+                  {title ? <h2>{title}</h2> : null}
                 </div>
-                <button type="submit" className="btn btn-dark">
-                  Dar feedback
-                </button>
-              </form>
+                <div class="row">
+                  <div class="col-md-2">
+                    <img
+                      class="rounded-circle d-none d-md-block"
+                      src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                      alt=""
+                      style={{ width: "100%" }}
+                    />
+
+                    <br />
+                    {user ? (
+                      <Link to={`/terapeuta/${user._id}`}>
+                        <p class="text-center">{user.name}</p>
+                      </Link>
+                    ) : null}
+                    {/* {user ? <p class="text-center">{user.name}</p> : null} */}
+                    {date ? (
+                      <p className="text-center">
+                        <small class="text-muted">{date.slice(0, 10)}</small>
+                      </p>
+                    ) : null}
+                  </div>
+                  <div class="col-md-10">
+                    <div className="row">
+                      {observation ? (
+                        <p class="lead">
+                          {" "}
+                          <b>Observação</b> {observation}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="row">
+                      {activity ? (
+                        <p class="lead">
+                          {" "}
+                          <b>Atividade:</b> {activity}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="row">
+                      {behavior ? (
+                        <p class="lead">
+                          {" "}
+                          <b>Comportamento:</b> {behavior}
+                        </p>
+                      ) : null}
+                    </div>
+                    <hr />
+                    <div className="row">
+                      {availableTo ? (
+                        <div className="col-md-12">
+                          <p>
+                            <b>Disponível para:</b>
+                          </p>
+                        </div>
+                      ) : null}
+                      <div className="card">
+                        <div className="card-header">
+                          <h3 className="card-title">Utilizadores</h3>
+                          <div className="card-tools">
+                            <span className="badge badge-danger">
+                              {availableTo ? availableTo.length : null} Membros
+                            </span>
+                          </div>
+                        </div>
+                        {/* /.card-header */}
+                        <div className="card-body p-0">
+                          <ul className="users-list clearfix">
+                            {availableTo
+                              ? availableTo.map(elem => (
+                                  <li>
+                                    <img src={user_img} alt="User Image" />
+                                    <Link to={`/terapeuta/${elem._id}`}>
+                                      {" "}
+                                      {elem.name}{" "}
+                                    </Link>{" "}
+                                  </li>
+                                ))
+                              : null}
+                          </ul>
+                          {/* /.users-list */}
+                        </div>
+                        {/* /.card-body */}
+                      </div>
+                    </div>
+                    {hasImageFiles ? (
+                      <div className="container row">
+                        <h1>Imagens</h1>
+                      </div>
+                    ) : null}
+                    <div className="row">{image_files}</div>
+                    {hasApplicationFiles ? (
+                      <div className="container row">
+                        <h1>Ficheiros</h1>
+                      </div>
+                    ) : null}
+                    <div className="row">{application_files}</div>
+                    {hasAudioFiles ? (
+                      <div className="container row">
+                        <h1>Audio</h1>
+                      </div>
+                    ) : null}
+                    <div className="row">{audio_files}</div>
+                    {hasVideoFiles ? (
+                      <div className="container row">
+                        <h1>Video</h1>
+                      </div>
+                    ) : null}
+                    <div className="row">{video_files}</div>
+                  </div>
+                </div>
+              </div>
+              {feedback
+                ? feedback.map(elem => (
+                    <div class="post card">
+                      <div class="user-block card-header">
+                        <div style={{ display: "flex" }}>
+                          <img
+                            src={user_img}
+                            alt="user image"
+                            style={{ width: "7%", borderRadius: "50%" }}
+                            className="mr-2"
+                          />
+                          <div style={{ flexDirection: "column" }}>
+                            <div class="username">
+                              <a href="#">
+                                {" "}
+                                {this.props.user.name ? (
+                                  <p class="text-center">
+                                    {this.props.user.name}
+                                  </p>
+                                ) : null}
+                              </a>
+                            </div>
+                            <div class="description">
+                              {elem.date ? (
+                                <p className="text-center">
+                                  <small class="text-muted">
+                                    {elem.date.slice(0, 10)}
+                                  </small>
+                                </p>
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="card-body">{elem.observation} </p>
+                    </div>
+
+                    // <div className="card card-body mb-3">
+                    //   <div className="row">
+                    //     <div class="col-md-2">
+                    //       <a href="profile.html">
+                    //         <img
+                    //           class="rounded-circle d-none d-md-block"
+                    //           src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                    //           alt=""
+                    //           style={{ width: "100%" }}
+                    //         />
+                    //       </a>
+                    //       <br />
+
+                    //       {this.props.user.name ? (
+                    //         <p class="text-center">{this.props.user.name}</p>
+                    //       ) : null}
+                    //       {elem.date ? (
+                    //         <p className="text-center">
+                    //           <small class="text-muted">
+                    //             {elem.date.slice(0, 10)}
+                    //           </small>
+                    //         </p>
+                    //       ) : null}
+                    //     </div>
+                    //     <div className="col-md-10">
+                    //       <p className="lead">{elem.observation}</p>
+                    //       {/* {comment.user === auth.user.id ? (
+                    //         <button
+                    //           onClick={this.onDeleteClick.bind(
+                    //             this,
+                    //             postId,
+                    //             comment._id
+                    //           )}
+                    //           type="button"
+                    //           className="btn btn-danger mr-1"
+                    //         >
+                    //           <i className="fas fa-times" />
+                    //         </button>
+                    //       ) : null} */}
+                    //     </div>
+                    //   </div>
+                    // </div>
+                  ))
+                : null}
+              <div className="post-form mb-3 mt-3">
+                <div className="card card-info">
+                  <div className="card-header bg-info text-white">
+                    Faça um comentário...
+                  </div>
+                  <div className="card-body">
+                    <form onSubmit={this.onSubmit}>
+                      <div className="form-group">
+                        <TextAreaFieldGroup
+                          placeholder="Dê feedback a este registo"
+                          name="observation"
+                          value={this.state.observation}
+                          onChange={this.onChange}
+                          error={errors.observation}
+                        />
+                      </div>
+                      <button type="submit" className="btn btn-dark">
+                        Dar feedback
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     );

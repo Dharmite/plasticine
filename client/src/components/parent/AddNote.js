@@ -6,6 +6,8 @@ import { withRouter, Link } from "react-router-dom";
 import { getPatient, addTherapeuticNote } from "../../actions/patientActions";
 import $ from "jquery";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class AddNote extends Component {
   componentWillUnmount() {
@@ -144,153 +146,162 @@ class AddNote extends Component {
 
     return (
       <div>
-        <button
-          type="button"
-          className="btn btn-light mt-3"
-          data-toggle="modal"
-          data-target="#backModal"
-        >
-          Voltar
-        </button>
-        <div
-          className="modal fade"
-          id="backModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Atenção!
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        <Navbar />
+        <div class="content-wrapper">
+          <section class="content">
+            <div class="container-fluid">
+              <Sidebar />
+
+              <button
+                type="button"
+                className="btn btn-light mt-3"
+                data-toggle="modal"
+                data-target="#backModal"
+              >
+                Voltar
+              </button>
+              <div
+                className="modal fade"
+                id="backModal"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      Deseja voltar à pagina anterior? As alterações não serão
+                      guardadas
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <Link to="/parente-dashboard" className="btn btn-light">
+                        Voltar
+                      </Link>{" "}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="modal-body">
-                Deseja voltar à pagina anterior? As alterações não serão
-                guardadas
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <Link to="/parente-dashboard" className="btn btn-light">
-                  Voltar
-                </Link>{" "}
+              <div className="card mb-3 mt-4">
+                <div className="card-header">Adicionar registo terapêutico</div>
+                <div className="card-body">
+                  <form onSubmit={this.onSubmit} encType="multipart/form-data">
+                    <TextInputGroup
+                      label="Titulo"
+                      name="title"
+                      placeholder="Introduza um titulo"
+                      value={title}
+                      onChange={this.onChange}
+                      error={errors.title}
+                    />
+                    <TextAreaFieldGroup
+                      label="Observação"
+                      name="observation"
+                      type="text"
+                      placeholder="Introduza uma observação"
+                      value={observation}
+                      onChange={this.onChange}
+                      error={errors.observation}
+                    />
+
+                    <div className="form-group">
+                      <label>Disponível para:</label>
+                      {therapist
+                        ? therapist.map(elem =>
+                            elem._id !== this.props.auth.user.id ? (
+                              <div className="form-check mb-1">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  name="availableTo2"
+                                  id="defaultCheck1"
+                                  value={elem._id}
+                                  onChange={this.handleSelectionChanged}
+                                  error={errors.availableTo2}
+                                />
+                                <label
+                                  className="form-check-label"
+                                  for="defaultCheck1"
+                                >
+                                  {elem.name}
+                                </label>
+                              </div>
+                            ) : null
+                          )
+                        : null}
+
+                      {parent
+                        ? parent.map(elem =>
+                            elem._id !== this.props.auth.user.id ? (
+                              <div className="form-check mb-1">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  name="availableTo2"
+                                  id="defaultCheck1"
+                                  value={elem._id}
+                                  onChange={this.handleSelectionChanged}
+                                  error={errors.availableTo2}
+                                />
+                                <label
+                                  className="form-check-label"
+                                  for="defaultCheck1"
+                                >
+                                  {elem.name}
+                                </label>
+                              </div>
+                            ) : null
+                          )
+                        : null}
+                    </div>
+
+                    <div className="custom-file mb-4">
+                      <input
+                        type="file"
+                        name="files"
+                        className="custom-file-input"
+                        id="customFile"
+                        placeholder="Faça upload dos ficheiros"
+                        onChange={this.onChange}
+                        error={errors.files}
+                        multiple
+                      />
+                      <label className="custom-file-label" htmlFor="customFile">
+                        {" "}
+                        {filename}
+                      </label>
+                    </div>
+
+                    <input
+                      type="submit"
+                      value="Adicionar observação"
+                      className="btn btn-info btn-block mt-4"
+                    />
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="card mb-3 mt-4">
-          <div className="card-header">Adicionar registo terapêutico</div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit} encType="multipart/form-data">
-              <TextInputGroup
-                label="Titulo"
-                name="title"
-                placeholder="Introduza um titulo"
-                value={title}
-                onChange={this.onChange}
-                error={errors.title}
-              />
-              <TextAreaFieldGroup
-                label="Observação"
-                name="observation"
-                type="text"
-                placeholder="Introduza uma observação"
-                value={observation}
-                onChange={this.onChange}
-                error={errors.observation}
-              />
-
-              <div className="form-group">
-                <label>Disponível para:</label>
-                {therapist
-                  ? therapist.map(elem =>
-                      elem._id !== this.props.auth.user.id ? (
-                        <div className="form-check mb-1">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="availableTo2"
-                            id="defaultCheck1"
-                            value={elem._id}
-                            onChange={this.handleSelectionChanged}
-                            error={errors.availableTo2}
-                          />
-                          <label
-                            className="form-check-label"
-                            for="defaultCheck1"
-                          >
-                            {elem.name}
-                          </label>
-                        </div>
-                      ) : null
-                    )
-                  : null}
-
-                {parent
-                  ? parent.map(elem =>
-                      elem._id !== this.props.auth.user.id ? (
-                        <div className="form-check mb-1">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="availableTo2"
-                            id="defaultCheck1"
-                            value={elem._id}
-                            onChange={this.handleSelectionChanged}
-                            error={errors.availableTo2}
-                          />
-                          <label
-                            className="form-check-label"
-                            for="defaultCheck1"
-                          >
-                            {elem.name}
-                          </label>
-                        </div>
-                      ) : null
-                    )
-                  : null}
-              </div>
-
-              <div className="custom-file mb-4">
-                <input
-                  type="file"
-                  name="files"
-                  className="custom-file-input"
-                  id="customFile"
-                  placeholder="Faça upload dos ficheiros"
-                  onChange={this.onChange}
-                  error={errors.files}
-                  multiple
-                />
-                <label className="custom-file-label" htmlFor="customFile">
-                  {" "}
-                  {filename}
-                </label>
-              </div>
-
-              <input
-                type="submit"
-                value="Adicionar observação"
-                className="btn btn-info btn-block mt-4"
-              />
-            </form>
-          </div>
+          </section>
         </div>
       </div>
     );

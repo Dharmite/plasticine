@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import $ from "jquery";
 import SelectListGroup from "../common/SelectListGroup";
+import Sidebar from "../layout/Sidebar";
+import Navbar from "../layout/Navbar";
 
 class EditTherapist extends Component {
   componentWillUnmount() {
@@ -95,8 +97,15 @@ class EditTherapist extends Component {
     ];
 
     return (
+
       <div>
-        <button
+      <Navbar />
+      <div class="content-wrapper">
+        <section class="content">
+          <div class="container-fluid">
+            <Sidebar />
+
+            <button
           type="button"
           class="btn btn-light mt-3"
           data-toggle="modal"
@@ -166,21 +175,6 @@ class EditTherapist extends Component {
                 onChange={this.onChange}
                 error={errors.name}
               />
-              {/* <select
-                className="form-control form-control-lg"
-                id="exampleFormControlSelect1"
-                error={errors.specialty}
-                value={specialty}
-                name="specialty"
-                onChange={this.handleSelectionChanged}
-              >
-                <option>Escolha uma especialidade</option>
-                <option>Psicologia</option>
-                <option>Terapia da Fala</option>
-                <option>Psicomotricidade</option>
-                <option>Fisioterapia</option>
-                <option>Terapia Ocupacional</option>
-              </select> */}
 
               <SelectListGroup
                 name="specialty"
@@ -199,7 +193,12 @@ class EditTherapist extends Component {
             </form>
           </div>
         </div>
+
+</div>
+        </section>
       </div>
+    </div>
+
     );
   }
 }
