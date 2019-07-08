@@ -78,6 +78,9 @@ class TherapeuticNote extends Component {
               </p>
               <p>{date.slice(0, 10)}</p>
               <Link to={`/paciente/${patient}/registo/${_id}`}>Detalhes</Link>
+              <Link to={`/paciente/${patient}/registo/${_id}/editar`}>
+                Editar
+              </Link>
               {user ? (
                 this.props.auth ? (
                   this.props.auth.user.id == user._id ? (

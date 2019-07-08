@@ -278,7 +278,7 @@ router.get(
   }
 );
 
-// @route POST api/therapeuticNote/:patient_id
+// @route POST api/therapeuticNote/notes/:note_id
 // @desc EDIT Therapeutic Note
 // @access Private
 
@@ -287,19 +287,66 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isTherapistOrParent,
   (req, res) => {
-    const newNote = {
-      title: req.body.title,
-      observation: req.body.observation
-    };
-    TherapeuticNote.findByIdAndUpdate(req.params.note_id, newNote)
-      .then(note => {
-        if (!note) {
-          return res.status(400).json({ err: "Nenhum registo encontrado" });
-        } else {
-          res.json(note);
-        }
-      })
-      .catch(err => res.json(err));
+    upload(req, res, err => {
+      let upload_files = [];
+      console.log(req.files, "files");
+      if(req.files.length > 0) {
+        req.files.forEach(file => {
+          let fileObj = {
+            filename: file.filename,
+            destination: file.destination,
+            src: file.destination + file.filename,
+            fileType: file.mimetype,
+            originalname: file.originalname
+          };
+          upload_files.push(fileObj);
+        });
+  
+        TherapeuticNote.findByIdAndUpdate(
+          req.params.note_id,
+          {
+            _id: req.params.note_id,
+            title: req.body.title,
+            observation: req.body.observation,
+            activity: req.body.activity,
+            behavior: req.body.behavior,
+            files: upload_files
+          },
+          { new: true }
+        )
+          .then(note => {
+            if (!note) {
+              return res.status(400).json({ err: "Nenhum registo encontrado" });
+            } else {
+              res.json(note);
+            }
+          })
+          .catch(err => res.json(err));
+  
+      }else{
+        console.log("entrei");
+        TherapeuticNote.findByIdAndUpdate(
+          req.params.note_id,
+          {
+            _id: req.params.note_id,
+            title: req.body.title,
+            observation: req.body.observation,
+            activity: req.body.activity,
+            behavior: req.body.behavior
+          },
+          { new: true }
+        )
+          .then(note => {
+            if (!note) {
+              return res.status(400).json({ err: "Nenhum registo encontrado" });
+            } else {
+              res.json(note);
+            }
+          })
+          .catch(err => res.json(err));
+  
+      }
+    });
   }
 );
 

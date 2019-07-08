@@ -107,6 +107,11 @@ class TherapeuticNoteDetails extends Component {
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                 class="card-img-top"
+                data-toggle="modal"
+                data-target="#zoomImageModal"
+                onClick={this.getFileName.bind(this, file.filename)}
+                style = {{cursor:"pointer"}}
+
               />
               <div className="card-body">
                 <button
@@ -118,7 +123,7 @@ class TherapeuticNoteDetails extends Component {
                     file.originalname
                   )}
                 >
-                  Download {file.originalname}{" "}
+                  Download
                 </button>
                 <button
                   type="button"
@@ -163,17 +168,20 @@ class TherapeuticNoteDetails extends Component {
                   Your browser does not support the audio element.
                 </audio>
               </p>
-              <button
-                className="btn btn-light"
-                style={{ border: "1px solid black" }}
-                onClick={this.downloadFile.bind(
-                  this,
-                  file.filename,
-                  file.originalname
-                )}
-              >
-                Download {file.originalname}{" "}
-              </button>
+              <p>
+                {file.originalname}{" "}
+                <button
+                  className="btn btn-light"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download
+                </button>
+              </p>
             </div>
           ) : null
         )
@@ -193,17 +201,20 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "application/pdf" ||
           file.fileType == "application/msword" ? (
             <div className="col-md-12 mt-3">
-              <button
-                className="btn btn-light"
-                style={{ border: "1px solid black" }}
-                onClick={this.downloadFile.bind(
-                  this,
-                  file.filename,
-                  file.originalname
-                )}
-              >
-                Download {file.originalname}{" "}
-              </button>
+              <p>
+                {file.originalname}{" "}
+                <button
+                  className="btn btn-light"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download
+                </button>
+              </p>
             </div>
           ) : null
         )
@@ -246,7 +257,7 @@ class TherapeuticNoteDetails extends Component {
                   file.originalname
                 )}
               >
-                Download {file.originalname}{" "}
+                Download
               </button>
             </div>
           ) : null
@@ -295,7 +306,7 @@ class TherapeuticNoteDetails extends Component {
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Fechar
                       </button>
                     </div>
                   </div>

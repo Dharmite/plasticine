@@ -110,12 +110,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   auth_middleware.isTherapistOrAdmin,
   (req, res) => {
-    // const newResource = {
-    //   title: req.body.title,
-    //   category: req.body.category,
-    //   subCategory: req.body.subCategory,
-    //   observation: req.body.observation
-    // };
 
     upload(req, res, err => {
       let upload_files = [];

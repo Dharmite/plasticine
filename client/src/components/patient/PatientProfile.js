@@ -298,21 +298,39 @@ class PatientProfile extends Component {
               </div>{" "}
               {isAdmin ? (
                 <div className="col-md-8 mt-3 mb-3">
-                  <Link to="/admin-dashboard" className="btn btn-light">
+                  <Link
+                    to="/admin-dashboard"
+                    className="btn btn-light"
+                    style={{
+                      border: "1px solid"
+                    }}
+                  >
                     Voltar
                   </Link>
                 </div>
               ) : null}
               {isTherapist ? (
                 <div className="col-md-8 mt-3 mb-3">
-                  <Link to="/terapeuta-dashboard" className="btn btn-light">
+                  <Link
+                    to="/terapeuta-dashboard"
+                    className="btn btn-light"
+                    style={{
+                      border: "1px solid"
+                    }}
+                  >
                     Voltar
                   </Link>
                 </div>
               ) : null}
               {isParent ? (
                 <div className="col-md-8 mt-3 mb-3">
-                  <Link to="/parente-dashboard" className="btn btn-light">
+                  <Link
+                    to="/parente-dashboard"
+                    className="btn btn-light"
+                    style={{
+                      border: "1px solid"
+                    }}
+                  >
                     Voltar
                   </Link>
                 </div>

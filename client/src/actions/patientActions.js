@@ -18,6 +18,7 @@ import {
   ADD_THERAPEUTIC_NOTE,
   GET_THERAPEUTIC_NOTE,
   REMOVE_THERAPEUTIC_NOTE,
+  UPDATE_THERAPEUTIC_NOTE,
   PATIENTS_LOADING,
   CLEAR_ERRORS,
   PATIENT_THERAPISTS_LOADING,
@@ -110,6 +111,36 @@ export const removeTherapeuticNote = note_id => async dispatch => {
       payload: error.response.data
     });
   }
+};
+
+export const updateTherapeuticNote = (
+  note_id,
+  newTherapeuticNote,
+  history
+) => dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+
+  axios
+    .post(`/api/therapeuticNote/notes/${note_id}`, newTherapeuticNote, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_THERAPEUTIC_NOTE,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+      history.push("/terapeuta-dashboard");
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
 
 export const getComments = note_id => async dispatch => {

@@ -6,7 +6,6 @@ import { withRouter } from "react-router";
 import store from "./store";
 
 import PrivateRoute from "./components/common/PrivateRoute";
-import AccessRoute from "./components/common/AccessRoute";
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -55,6 +54,8 @@ import ResourceMemoria from "./components/resources/ResourceMemoria";
 import ResourceEmocional from "./components/resources/ResourceEmocional";
 import ResourceAVD from "./components/resources/ResourceAVD";
 import Password from "./components/pages/Password";
+
+import EditTherapeuticNote from './components/therapist/EditTherapeuticNote'
 
 import "./App.css";
 
@@ -172,6 +173,11 @@ class App extends Component {
                 exact
                 path="/paciente/:patient_id/registo/:note_id"
                 component={TherapeuticNoteDetails}
+              />
+              <PrivateRoute
+                exact
+                path="/paciente/:patient_id/registo/:note_id/editar"
+                component={EditTherapeuticNote}
               />
               <PrivateRoute
                 exact

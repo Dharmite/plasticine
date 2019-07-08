@@ -10,6 +10,7 @@ import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
 class AddTherapeuticNote extends Component {
+  
   componentWillUnmount() {
     if ($(".modal-backdrop")[0]) {
       document.getElementsByClassName("modal-backdrop")[0].remove();
