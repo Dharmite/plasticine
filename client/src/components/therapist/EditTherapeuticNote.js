@@ -34,34 +34,29 @@ class EditTherapeuticNote extends Component {
   componentDidMount() {
     const { patient_id } = this.props.match.params;
     this.props.getPatient(patient_id);
-    
 
     const { note_id } = this.props.match.params;
     this.props.getTherapeuticNote(note_id);
-
-
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-
     const {
-        title,
-        activity,
-        behavior,
-        observation,
-        files,
-        filename
-      } = nextProps.note;
-  
-  
-      this.setState({
-        title,
-        activity,
-        behavior,
-        observation,
-        files,
-        filename
-      });
+      title,
+      activity,
+      behavior,
+      observation,
+      files,
+      filename
+    } = nextProps.note;
+
+    this.setState({
+      title,
+      activity,
+      behavior,
+      observation,
+      files,
+      filename
+    });
 
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -93,8 +88,6 @@ class EditTherapeuticNote extends Component {
       files: "",
       errors: {}
     });
-
-    
   };
 
   onChange = e => {
@@ -125,7 +118,11 @@ class EditTherapeuticNote extends Component {
               <Sidebar />
               <button
                 type="button"
-                class="btn btn-light mt-3"
+                className="btn mt-3"
+                style={{
+                  border: "1px solid black",
+                  backgroundColor: "white"
+                }}
                 data-toggle="modal"
                 data-target="#backModal"
               >
@@ -230,7 +227,7 @@ class EditTherapeuticNote extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar registo"
+                      value="Guardar registo"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

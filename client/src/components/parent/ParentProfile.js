@@ -36,7 +36,14 @@ class ParentProfile extends Component {
 
               <div className="row">
                 <div className="col-6 mt-3 mb-3">
-                  <Link to={`/${userType}-dashboard`} className="btn btn-light">
+                  <Link
+                    to={`/${userType}-dashboard`}
+                    className="btn"
+                    style={{
+                      border: "1px solid black",
+                      backgroundColor: "white"
+                    }}
+                  >
                     Voltar
                   </Link>{" "}
                 </div>

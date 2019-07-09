@@ -274,7 +274,11 @@ class TherapeuticNoteDetails extends Component {
                 <div className="col-md-8 mt-3 mb-3">
                   <Link
                     to={`/paciente/ver/${patient._id}`}
-                    className="btn btn-light"
+                    className="btn"
+                    style={{
+                      border: "1px solid black",
+                      backgroundColor:"white"
+                    }}
                   >
                     Voltar
                   </Link>

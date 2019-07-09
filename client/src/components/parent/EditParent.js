@@ -79,8 +79,12 @@ class EditParent extends Component {
               <Sidebar />
               <button
                 type="button"
-                className="btn btn-light mt-3"
-                data-toggle="modal"
+                className="btn mt-3"
+                style={{
+                  border: "1px solid black",
+                  backgroundColor:"white"
+                }}
+            data-toggle="modal"
                 data-target="#backModal"
               >
                 Voltar

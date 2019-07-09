@@ -35,7 +35,14 @@ class TherapistProfile extends Component {
               <Sidebar />
               <div className="row">
                 <div className="col-6 mt-3 mb-3">
-                  <Link to={`/${userType}-dashboard`} className="btn btn-light">
+                  <Link
+                    to={`/${userType}-dashboard`}
+                    className="btn"
+                    style={{
+                      border: "1px solid black",
+                      backgroundColor: "white"
+                    }}
+                  >
                     Voltar
                   </Link>{" "}
                 </div>
@@ -62,7 +69,12 @@ class TherapistProfile extends Component {
                           </div>
 
                           <h5 class="profile-username text-center">{name}</h5>
-                          <h6 class="text-muted text-center">{email}</h6>
+                          <h6 class="text-muted text-center">
+                            {email ? (
+                              <i className="fas fa-envelope-square"> </i>
+                            ) : null}{" "}
+                            {email}
+                          </h6>
                           <h6 class="text-muted text-center">{specialty}</h6>
 
                           <ul class="list-group list-group-unbordered mb-3">

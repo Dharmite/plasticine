@@ -10,7 +10,6 @@ import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
 class AddTherapeuticNote extends Component {
-  
   componentWillUnmount() {
     if ($(".modal-backdrop")[0]) {
       document.getElementsByClassName("modal-backdrop")[0].remove();
@@ -150,7 +149,11 @@ class AddTherapeuticNote extends Component {
               <Sidebar />
               <button
                 type="button"
-                class="btn btn-light mt-3"
+                className="btn mt-3"
+                style={{
+                  border: "1px solid black",
+                  backgroundColor: "white"
+                }}
                 data-toggle="modal"
                 data-target="#backModal"
               >

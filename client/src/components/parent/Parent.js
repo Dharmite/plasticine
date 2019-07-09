@@ -8,67 +8,96 @@ class Parent extends Component {
   render() {
     const { _id, name, email, patient } = this.props.parent;
 
-    return (
+    const show_patients = patient.slice(0, 1);
 
-      <div className="row">
-      <div className="col-md-6">
-        <div className="card card-widget widget-user-2">
-          <div className="widget-user-header bg-info">
-            <div className="widget-user-image">
-              <img
-                className="img-circle elevation-2"
-                src="../dist/img/user7-128x128.jpg"
-                alt="User Avatar"
-              />
-            </div>
-            <h3 className="widget-user-username">{name}</h3>
-            <p className="widget-user-desc"> 
-              <i className="fas fa-envelope-square"> </i> {email}
-            </p>      
-          </div>
-          <div className="card-footer bg-white">
-            <div className="row">
-              <div className="col-sm-6 border-right">
-                <div className="description-block bg-white">
-                  <Link
-                    to={`/parente/${_id}`}
-                    href="profile.html"
-                    className="btn btn bg-white"
-                    style={{ border: "1px solid" , width: "100%", height: "100%"  }}
-                  >
-                    Ver
-                  </Link>
-                </div>
+    return (
+      <div className="row mb-4">
+        <div className="col-md-6">
+          <div className="card card-widget widget-user-2">
+            <div className="widget-user-header bg-info">
+              <div className="widget-user-image">
+                <img
+                  className="img-circle elevation-2"
+                  src="../dist/img/user7-128x128.jpg"
+                  alt="User Avatar"
+                />
               </div>
-              <div className="col-sm-6">
-                <div className="description-block bg-white">
-                  <Link
-                    to={`/parente/editar/${_id}`}
-                    className="btn bg-white"
-                    style={{ border: "1px solid" , width: "100%", height: "100%"  }}
-                  >
-                    Editar
-                  </Link>
+              <h3 className="widget-user-username">
+                {" "}
+                <Link to={`/parente/${_id}`}>{name}</Link>
+              </h3>
+              <p className="widget-user-desc">
+                <i className="fas fa-envelope-square"> </i> {email}
+              </p>
+            </div>
+            <div className="card-footer bg-white">
+              <div className="row">
+                <div className="col-sm-6 border-right">
+                  <div className="description-block bg-white">
+                    <Link
+                      to={`/parente/${_id}`}
+                      href="profile.html"
+                      className="btn btn bg-white"
+                      style={{
+                        border: "1px solid",
+                        width: "100%",
+                        height: "100%"
+                      }}
+                    >
+                      Ver
+                    </Link>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="description-block bg-white">
+                    <Link
+                      to={`/parente/editar/${_id}`}
+                      className="btn bg-white"
+                      style={{
+                        border: "1px solid",
+                        width: "100%",
+                        height: "100%"
+                      }}
+                    >
+                      Editar
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="col-md-4">
-        {patient.map(user => (
-          <div className="info-box mb-3 bg-success">
-            <span className="info-box-icon">
-              <i className="fas fa-child" />
-            </span>
-            <div style={{ display: "flex" }}>
-              <div style={{ alignSelf: "center" }}>{user.name}</div>
+        <div className="col-md-4">
+          {show_patients.map(user => (
+            <div className="info-box mb-3 bg-success">
+              <span className="info-box-icon">
+                <i className="fas fa-child" />
+              </span>
+              <div style={{ display: "flex" }}>
+                <div style={{ alignSelf: "center" }}>
+                  <Link to={`/paciente/ver/${user._id}`}>{user.name}</Link>
+                </div>
+              </div>
             </div>
-
-          </div>
-        ))}
+          ))}
+          {show_patients ? (
+            patient.length > 1 ? (
+              <Link
+                to={`/parente/${_id}`}
+                href="profile.html"
+                className="btn mb-3"
+                style={{
+                  border: "1px solid black",
+                  backgroundColor: "white",
+                  width: "100%"
+                }}
+              >
+                Ver Todos
+              </Link>
+            ) : null
+          ) : null}
+        </div>
       </div>
-    </div>
 
       // <div>
       //   <Sidebar />

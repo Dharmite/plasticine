@@ -25,7 +25,7 @@ class DashboardTherapist extends Component {
           <section class="content">
             <div class="container-fluid">
               <Sidebar />
-              <h1 className="mt-3 mb-3">Dashboard {name}</h1>
+              <h1 className="mb-3">Dashboard {name}</h1>
               {patient ? patient.length > 0 ? (
                 patient.map(patient => (
                   <div className="card card-body bg-light mb-3">

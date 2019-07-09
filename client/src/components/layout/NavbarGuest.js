@@ -17,10 +17,15 @@ class NavbarGuest extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown">
-          <a className="nav-link" data-toggle="dropdown" href="#" style={{marginBottom:"20px"}}>
+          <a
+            className="nav-link"
+            data-toggle="dropdown"
+            href="#"
+            style={{ marginBottom: "20px" }}
+          >
             <span
               className="badge badge-warning navbar-badge"
-              style={{ fontSize: "15px",marginBottom:"10px"}}
+              style={{ fontSize: "15px", marginBottom: "10px" }}
             >
               {this.props.auth ? this.props.auth.user.name : null}
               <i className="fas fa-chevron-circle-down ml-2" />
@@ -32,13 +37,15 @@ class NavbarGuest extends Component {
                 <span className="dropdown-item dropdown-header">Recursos</span>
               </Link>
             ) : null}
-            <div className="dropdown-divider" />
+            {isTherapist ? <div className="dropdown-divider" /> : null}
             {isTherapist ? (
               <Link to="/recurso/adicionar" className="nav-link">
-                <span className="dropdown-item dropdown-header">Criar recurso</span>
+                <span className="dropdown-item dropdown-header">
+                  Criar recurso
+                </span>
               </Link>
             ) : null}{" "}
-            <div className="dropdown-divider" />
+            {isTherapist ? <div className="dropdown-divider" /> : null}
             {isAdmin ? (
               <Link to="/admin-dashboard" className="nav-link">
                 <span className="dropdown-item dropdown-header">Perfil</span>
@@ -56,7 +63,9 @@ class NavbarGuest extends Component {
             ) : null}
             <div className="dropdown-divider" />
             <Link to="/password" className="nav-link">
-              <span className="dropdown-item dropdown-header">Mudar password</span>
+              <span className="dropdown-item dropdown-header">
+                Mudar password
+              </span>
             </Link>
             <div className="dropdown-divider" />
             <Link

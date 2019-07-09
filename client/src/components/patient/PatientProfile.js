@@ -297,12 +297,13 @@ class PatientProfile extends Component {
                 </div>
               </div>{" "}
               {isAdmin ? (
-                <div className="col-md-8 mt-3 mb-3">
+                <div className="col-md-8 mb-3 pt-3">
                   <Link
                     to="/admin-dashboard"
-                    className="btn btn-light"
+                    className="btn"
                     style={{
-                      border: "1px solid"
+                      border: "1px solid black",
+                      backgroundColor: "white"
                     }}
                   >
                     Voltar
@@ -310,12 +311,13 @@ class PatientProfile extends Component {
                 </div>
               ) : null}
               {isTherapist ? (
-                <div className="col-md-8 mt-3 mb-3">
+                <div className="col-md-8 mb-3 pt-3">
                   <Link
                     to="/terapeuta-dashboard"
-                    className="btn btn-light"
+                    className="btn"
                     style={{
-                      border: "1px solid"
+                      border: "1px solid black",
+                      backgroundColor: "white"
                     }}
                   >
                     Voltar
@@ -323,12 +325,13 @@ class PatientProfile extends Component {
                 </div>
               ) : null}
               {isParent ? (
-                <div className="col-md-8 mt-3 mb-3">
+                <div className="col-md-8 mb-3 pt-3">
                   <Link
                     to="/parente-dashboard"
-                    className="btn btn-light"
+                    className="btn"
                     style={{
-                      border: "1px solid"
+                      border: "1px solid black",
+                      backgroundColor: "white"
                     }}
                   >
                     Voltar
@@ -379,7 +382,11 @@ class PatientProfile extends Component {
                       {isTherapist ? (
                         <div className="btn-group mb-4" role="group">
                           <Link
-                            className="btn btn-light"
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              backgroundColor: "white"
+                            }}
                             to={`/paciente/${_id}/registo/adicionar`}
                           >
                             <i className="far fa-clipboard text-info mr-1" />{" "}
@@ -682,7 +689,8 @@ class PatientProfile extends Component {
                         <div className="btn-group mb-4" role="group">
                           <Link
                             to={`/paciente/${_id}/medicamento/adicionar`}
-                            className="btn btn-light"
+                            className="btn"
+                            style={{border: "1px solid black", backgroundColor:"white"}}
                           >
                             <i className="far fa-clipboard text-info mr-1" />{" "}
                             Adicionar medicamento
