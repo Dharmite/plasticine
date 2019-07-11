@@ -71,61 +71,93 @@ class Resource extends Component {
             </div>
           </div>
         </div>
-        <div class="card card-body bg-light mb-3">
-          <div class="row">
-            <div class="col-2">
-              <img
-                class="rounded-circle"
-                style={{ width: "100%" }}
-                src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                alt=""
-              />
-            </div>
-            <div class="col-lg-6 col-md-12 col-12">
-              {title ? <h1 style={{ marginBottom: "16px" }}>{title}</h1> : null}
-              {user ? (
-                <p style={{ marginBottom: "16px" }}>{user.name}</p>
-              ) : null}
-              {subCategory ? (
-                <p style={{ marginBottom: "16px" }}>{subCategory}</p>
-              ) : null}
+        <div class="card">
+          <div class="card-body">
+            {title ? (
+              <h1 class="card-title mb-3" style={{ fontSize: "32px" }}>
+                {title}
+              </h1>
+            ) : null}
 
-              {this.props.resource ? (
-                <button
-                  className="btn btn-light"
-                  style={{ border: "1px solid black" }}
-                >
-                  <Link to={`/recurso/${_id}`}>Detalhes</Link>
-                </button>
-              ) : null}
+            <div>
+              <div class="row">
+                <div class="col-2-lg">
+                  <img
+                    class="profile-user-img img-responsive img-circle"
+                    src="../../dist/img/user4-128x128.jpg"
+                    alt="User profile picture"
+                  />
+                  {user ? <p className="text-muted mt-2">{user.name}</p> : null}
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                  {category ? (
+                    <h4 style={{ marginBottom: "16px" }}>{category}</h4>
+                  ) : null}
+                  {subCategory ? (
+                    <h6 style={{ marginBottom: "16px" }}>{subCategory}</h6>
+                  ) : null}
+                  {observation ? (
+                    <p style={{ marginBottom: "16px" }}>{observation}</p>
+                  ) : null}
+                </div>
+              </div>
 
-              {user ? (
-                this.props.auth ? (
-                  this.props.auth.user.id == user._id ? (
-                    <button
-                      className="btn btn-light"
-                      style={{ border: "1px solid black" }}
-                    >
-                      <Link to={`/recurso/editar/${_id}`}>Editar</Link>
-                    </button>
+              <div className="row mt-3">
+                {this.props.resource ? (
+                  <button
+                    className="btn"
+                    style={{
+                      border: "1px solid black",
+                      backgroundColor: "white"
+                    }}
+                  >
+                    <Link style={{ color: "black" }} to={`/recurso/${_id}`}>
+                      Detalhes
+                    </Link>
+                  </button>
+                ) : null}
+
+                <div>
+                  {user ? (
+                    this.props.auth ? (
+                      this.props.auth.user.id == user._id ? (
+                        <button
+                          className="btn ml-3"
+                          style={{
+                            border: "1px solid black",
+                            backgroundColor: "white"
+                          }}
+                        >
+                          <Link
+                            style={{ color: "black" }}
+                            to={`/recurso/editar/${_id}`}
+                          >
+                            Editar
+                          </Link>
+                        </button>
+                      ) : null
+                    ) : null
+                  ) : null}
+                </div>
+                {user ? (
+                  this.props.auth ? (
+                    this.props.auth.user.id == user._id ? (
+                      <button
+                        className="btn ml-3"
+                        style={{ color: "black" }}
+                        data-toggle="modal"
+                        data-target="#removeResourceModal"
+                        style={{
+                          border: "1px solid black",
+                          backgroundColor: "white"
+                        }}
+                      >
+                        Apagar
+                      </button>
+                    ) : null
                   ) : null
-                ) : null
-              ) : null}
-
-              {user ? (
-                this.props.auth ? (
-                  this.props.auth.user.id == user._id ? (
-                    <button
-                      className="btn btn-light"
-                      data-toggle="modal"
-                      data-target="#removeResourceModal"
-                      style={{ border: "1px solid black" }}
-                    >
-                      Apagar
-                    </button>
-                  ) : null
-                ) : null
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

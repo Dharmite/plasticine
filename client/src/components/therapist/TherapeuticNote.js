@@ -68,33 +68,58 @@ class TherapeuticNote extends Component {
             </div>
           </div>
         </div>
-
-        <div className="card card-body bg-light mb-3">
-          <div className="row">
+        <div className="row">
+          <div className="card card-body bg-light mb-3">
             <div className="col-lg-6 col-md-12 col-12">
               <h3>{title}</h3>
               <p>
                 <b>Observação:</b> {observation}
               </p>
               <p>{date.slice(0, 10)}</p>
-              <Link to={`/paciente/${patient}/registo/${_id}`}>Detalhes</Link>
-              <Link to={`/paciente/${patient}/registo/${_id}/editar`}>
-                Editar
-              </Link>
-              {user ? (
-                this.props.auth ? (
-                  this.props.auth.user.id == user._id ? (
-                    <button
-                      className="btn btn-light"
-                      data-toggle="modal"
-                      data-target="#removeResourceModal"
+            </div>
+            <div className="card-footer" style={{ backgroundColor: "#f8f9fa" }}>
+              <div className="row">
+                <div className="col-lg-4 col-md-4 col-lg-4 col-md-4 col-sm-4">
+                  <div className="description-block">
+                    <Link
+                      className="btn"
                       style={{ border: "1px solid black" }}
+                      to={`/paciente/${patient}/registo/${_id}`}
                     >
-                      Apagar
-                    </button>
-                  ) : null
-                ) : null
-              ) : null}
+                      Detalhes
+                    </Link>
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-4 col-sm-4">
+                  <div className="description-block ">
+                    <Link
+                      className="btn"
+                      style={{ border: "1px solid black" }}
+                      to={`/paciente/${patient}/registo/${_id}/editar`}
+                    >
+                      Editar
+                    </Link>
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-4 col-sm-4">
+                  <div className="description-block">
+                    {user ? (
+                      this.props.auth ? (
+                        this.props.auth.user.id == user._id ? (
+                          <button
+                            className="btn"
+                            data-toggle="modal"
+                            data-target="#removeResourceModal"
+                            style={{ border: "1px solid black" }}
+                          >
+                            Apagar
+                          </button>
+                        ) : null
+                      ) : null
+                    ) : null}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

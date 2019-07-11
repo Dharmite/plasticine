@@ -19,7 +19,8 @@ import {
   ADD_EMOCIONAL_SOCIAL,
   ADD_AVD,
   ADD_COMMENT,
-  GET_COMMENTS
+  GET_COMMENTS,
+  LOADED
 } from "../actions/types";
 
 const initialState = {
@@ -32,11 +33,17 @@ const initialState = {
   emocional_social: [],
   avd: [],
   resource: {},
-  comments: []
+  comments: [],
+  loaded: 0
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case LOADED:
+      return {
+        ...state,
+        loaded: action.payload
+      };
     case GET_RESOURCES:
       return {
         ...state,

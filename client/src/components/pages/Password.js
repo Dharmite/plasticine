@@ -65,7 +65,7 @@ class Password extends Component {
                       </h1>
                       {this.props.auth ? (
                         <p className="lead text-center">
-                          {this.props.auth.user.email}
+                          <i className="fas fa-envelope-square"> </i> {this.props.auth.user.email}
                         </p>
                       ) : null}
                       <form noValidate onSubmit={this.onSubmit}>

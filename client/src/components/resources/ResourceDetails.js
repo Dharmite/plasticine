@@ -11,6 +11,8 @@ import {
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import user_img from "../../img/user1.jpg";
+
 
 class ResourceDetails extends Component {
   state = {
@@ -102,29 +104,43 @@ class ResourceDetails extends Component {
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                 class="card-img-top"
+                data-toggle="modal"
+                data-target="#zoomImageModal"
+                onClick={this.getFileName.bind(this, file.filename)}
+                style={{ cursor: "pointer" }}
               />
-              <div className="card-body">
-                <button
-                  className="btn btn-light mt-3"
-                  style={{ border: "1px solid black" }}
-                  onClick={this.downloadFile.bind(
-                    this,
-                    file.filename,
-                    file.originalname
-                  )}
-                >
-                  Download {file.originalname}{" "}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-light mt-3"
-                  style={{ border: "1px solid black" }}
-                  data-toggle="modal"
-                  data-target="#zoomImageModal"
-                  onClick={this.getFileName.bind(this, file.filename)}
-                >
-                  Ver imagem
-                </button>
+              <div className="card-footer bg-white">
+                <div className="row">
+                  <div className="col-sm-6 border-right">
+                    <div className="description-block bg-white">
+                      <button
+                        type="button"
+                        className="btn btn-light mt-3"
+                        style={{ border: "1px solid black" }}
+                        data-toggle="modal"
+                        data-target="#zoomImageModal"
+                        onClick={this.getFileName.bind(this, file.filename)}
+                      >
+                        Ver imagem
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="description-block bg-white">
+                      <button
+                        className="btn btn-light mt-3"
+                        style={{ border: "1px solid black" }}
+                        onClick={this.downloadFile.bind(
+                          this,
+                          file.filename,
+                          file.originalname
+                        )}
+                      >
+                        Download
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : null
@@ -158,17 +174,21 @@ class ResourceDetails extends Component {
                   Your browser does not support the audio element.
                 </audio>
               </p>
-              <button
-                className="btn btn-light"
-                style={{ border: "1px solid black" }}
-                onClick={this.downloadFile.bind(
-                  this,
-                  file.filename,
-                  file.originalname
-                )}
-              >
-                Download {file.originalname}{" "}
-              </button>
+              <p>
+                {" "}
+                {file.originalname}{" "}
+                <button
+                  className="btn btn-light"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download
+                </button>
+              </p>
             </div>
           ) : null
         )
@@ -188,17 +208,20 @@ class ResourceDetails extends Component {
           file.fileType == "application/pdf" ||
           file.fileType == "application/msword" ? (
             <div className="col-md-12 mt-3">
-              <button
-                className="btn btn-light"
-                style={{ border: "1px solid black" }}
-                onClick={this.downloadFile.bind(
-                  this,
-                  file.filename,
-                  file.originalname
-                )}
-              >
-                Download {file.originalname}{" "}
-              </button>
+              <p>
+                {file.originalname}{" "}
+                <button
+                  className="btn btn-light"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.downloadFile.bind(
+                    this,
+                    file.filename,
+                    file.originalname
+                  )}
+                >
+                  Download
+                </button>
+              </p>
             </div>
           ) : null
         )
@@ -241,7 +264,7 @@ class ResourceDetails extends Component {
                   file.originalname
                 )}
               >
-                Download {file.originalname}{" "}
+                Download
               </button>
             </div>
           ) : null
@@ -281,7 +304,7 @@ class ResourceDetails extends Component {
                         class="btn btn-secondary"
                         data-dismiss="modal"
                       >
-                        Close
+                        Fechar
                       </button>
                     </div>
                   </div>
@@ -389,45 +412,26 @@ class ResourceDetails extends Component {
 
               {feedback
                 ? feedback.map(elem => (
-                    <div className="card card-body mb-3">
-                      <div className="row">
-                        <div class="col-md-2">
-                          <a href="profile.html">
-                            <img
-                              class="rounded-circle d-none d-md-block"
-                              src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                              alt=""
-                              style={{ width: "100%" }}
-                            />
-                          </a>
-                          <br />
-
+                    <div
+                      className="card-footer card-comments mt-5 mb-5"
+                      style={{ backgroundColor: "#f4f6f9" }}
+                    >
+                      <div className="card-comment">
+                        <img
+                          className="img-circle img-sm"
+                          src={user_img}
+                          alt="User Image"
+                        />
+                        <div className="comment-text">
                           {elem.user.name ? (
-                            <p class="text-center">{this.props.user.name}</p>
-                          ) : null}
-                          {elem.date ? (
-                            <p className="text-center">
-                              <small class="text-muted">
+                            <span className="username">
+                              {this.props.user.name}
+                              <span className="text-muted float-right">
                                 {elem.date.slice(0, 10)}
-                              </small>
-                            </p>
+                              </span>
+                            </span>
                           ) : null}
-                        </div>
-                        <div className="col-md-10">
-                          <p className="lead">{elem.observation}</p>
-                          {/* {comment.user === auth.user.id ? (
-                      <button
-                        onClick={this.onDeleteClick.bind(
-                          this,
-                          postId,
-                          comment._id
-                        )}
-                        type="button"
-                        className="btn btn-danger mr-1"
-                      >
-                        <i className="fas fa-times" />
-                      </button>
-                    ) : null} */}
+                          {elem.observation}{" "}
                         </div>
                       </div>
                     </div>

@@ -14,7 +14,9 @@ class ParentProfile extends Component {
   }
 
   render() {
-    const { name, email, notes } = this.props.parent;
+    const { name, email, notes, patient } = this.props.parent;
+
+    console.log(patient, "patient");
 
     let userType;
 
@@ -47,42 +49,100 @@ class ParentProfile extends Component {
                     Voltar
                   </Link>{" "}
                 </div>
+              </div>
 
-                <div className="col-md-12">
-                  <div className="card card-body bg-info text-white mb-3">
-                    <div className="row">
-                      <div className="col-4 col-md-3 m-auto">
-                        <img
-                          className="rounded-circle"
-                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                          alt=""
-                        />
+              <div class="container row mb-2">
+                <div class="col-sm-6">
+                  <h1>Perfil</h1>
+                </div>
+              </div>
+
+              <section class="content">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                          <div class="text-center">
+                            <img
+                              class="profile-user-img img-responsive img-circle"
+                              src="../../dist/img/user4-128x128.jpg"
+                              alt="User profile picture"
+                            />
+                          </div>
+
+                          <h3 class="profile-username text-center">{name}</h3>
+                          <p class="text-muted text-center">
+                            {email ? (
+                              <i className="fas fa-envelope-square"> </i>
+                            ) : null}{" "}
+                            {email}
+                          </p>
+
+                          <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                              <b>Notas</b>{" "}
+                              <a class="float-right">
+                                {notes ? notes.length : null}
+                              </a>
+                            </li>
+                            <li class="list-group-item">
+                              <b>Crianças</b>{" "}
+                              <a class="float-right">
+                                {patient ? patient.length : null}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-center">
-                      <h1 className="display-4 text-center">{name}</h1>
-                      <p className="lead text-center">{email}</p>
+                    <div class="col-md-6">
+                      {notes ? (
+                        notes.length > 0 ? (
+                          notes.map(note => (
+                            <TherapeuticNote
+                              key={note._id}
+                              TherapeuticNote={note}
+                            />
+                          ))
+                        ) : (
+                          <h3 className="text-center">
+                            Sem notas para mostrar
+                          </h3>
+                        )
+                      ) : null}
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                          <h3 class="profile-username text-center">Crianças</h3>
+
+                          <ul class="list-group list-group-unbordered mb-3">
+                            {patient ? (
+                              patient.length > 0 ? (
+                                patient.map(user => (
+                                  <li class="list-group-item">
+                                    <b>
+                                      <Link
+                                        style={{ color: "black" }}
+                                        to={`/paciente/ver/${user._id}`}
+                                      >
+                                        {user.name}
+                                      </Link>
+                                    </b>{" "}
+                                  </li>
+                                ))
+                              ) : (
+                                <p>Sem pacientes</p>
+                              )
+                            ) : null}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <h1 className="display-6">Notas</h1>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  {notes
-                    ? notes.map(note => (
-                        <TherapeuticNote
-                          key={note._id}
-                          TherapeuticNote={note}
-                        />
-                      ))
-                    : null}
-                </div>
-              </div>
+              </section>
             </div>
           </section>
         </div>

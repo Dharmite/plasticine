@@ -235,10 +235,19 @@ class DashboardResources extends Component {
                       {percepcao_resources ? (
                         percepcao_resources.length > 0 ? (
                           <button
-                            className="btn btn-light"
-                            style={{ border: "1px solid black" }}
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
                           >
-                            <Link to={`/recursos/percepcao`}>Ver todos</Link>
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/percepcao`}
+                            >
+                              Ver todos
+                            </Link>
                           </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
@@ -258,7 +267,21 @@ class DashboardResources extends Component {
                         : null}
                       {motricidade_resources ? (
                         motricidade_resources.length > 0 ? (
-                          <Link to={`/recursos/motricidade`}>Ver todos</Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/motricidade`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )
@@ -277,7 +300,21 @@ class DashboardResources extends Component {
                         : null}
                       {desenvolvimento_verbal_resources ? (
                         desenvolvimento_verbal_resources.length > 0 ? (
-                          <Link to={`/recursos/d.verbal`}>Ver todos</Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/d.verbal`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )
@@ -296,7 +333,21 @@ class DashboardResources extends Component {
                         : null}
                       {memoria_resources ? (
                         memoria_resources.length > 0 ? (
-                          <Link to={`/recursos/memoria`}>Ver todos</Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/memoria`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )
@@ -315,7 +366,21 @@ class DashboardResources extends Component {
                         : null}
                       {areas_numericas_resources ? (
                         areas_numericas_resources.length > 0 ? (
-                          <Link to={`/recursos/a.numericas`}>Ver todos</Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/a.numericas`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )
@@ -334,9 +399,21 @@ class DashboardResources extends Component {
                         : null}
                       {emocional_social_resources ? (
                         emocional_social_resources.length > 0 ? (
-                          <Link to={`/recursos/d.emocional-social`}>
-                            Ver todos
-                          </Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/d.emocional-social`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )
@@ -355,7 +432,21 @@ class DashboardResources extends Component {
                         : null}
                       {avd_resources ? (
                         avd_resources.length > 0 ? (
-                          <Link to={`/recursos/avd`}>Ver todos</Link>
+                          <button
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              color: "black",
+                              marginBottom: "50px"
+                            }}
+                          >
+                            <Link
+                              style={{ color: "black" }}
+                              to={`/recursos/avd`}
+                            >
+                              Ver todos
+                            </Link>
+                          </button>
                         ) : (
                           <h6 className="mt-4">Sem recursos desta área</h6>
                         )

@@ -5,6 +5,7 @@ import { withRouter, Link } from "react-router-dom";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 import { getTherapist } from "../../actions/therapistActions";
+import Patient from "../patient/Patient";
 
 
 class DashboardTherapist extends Component {
@@ -14,10 +15,20 @@ class DashboardTherapist extends Component {
   }
 
   render() {
-    const { name } = this.props.user;
     const { patient } = this.props.therapist;
-    console.log(patient);
-
+    let patientContent;
+    if(patient){
+      patientContent =
+      patient.length > 0 ? (
+        patient.map(patient => (
+          <Patient key={patient.id} patient={patient} />
+        ))
+      ) : (
+        <h6 className="mt-4">Nenhum paciente disponível</h6>
+      );
+    }
+      
+    
     return (
       <div>
         <Navbar />
@@ -25,8 +36,45 @@ class DashboardTherapist extends Component {
           <section class="content">
             <div class="container-fluid">
               <Sidebar />
-              <h1 className="mb-3">Dashboard {name}</h1>
-              {patient ? patient.length > 0 ? (
+
+
+              <div className="row">
+                    <div className="col-md-12">
+                      <h1 className="display-4">Perfil de terapeuta</h1>
+                      <p className="lead text-muted">
+                        Bem vindo {this.props.user.name}
+                      </p>
+                    </div>
+                </div>
+
+                  <div className="row">
+
+                    <div
+                      className="col-12 col-sm-6 col-md-3"
+                    >
+                      <div
+                        className="info-box mb-3"
+                      >
+                        <span className="info-box-icon bg-success elevation-1">
+                          <i class="fas fa-child" />{" "}
+                        </span>
+                        <div className="info-box-content">
+                          <span className="info-box-text">Pacientes</span>
+                          <span className="info-box-number">
+                            {patient ? patient.length : null}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="clearfix hidden-md-up" />
+   
+                  </div>
+                  <hr />
+
+                  {patient ? patientContent : null}
+
+
+              {/* {patient ? patient.length > 0 ? (
                 patient.map(patient => (
                   <div className="card card-body bg-light mb-3">
                     <div className="row">
@@ -81,7 +129,7 @@ class DashboardTherapist extends Component {
                 ))
               ) : (
                 <p>Sem pacientes</p>
-              ): null}
+              ): null} */}
             </div>
           </section>
         </div>

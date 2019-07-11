@@ -21,7 +21,8 @@ import {
   ADD_COMMENT,
   GET_COMMENTS,
   GET_ERRORS,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  LOADED
 } from "./types";
 
 import axios from "axios";
@@ -43,7 +44,15 @@ export const getResource = id => async dispatch => {
 };
 
 export const addResource = (newResource, history) => async dispatch => {
-  const res = await axios.post("/api/resource/new", newResource);
+  const res = await axios.post("/api/resource/new", newResource, {
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded);
+      dispatch({
+        type:LOADED,
+        payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
+      });
+    }
+  });
 
   if (newResource.category == "Percepção") {
     dispatch({
@@ -85,6 +94,10 @@ export const addResource = (newResource, history) => async dispatch => {
   dispatch({
     type: ADD_RESOURCE,
     payload: res.data
+  });
+  dispatch({
+    type:LOADED,
+    payload: 0
   });
   history.push("/recursos");
 };

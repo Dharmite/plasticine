@@ -180,6 +180,13 @@ router.get(
       .populate("resources")
       .populate("therapeuticnote")
       .populate({
+        path: "resources",
+        populate: {
+          path: "user",
+          model: "base"
+        }
+      })
+      .populate({
         path: "patient",
         populate: {
           path: "therapeuticNote",
@@ -260,6 +267,14 @@ router.get(
   (req, res) => {
     Parent.findById(req.params.parent_id)
       .populate("notes")
+      // .populate({
+      //   path: "patient",
+      //   populate: {
+      //     path: "therapist",
+      //     model: "base"
+      //   }
+      // })
+      .populate("patient")
       .then(parent => {
         if (!parent) {
           res.status(404).json({ error: "Não há nenhum parente com esse id" });

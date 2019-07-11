@@ -23,6 +23,7 @@ import { getParents } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import user_img from "../../img/user1.jpg";
 
 class PatientProfile extends Component {
   state = {
@@ -168,6 +169,8 @@ class PatientProfile extends Component {
       therapeuticNote
     } = this.props.patient;
 
+    console.log(therapeuticNote, "notas")
+
     const { therapists } = this.props;
     const { parents } = this.props;
     const { errors } = this.state;
@@ -191,588 +194,807 @@ class PatientProfile extends Component {
       });
     }
 
-    return (
-      <div>
-        <Navbar />
-        <div class="content-wrapper">
-          <section class="content">
-            <div class="container-fluid">
-              <Sidebar />
-              <div
-                className="modal fade"
-                id="removeTherapistModal"
-                tabIndex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Atenção!
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Deseja mesmo remover este utilizador?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Cancelar
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        data-dismiss="modal"
-                        onClick={this.removeTherapist.bind(
-                          this,
-                          this.state.user_id
-                        )}
-                      >
-                        Confirmar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>{" "}
-              <div
-                className="modal fade"
-                id="removeParentModal"
-                tabIndex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Atenção!
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Deseja mesmo remover este utilizador?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Cancelar
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        data-dismiss="modal"
-                        onClick={this.removeParent.bind(
-                          this,
-                          this.state.user_id
-                        )}
-                      >
-                        Confirmar
-                      </button>
+    console.log(isAdmin, "isAdmin");
+
+    let therapist_auth = false;
+    let parent_auth = false;
+
+    if (this.props.auth) {
+      if (this.props.auth.user.userType == "therapist") {
+        patientTherapists.forEach(element => {
+          if (element._id == this.props.auth.user.id) {
+            therapist_auth = true;
+          }
+        });
+      }
+
+      if (this.props.auth.user.userType == "parent") {
+        patientParents.forEach(element => {
+          if (element._id == this.props.auth.user.id) {
+            parent_auth = true;
+          }
+        });
+      }
+    }
+
+    if (
+      therapist_auth ||
+      parent_auth ||
+      this.props.auth.user.userType == "admin"
+    ) {
+      return (
+        <div>
+          <Navbar />
+          <div class="content-wrapper">
+            <section class="content">
+              <div class="container-fluid">
+                <Sidebar />
+                <div
+                  className="modal fade"
+                  id="removeTherapistModal"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          Atenção!
+                        </h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        Deseja mesmo remover este utilizador?
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          data-dismiss="modal"
+                          onClick={this.removeTherapist.bind(
+                            this,
+                            this.state.user_id
+                          )}
+                        >
+                          Confirmar
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>{" "}
-              {isAdmin ? (
-                <div className="col-md-8 mb-3 pt-3">
-                  <Link
-                    to="/admin-dashboard"
-                    className="btn"
-                    style={{
-                      border: "1px solid black",
-                      backgroundColor: "white"
-                    }}
-                  >
-                    Voltar
-                  </Link>
-                </div>
-              ) : null}
-              {isTherapist ? (
-                <div className="col-md-8 mb-3 pt-3">
-                  <Link
-                    to="/terapeuta-dashboard"
-                    className="btn"
-                    style={{
-                      border: "1px solid black",
-                      backgroundColor: "white"
-                    }}
-                  >
-                    Voltar
-                  </Link>
-                </div>
-              ) : null}
-              {isParent ? (
-                <div className="col-md-8 mb-3 pt-3">
-                  <Link
-                    to="/parente-dashboard"
-                    className="btn"
-                    style={{
-                      border: "1px solid black",
-                      backgroundColor: "white"
-                    }}
-                  >
-                    Voltar
-                  </Link>
-                </div>
-              ) : null}
-              <div className="profile">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div className="card card-body bg-info text-white mb-3">
-                            <div className="row">
-                              <div className="col-4 col-md-3 m-auto">
-                                <img
-                                  className="rounded-circle"
-                                  src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                                  alt=""
-                                />
+                </div>{" "}
+                <div
+                  className="modal fade"
+                  id="removeParentModal"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          Atenção!
+                        </h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        Deseja mesmo remover este utilizador?
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          data-dismiss="modal"
+                          onClick={this.removeParent.bind(
+                            this,
+                            this.state.user_id
+                          )}
+                        >
+                          Confirmar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>{" "}
+                {isAdmin ? (
+                  <div className="col-md-8 mb-3 pt-3">
+                    <Link
+                      to="/admin-dashboard"
+                      className="btn"
+                      style={{
+                        border: "1px solid black",
+                        backgroundColor: "white"
+                      }}
+                    >
+                      Voltar
+                    </Link>
+                  </div>
+                ) : null}
+                {isTherapist ? (
+                  <div className="col-md-8 mb-3 pt-3">
+                    <Link
+                      to="/terapeuta-dashboard"
+                      className="btn"
+                      style={{
+                        border: "1px solid black",
+                        backgroundColor: "white"
+                      }}
+                    >
+                      Voltar
+                    </Link>
+                  </div>
+                ) : null}
+                {isParent ? (
+                  <div className="col-md-8 mb-3 pt-3">
+                    <Link
+                      to="/parente-dashboard"
+                      className="btn"
+                      style={{
+                        border: "1px solid black",
+                        backgroundColor: "white"
+                      }}
+                    >
+                      Voltar
+                    </Link>
+                  </div>
+                ) : null}
+                <div className="profile">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="card card-body bg-info text-white mb-3">
+                              <div className="row">
+                                <div className="col-4 col-md-3 m-auto">
+                                  <img
+                                    className="rounded-circle"
+                                    src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                              <div className="text-center">
+                                {name ? (
+                                  <h1 className="display-4 text-center">
+                                    {name}
+                                  </h1>
+                                ) : null}
+                                {age ? (
+                                  <p className="lead text-center">
+                                    Idade: {age}
+                                  </p>
+                                ) : null}
+                                {schoolName ? <p>{schoolName}</p> : null}
                               </div>
                             </div>
-                            <div className="text-center">
-                              {name ? (
-                                <h1 className="display-4 text-center">
-                                  {name}
-                                </h1>
-                              ) : null}
-                              {age ? (
-                                <p className="lead text-center">Idade: {age}</p>
-                              ) : null}
-                              {schoolName ? <p>{schoolName}</p> : null}
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="card card-body bg-light mb-3">
+                              <h3 className="text-center text-info">
+                                Estado clinico de {name}
+                              </h3>
+                              <p className="lead">{clinicalStatus}</p>
                             </div>
                           </div>
                         </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div className="card card-body bg-light mb-3">
-                            <h3 className="text-center text-info">
-                              Estado clinico de {name}
-                            </h3>
-                            <p className="lead">{clinicalStatus}</p>
-                          </div>
-                        </div>
-                      </div>
-                      {isTherapist ? (
-                        <div className="btn-group mb-4" role="group">
-                          <Link
-                            className="btn"
-                            style={{
-                              border: "1px solid black",
-                              backgroundColor: "white"
-                            }}
-                            to={`/paciente/${_id}/registo/adicionar`}
-                          >
-                            <i className="far fa-clipboard text-info mr-1" />{" "}
-                            Criar registo
-                          </Link>
-                        </div>
-                      ) : null}
-
-                      {isTherapist || isParent ? (
-                        <div className="mb-5">
-                          <ul
-                            className="nav nav-tabs"
-                            id="myTab"
-                            role="tablist"
-                          >
-                            <li className="nav-item">
-                              <a
-                                className="nav-link active"
-                                id="mynotes-tab"
-                                data-toggle="tab"
-                                href="#mynotes"
-                                role="tab"
-                                aria-controls="mynotes"
-                                aria-selected="true"
-                              >
-                                Minhas notas
-                              </a>
-                            </li>
-                            <li className="nav-item">
-                              <a
-                                className="nav-link"
-                                id="availableTo-tab"
-                                data-toggle="tab"
-                                href="#availableTo"
-                                role="tab"
-                                aria-controls="availableTo"
-                                aria-selected="false"
-                              >
-                                Partilhado comigo
-                              </a>
-                            </li>
-                          </ul>
-
-                          <div className="tab-content" id="myTabContent">
-                            <div
-                              className="tab-pane fade show active"
-                              id="mynotes"
-                              role="tabpanel"
-                              aria-labelledby="mynotes-tab"
+                        {isTherapist ? (
+                          <div className="btn-group mb-4" role="group">
+                            <Link
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
+                              to={`/paciente/${_id}/registo/adicionar`}
                             >
-                              {therapeuticNote ? (
-                                therapeuticNote.length > 0 ? (
-                                  therapeuticNote.map(note =>
-                                    note.user._id == this.props.auth.user.id ? (
-                                      <TherapeuticNote
-                                        key={note.id}
-                                        TherapeuticNote={note}
-                                      />
-                                    ) : null
-                                  )
-                                ) : (
-                                  <p className="mt-4">Sem notas disponíveis</p>
-                                )
-                              ) : null}
+                              <i className="far fa-clipboard text-info mr-1" />{" "}
+                              Criar registo
+                            </Link>
+                          </div>
+                        ) : null}
+
+                        <div className="row">
+                          <div className="col-lg-4 col-md-4 col-sm-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <h3 class="card-title">Parentes</h3>
+                              </div>
+
+                              {/* /.card-header */}
+                              <div className="card-body p-0">
+                                <ul className="products-list product-list-in-card pl-2 pr-2">
+                                  {patientParents.length > 0 ? (
+                                    patientParents.map(elem => (
+                                      <li className="item">
+                                        <div className="product-img">
+                                          <img
+                                            src={user_img}
+                                            alt="Product Image"
+                                            className="img-size-50"
+                                          />
+                                        </div>
+                                        <div className="product-info">
+                                          <a
+                                            href="javascript:void(0)"
+                                            className="product-title"
+                                          >
+                                            {elem.name}
+                                            <span class="badge float-right">
+                                              {" "}
+                                              {isAdmin ? (
+                                                <i
+                                                  onClick={this.onRemoveUserClick.bind(
+                                                    this,
+                                                    elem._id
+                                                  )}
+                                                  className="fas fa-times"
+                                                  data-toggle="modal"
+                                                  data-target="#removeParentModal"
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    float: "right",
+                                                    color: "red"
+                                                  }}
+                                                />
+                                              ) : null}
+                                            </span>
+                                          </a>
+
+                                          <span className="product-description">
+                                            <b>Email: </b>
+                                            {elem.email}
+                                          </span>
+                                        </div>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <p> Sem parentes associados </p>
+                                  )}
+                                </ul>
+                              </div>
                             </div>
-                            <div
-                              className="tab-pane fade"
-                              id="availableTo"
-                              role="tabpanel"
-                              aria-labelledby="availableTo-tab"
-                            >
-                              {therapeuticNote ? (
-                                shared == true ? (
-                                  therapeuticNote.map(note =>
-                                    note.availableTo.map(elem =>
-                                      elem == this.props.auth.user.id &&
-                                      note.user._id !==
-                                        this.props.auth.user.id ? (
-                                        <TherapeuticNote
-                                          key={note.id}
-                                          TherapeuticNote={note}
-                                        />
-                                      ) : null
-                                    )
-                                  )
-                                ) : (
-                                  <p className="mt-4">Sem notas disponíveis</p>
-                                )
-                              ) : null}
+                          </div>
+                          <div className="col-lg-4 col-md-6 col-sm-12">
+                            {isTherapist || isParent || isAdmin ? (
+                              <div className="mb-5">
+                                <ul
+                                  className="nav nav-tabs"
+                                  id="myTab"
+                                  role="tablist"
+                                >
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link active"
+                                      id="mynotes-tab"
+                                      data-toggle="tab"
+                                      href="#mynotes"
+                                      role="tab"
+                                      aria-controls="mynotes"
+                                      aria-selected="true"
+                                    >
+                                      Minhas notas
+                                    </a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      id="availableTo-tab"
+                                      data-toggle="tab"
+                                      href="#availableTo"
+                                      role="tab"
+                                      aria-controls="availableTo"
+                                      aria-selected="false"
+                                    >
+                                      Partilhado comigo
+                                    </a>
+                                  </li>
+                                </ul>
+
+                                <div className="tab-content" id="myTabContent">
+                                  <div
+                                    className="tab-pane fade show active"
+                                    id="mynotes"
+                                    role="tabpanel"
+                                    aria-labelledby="mynotes-tab"
+                                  >
+                                    {therapeuticNote ? (
+                                      therapeuticNote.length > 0 ? (
+                                        therapeuticNote.map(note =>
+                                          note.user._id ==
+                                          this.props.auth.user.id ? (
+                                            <TherapeuticNote
+                                              key={note.id}
+                                              TherapeuticNote={note}
+                                            />
+                                          ) : null
+                                        )
+                                      ) : (
+                                        <p className="mt-4">
+                                          Sem notas disponíveis
+                                        </p>
+                                      )
+                                    ) : null}
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="availableTo"
+                                    role="tabpanel"
+                                    aria-labelledby="availableTo-tab"
+                                  >
+                                    {therapeuticNote ? (
+                                      shared == true ? (
+                                        therapeuticNote.map(note =>
+                                          note.availableTo.map(elem =>
+                                            elem == this.props.auth.user.id &&
+                                            note.user._id !==
+                                              this.props.auth.user.id ? (
+                                              <TherapeuticNote
+                                                key={note.id}
+                                                TherapeuticNote={note}
+                                              />
+                                            ) : null
+                                          )
+                                        )
+                                      ) : (
+                                        <p className="mt-4">
+                                          Sem notas disponíveis
+                                        </p>
+                                      )
+                                    ) : null}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="col-lg-4 col-md-4 col-sm-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <h3 class="card-title">Terapeutas</h3>
+                              </div>
+
+                              {/* /.card-header */}
+                              <div className="card-body p-0">
+                                <ul className="products-list product-list-in-card pl-2 pr-2">
+                                  {patientTherapists.length > 0 ? (
+                                    patientTherapists.map(elem => (
+                                      <li className="item">
+                                        <div className="product-img">
+                                          <img
+                                            src={user_img}
+                                            alt="Product Image"
+                                            className="img-size-50"
+                                          />
+                                        </div>
+                                        <div className="product-info">
+                                          <a
+                                            href="javascript:void(0)"
+                                            className="product-title"
+                                          >
+                                            {elem.name}
+                                            <span class="badge float-right">
+                                              {" "}
+                                              {isAdmin ? (
+                                                <i
+                                                  onClick={this.onRemoveUserClick.bind(
+                                                    this,
+                                                    elem._id
+                                                  )}
+                                                  className="fas fa-times"
+                                                  data-toggle="modal"
+                                                  data-target="#removeParentModal"
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    float: "right",
+                                                    color: "red"
+                                                  }}
+                                                />
+                                              ) : null}
+                                            </span>
+                                          </a>
+
+                                          <span className="product-description">
+                                            <b>Email: </b>
+                                            {elem.email}
+                                          </span>
+                                          <span className="product-description">
+                                            <b>Especialidade: </b>
+                                            {elem.specialty}
+                                          </span>
+
+                                        </div>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <p> Sem parentes associados </p>
+                                  )}
+                                </ul>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      ) : null}
 
-                      {isAdmin ? (
-                        <div
-                          className="btn-group mb-4"
-                          role="group"
-                          id="associateUser"
-                        >
-                          <a
-                            className="btn btn-light"
-                            style={{ border: "1px solid black" }}
-                            onClick={() =>
-                              this.setState({
-                                showTherapists: true,
-                                showParents: false
-                              })
-                            }
-                          >
-                            <i className="fas fa-user-circle text-info mr-1" />{" "}
-                            Associar Terapeuta
-                          </a>
-
-                          <a
-                            className="btn btn-light"
-                            style={{ border: "1px solid black" }}
-                            onClick={() =>
-                              this.setState({
-                                showParents: true,
-                                showTherapists: false
-                              })
-                            }
-                          >
-                            <i className="fas fa-user-circle text-info mr-1" />{" "}
-                            Associar Parente
-                          </a>
-                        </div>
-                      ) : null}
-
-                      {showTherapists && isAdmin ? (
-                        <form
-                          className="form-inline mb-3"
-                          onSubmit={this.onSubmitTherapist}
-                        >
+                        {isAdmin ? (
                           <div
-                            className="form-group mb-2 mr-3"
-                            style={{ marginRight: "5px" }}
+                            className="btn-group mb-4"
+                            role="group"
+                            id="associateUser"
                           >
-                            <label
-                              htmlFor="exampleFormControlSelect1"
+                            <a
+                              className="btn btn-light"
+                              style={{ border: "1px solid black" }}
+                              onClick={() =>
+                                this.setState({
+                                  showTherapists: true,
+                                  showParents: false
+                                })
+                              }
+                            >
+                              <i className="fas fa-user-circle text-info mr-1" />{" "}
+                              Associar Terapeuta
+                            </a>
+
+                            <a
+                              className="btn btn-light"
+                              style={{ border: "1px solid black" }}
+                              onClick={() =>
+                                this.setState({
+                                  showParents: true,
+                                  showTherapists: false
+                                })
+                              }
+                            >
+                              <i className="fas fa-user-circle text-info mr-1" />{" "}
+                              Associar Parente
+                            </a>
+                          </div>
+                        ) : null}
+
+                        {showTherapists && isAdmin ? (
+                          <form
+                            className="form-inline mb-3"
+                            onSubmit={this.onSubmitTherapist}
+                          >
+                            <div
+                              className="form-group mb-2 mr-3"
                               style={{ marginRight: "5px" }}
                             >
-                              Selecione o terapeuta
-                            </label>
-                            <select
-                              className="form-control ml-3"
-                              id="exampleFormControlSelect1"
-                              onChange={this.handleTherapistSelectionChanged}
-                            >
-                              <option id="option">Escolha um terapeuta</option>
-                              {therapists
-                                ? therapists.map(elem => (
-                                    <option id="option">{elem.name}</option>
-                                  ))
-                                : null}
-                            </select>
-                          </div>
+                              <label
+                                htmlFor="exampleFormControlSelect1"
+                                style={{ marginRight: "5px" }}
+                              >
+                                Selecione o terapeuta
+                              </label>
+                              <select
+                                className="form-control ml-3"
+                                id="exampleFormControlSelect1"
+                                onChange={this.handleTherapistSelectionChanged}
+                              >
+                                <option id="option">
+                                  Escolha um terapeuta
+                                </option>
+                                {therapists
+                                  ? therapists.map(elem => (
+                                      <option id="option">{elem.name}</option>
+                                    ))
+                                  : null}
+                              </select>
+                            </div>
 
-                          <button
-                            type="submit"
-                            className="btn btn-primary mb-2"
-                            style={{ marginRight: "5px;" }}
-                          >
-                            {" "}
-                            Associar terapeuta
-                          </button>
-                        </form>
-                      ) : null}
-
-                      {showParents ? (
-                        <form
-                          className="form-inline mb-3"
-                          onSubmit={this.onSubmitParent}
-                        >
-                          <div
-                            className="form-group mb-2 mr-3"
-                            style={{ marginRight: "5px;" }}
-                          >
-                            <label
-                              for="exampleFormControlSelect1"
+                            <button
+                              type="submit"
+                              className="btn btn-primary mb-2"
                               style={{ marginRight: "5px;" }}
                             >
-                              Selecione o parente
-                            </label>
-                            <select
-                              className="form-control ml-3"
-                              id="exampleFormControlSelect1"
-                              onChange={this.handleParentSelectionChanged}
+                              {" "}
+                              Associar terapeuta
+                            </button>
+                          </form>
+                        ) : null}
+
+                        {showParents ? (
+                          <form
+                            className="form-inline mb-3"
+                            onSubmit={this.onSubmitParent}
+                          >
+                            <div
+                              className="form-group mb-2 mr-3"
+                              style={{ marginRight: "5px;" }}
                             >
-                              <option id="option">Escolha um parente</option>
-                              {parents
-                                ? parents.map(elem => (
-                                    <option id="option">{elem.name}</option>
-                                  ))
-                                : null}
-                            </select>
+                              <label
+                                for="exampleFormControlSelect1"
+                                style={{ marginRight: "5px;" }}
+                              >
+                                Selecione o parente
+                              </label>
+                              <select
+                                className="form-control ml-3"
+                                id="exampleFormControlSelect1"
+                                onChange={this.handleParentSelectionChanged}
+                              >
+                                <option id="option">Escolha um parente</option>
+                                {parents
+                                  ? parents.map(elem => (
+                                      <option id="option">{elem.name}</option>
+                                    ))
+                                  : null}
+                              </select>
+                            </div>
+
+                            <button
+                              type="submit"
+                              className="btn btn-primary mb-2"
+                              style={{ marginRight: "5px;" }}
+                            >
+                              {" "}
+                              Associar parente
+                            </button>
+                          </form>
+                        ) : null}
+
+                        {errors.err ? (
+                          <div
+                            className="invalid-feedback"
+                            style={{ display: "block" }}
+                          >
+                            {errors.err}
                           </div>
-
-                          <button
-                            type="submit"
-                            className="btn btn-primary mb-2"
-                            style={{ marginRight: "5px;" }}
-                          >
-                            {" "}
-                            Associar parente
-                          </button>
-                        </form>
-                      ) : null}
-
-                      {errors.err ? (
-                        <div
-                          className="invalid-feedback"
-                          style={{ display: "block" }}
-                        >
-                          {errors.err}
-                        </div>
-                      ) : null}
-                      <div className="row mb-4">
-                        <div className="col-md-6">
-                          <h3 className="text-center text-info">Parentes</h3>
-                          <ul className="list-group">
-                            {patientParents.length > 0 ? (
-                              patientParents.map(elem => (
-                                <li className="list-group-item">
-                                  {isAdmin ? (
-                                    <i
-                                      onClick={this.onRemoveUserClick.bind(
-                                        this,
-                                        elem._id
-                                      )}
-                                      className="fas fa-times"
-                                      data-toggle="modal"
-                                      data-target="#removeParentModal"
-                                      style={{
-                                        cursor: "pointer",
-                                        float: "right",
-                                        color: "red"
-                                      }}
-                                    />
-                                  ) : null}
-
-                                  <h4>{elem.name}</h4>
-                                  <p>
-                                    <b>Email: </b>
-                                    {elem.email}
-                                  </p>
-                                </li>
-                              ))
-                            ) : (
-                              <p> Sem parentes associados </p>
-                            )}
-                          </ul>
-                        </div>
-                        <div className="col-md-6">
-                          <h3 className="text-center text-info">Terapeutas</h3>{" "}
-                          <ul className="list-group">
-                            {patientTherapists.length > 0 ? (
-                              patientTherapists.map(elem => (
-                                <li className="list-group-item">
-                                  {isAdmin ? (
-                                    <i
-                                      onClick={this.onRemoveUserClick.bind(
-                                        this,
-                                        elem._id
-                                      )}
-                                      className="fas fa-times"
-                                      data-toggle="modal"
-                                      data-target="#removeTherapistModal"
-                                      style={{
-                                        cursor: "pointer",
-                                        float: "right",
-                                        color: "red"
-                                      }}
-                                    />
-                                  ) : null}
-
-                                  <h4>{elem.name}</h4>
-                                  <p>
-                                    <b>Email: </b>
-                                    {elem.email}
-                                  </p>
-                                  <p>
-                                    <b>Especialidade: </b>
-                                    {elem.specialty}
-                                  </p>
-                                </li>
-                              ))
-                            ) : (
-                              <p> Sem terapeutas associados </p>
-                            )}
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div>
-                        <hr />
-
-                        <h3 className="mb-4">Medicamentos</h3>
-                        <div className="btn-group mb-4" role="group">
-                          <Link
-                            to={`/paciente/${_id}/medicamento/adicionar`}
-                            className="btn"
-                            style={{border: "1px solid black", backgroundColor:"white"}}
-                          >
-                            <i className="far fa-clipboard text-info mr-1" />{" "}
-                            Adicionar medicamento
-                          </Link>
-                        </div>
-                        <div className="row">
-                          {typeof medicine !== "undefined" &&
-                          medicine.length > 0 ? (
-                            medicine.map(elem => (
-                              <div className="col-md-6">
-                                <div className="card card-body mb-2">
-                                  <h4>
-                                    {elem.name}{" "}
-                                    <Link
-                                      to={`/paciente/${_id}/ver/medicamento/editar/${
-                                        elem._id
-                                      }`}
-                                    >
+                        ) : null}
+                        {/* <div className="row mb-4">
+                          <div className="col-md-6">
+                            <h3 className="text-center text-info">Parentes</h3>
+                            <ul className="list-group">
+                              {patientParents.length > 0 ? (
+                                patientParents.map(elem => (
+                                  <li className="list-group-item">
+                                    {isAdmin ? (
                                       <i
-                                        className="fas fa-pencil-alt"
+                                        onClick={this.onRemoveUserClick.bind(
+                                          this,
+                                          elem._id
+                                        )}
+                                        className="fas fa-times"
+                                        data-toggle="modal"
+                                        data-target="#removeParentModal"
                                         style={{
                                           cursor: "pointer",
                                           float: "right",
-                                          color: "black"
+                                          color: "red"
                                         }}
                                       />
-                                    </Link>
-                                    <i
-                                      className="fas fa-times"
-                                      style={{
-                                        cursor: "pointer",
-                                        float: "right",
-                                        color: "red",
-                                        fontSize: "12px"
-                                      }}
-                                      onClick={this.onDeleteClick.bind(
-                                        this,
-                                        elem._id
-                                      )}
-                                    >
-                                      {" "}
-                                      Apagar
-                                    </i>
-                                  </h4>
-                                  <p>
-                                    <b>Observações:</b> {elem.observation}
-                                  </p>
-                                  <p>
-                                    <b>Dosagem:</b> {elem.dosage}
-                                  </p>
-                                  <p>
-                                    <b>Horario:</b> {elem.time}
-                                  </p>
-                                  {elem.startingDate ? (
+                                    ) : null}
+
+                                    <h4>{elem.name}</h4>
                                     <p>
-                                      <b>Inicio:</b>{" "}
-                                      {elem.startingDate.slice(0, 10)}
+                                      <b>Email: </b>
+                                      {elem.email}
                                     </p>
-                                  ) : null}
-                                  {elem.finishedDate ? (
+                                  </li>
+                                ))
+                              ) : (
+                                <p> Sem parentes associados </p>
+                              )}
+                            </ul>
+                          </div>
+                          <div className="col-md-6">
+                            <h3 className="text-center text-info">
+                              Terapeutas
+                            </h3>{" "}
+                            <ul className="list-group">
+                              {patientTherapists.length > 0 ? (
+                                patientTherapists.map(elem => (
+                                  <li className="list-group-item">
+                                    {isAdmin ? (
+                                      <i
+                                        onClick={this.onRemoveUserClick.bind(
+                                          this,
+                                          elem._id
+                                        )}
+                                        className="fas fa-times"
+                                        data-toggle="modal"
+                                        data-target="#removeTherapistModal"
+                                        style={{
+                                          cursor: "pointer",
+                                          float: "right",
+                                          color: "red"
+                                        }}
+                                      />
+                                    ) : null}
+
+                                    <h4>{elem.name}</h4>
                                     <p>
-                                      <b>Fim:</b>{" "}
-                                      {elem.finishedDate.slice(0, 10)}
+                                      <b>Email: </b>
+                                      {elem.email}
                                     </p>
-                                  ) : null}
+                                    <p>
+                                      <b>Especialidade: </b>
+                                      {elem.specialty}
+                                    </p>
+                                  </li>
+                                ))
+                              ) : (
+                                <p> Sem terapeutas associados </p>
+                              )}
+                            </ul>
+                          </div>
+                        </div> */}
+
+                        <div>
+                          <hr />
+
+                          <h3 className="mb-4">Medicamentos</h3>
+                          <div className="btn-group mb-4" role="group">
+                            <Link
+                              to={`/paciente/${_id}/medicamento/adicionar`}
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
+                            >
+                              <i className="far fa-clipboard text-info mr-1" />{" "}
+                              Adicionar medicamento
+                            </Link>
+                          </div>
+                          <div className="row">
+                            {typeof medicine !== "undefined" &&
+                            medicine.length > 0 ? (
+                              medicine.map(elem => (
+                                <div className="col-md-6">
+                                  <div className="card card-body mb-2">
+                                    <h4>
+                                      {elem.name}{" "}
+                                      <Link
+                                        to={`/paciente/${_id}/ver/medicamento/editar/${
+                                          elem._id
+                                        }`}
+                                      >
+                                        <i
+                                          className="fas fa-pencil-alt"
+                                          style={{
+                                            cursor: "pointer",
+                                            float: "right",
+                                            color: "black"
+                                          }}
+                                        />
+                                      </Link>
+                                      <i
+                                        className="fas fa-times"
+                                        style={{
+                                          cursor: "pointer",
+                                          float: "right",
+                                          color: "red",
+                                          fontSize: "12px"
+                                        }}
+                                        onClick={this.onDeleteClick.bind(
+                                          this,
+                                          elem._id
+                                        )}
+                                      >
+                                        {" "}
+                                        Apagar
+                                      </i>
+                                    </h4>
+                                    <p>
+                                      <b>Observações:</b> {elem.observation}
+                                    </p>
+                                    <p>
+                                      <b>Dosagem:</b> {elem.dosage}
+                                    </p>
+                                    <p>
+                                      <b>Horario:</b> {elem.time}
+                                    </p>
+                                    {elem.startingDate ? (
+                                      <p>
+                                        <b>Inicio:</b>{" "}
+                                        {elem.startingDate.slice(0, 10)}
+                                      </p>
+                                    ) : null}
+                                    {elem.finishedDate ? (
+                                      <p>
+                                        <b>Fim:</b>{" "}
+                                        {elem.finishedDate.slice(0, 10)}
+                                      </p>
+                                    ) : null}
+                                  </div>
                                 </div>
-                              </div>
-                            ))
-                          ) : (
-                            <p> Sem medicamentos para mostrar </p>
-                          )}
+                              ))
+                            ) : (
+                              <p> Sem medicamentos para mostrar </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>
+          <Navbar />
+          <div class="content-wrapper">
+            <section class="content">
+              <div class="container-fluid">
+                <Sidebar />
+                <section className="content">
+                  <div className="error-page">
+                    <h2 className="headline text-danger">403</h2>
+                    <div className="error-content">
+                      <h3>
+                        <i className="fa fa-warning text-danger" /> Oops! Não
+                        tem autorização para visualizar esta pagina.
+                      </h3>
+                      <p>
+                        Precisa de estar associado a este paciente para poder
+                        visualizar esta página.
+                      </p>
+                      <p>
+                        {this.props.auth ? (
+                          this.props.auth.user.userType == "therapist" ? (
+                            <Link to="/terapeuta-dashboard">
+                              Entretanto poderá voltar ao seu dashboard.
+                            </Link>
+                          ) : null
+                        ) : null}
+                      </p>
+                      <p>
+                        {this.props.auth ? (
+                          this.props.auth.user.userType == "parent" ? (
+                            <Link to="/parente-dashboard">
+                              Entretanto poderá voltar ao seu dashboard.
+                            </Link>
+                          ) : null
+                        ) : null}
+                      </p>
+                    </div>
+                  </div>
+                  {/* /.error-page */}
+                </section>
+              </div>
+            </section>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

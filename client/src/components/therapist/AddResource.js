@@ -8,6 +8,8 @@ import { addResource } from "../../actions/resourceActions";
 import $ from "jquery";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import {Progress} from 'reactstrap';
+
 
 import "./AddResource.css";
 
@@ -492,6 +494,9 @@ data-toggle="modal"
               </label>
             </div>
 
+            <Progress style={{width:"100%"}} max="100" color="success" value={this.props.loaded} >{Math.round(this.props.loaded,2) }%</Progress>
+
+
             <input
               type="submit"
               value="Adicionar recurso"
@@ -512,7 +517,8 @@ AddResource.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  loaded: state.resource.loaded
 });
 
 export default connect(

@@ -56,6 +56,19 @@ class ResourcePercepcao extends Component {
               <Sidebar />
               <div class="resources">
                 <div class="container">
+                  <div className="row pt-3" style={{ paddingLeft: "7.5px" }}>
+                    <Link
+                      to={`/recursos`}
+                      className="btn"
+                      style={{
+                        border: "1px solid black",
+                        backgroundColor: "white"
+                      }}
+                    >
+                      Voltar
+                    </Link>{" "}
+                  </div>
+
                   <div class="row">
                     <div class="col-md-12">
                       <h1 class="display-4 text-center">Recursos</h1>

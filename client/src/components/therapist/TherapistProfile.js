@@ -62,20 +62,21 @@ class TherapistProfile extends Component {
                         <div class="card-body box-profile">
                           <div class="text-center">
                             <img
-                              className="rounded-circle"
-                              src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                              alt=""
-                            />{" "}
+                              class="profile-user-img img-responsive img-circle"
+                              src="../../dist/img/user4-128x128.jpg"
+                              alt="User profile picture"
+                            />
                           </div>
 
-                          <h5 class="profile-username text-center">{name}</h5>
-                          <h6 class="text-muted text-center">
+                          <h3 class="profile-username text-center">{name}</h3>
+                          <p class="text-muted text-center">
                             {email ? (
                               <i className="fas fa-envelope-square"> </i>
                             ) : null}{" "}
                             {email}
-                          </h6>
-                          <h6 class="text-muted text-center">{specialty}</h6>
+                          </p>
+                          <hr />
+                          <p class="text-muted text-center">{specialty}</p>
 
                           <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
@@ -94,78 +95,50 @@ class TherapistProfile extends Component {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-9">
-                      <div class="card">
-                        <div class="card-header p-2">
-                          <ul class="nav nav-pills">
-                            <li class="nav-item">
-                              <a
-                                class="nav-link active"
-                                href="#resources"
-                                data-toggle="tab"
-                              >
-                                Recursos
-                              </a>
-                            </li>
+                    <div class="col-md-6">
+                      {resources ? (
+                        resources.length > 0 ? (
+                          resources.map(resource => (
+                            <Resource key={resource._id} resource={resource} />
+                          ))
+                        ) : (
+                          <h3 className="text-center">
+                            Sem recursos para mostrar
+                          </h3>
+                        )
+                      ) : null}
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                          <h3 class="profile-username text-center">Crianças</h3>
+
+                          <ul class="list-group list-group-unbordered mb-3">
+                            {patient ? (
+                              patient.length > 0 ? (
+                                patient.map(user => (
+                                  <li class="list-group-item">
+                                    <b>
+                                      <Link
+                                        style={{ color: "black" }}
+                                        to={`/paciente/ver/${user._id}`}
+                                      >
+                                        {user.name}
+                                      </Link>
+                                    </b>{" "}
+                                  </li>
+                                ))
+                              ) : (
+                                <p>Sem pacientes</p>
+                              )
+                            ) : null}
                           </ul>
-                        </div>
-                        <div class="card-body">
-                          <div class="tab-content">
-                            <div class="active tab-pane" id="resources">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  {resources
-                                    ? resources.map(resource => (
-                                        <Resource
-                                          key={resource._id}
-                                          resource={resource}
-                                        />
-                                      ))
-                                    : null}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </section>
-
-              {/* 
-          <div className="col-md-12">
-            <div className="card card-body bg-info text-white mb-3">
-              <div className="row">
-                <div className="col-4 col-md-3 m-auto">
-                  <img
-                    className="rounded-circle"
-                    src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <h1 className="display-4 text-center">{name}</h1>
-                <p className="lead text-center">{email}</p>
-                <p className="lead text-center">{specialty}</p>
-              </div>
-            </div>
-          </div> */}
-              {/* <div class="row">
-          <div class="col-md-12">
-            <h1 class="display-6">Recursos</h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            {resources
-              ? resources.map(resource => (
-                  <Resource key={resource._id} resource={resource} />
-                ))
-              : null}
-          </div>
-        </div> */}
             </div>
           </section>
         </div>

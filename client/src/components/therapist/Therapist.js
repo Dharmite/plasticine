@@ -89,7 +89,6 @@ class Therapist extends Component {
             patient.length > 2 ? (
               <Link
                 to={`/terapeuta/${_id}`}
-                href="profile.html"
                 className="btn mb-3"
                 style={{
                   border: "1px solid black",

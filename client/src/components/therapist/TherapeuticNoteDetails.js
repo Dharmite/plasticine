@@ -110,31 +110,40 @@ class TherapeuticNoteDetails extends Component {
                 data-toggle="modal"
                 data-target="#zoomImageModal"
                 onClick={this.getFileName.bind(this, file.filename)}
-                style = {{cursor:"pointer"}}
-
+                style={{ cursor: "pointer" }}
               />
-              <div className="card-body">
-                <button
-                  className="btn btn-light mt-3"
-                  style={{ border: "1px solid black" }}
-                  onClick={this.downloadFile.bind(
-                    this,
-                    file.filename,
-                    file.originalname
-                  )}
-                >
-                  Download
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-light mt-3"
-                  style={{ border: "1px solid black" }}
-                  data-toggle="modal"
-                  data-target="#zoomImageModal"
-                  onClick={this.getFileName.bind(this, file.filename)}
-                >
-                  Ver imagem
-                </button>
+              <div className="card-footer bg-white">
+                <div className="row">
+                  <div className="col-sm-6 border-right">
+                    <div className="description-block bg-white">
+                      <button
+                        type="button"
+                        className="btn btn-light mt-3"
+                        style={{ border: "1px solid black" }}
+                        data-toggle="modal"
+                        data-target="#zoomImageModal"
+                        onClick={this.getFileName.bind(this, file.filename)}
+                      >
+                        Ver imagem
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="description-block bg-white">
+                      <button
+                        className="btn btn-light mt-3"
+                        style={{ border: "1px solid black" }}
+                        onClick={this.downloadFile.bind(
+                          this,
+                          file.filename,
+                          file.originalname
+                        )}
+                      >
+                        Download
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : null
@@ -277,7 +286,7 @@ class TherapeuticNoteDetails extends Component {
                     className="btn"
                     style={{
                       border: "1px solid black",
-                      backgroundColor:"white"
+                      backgroundColor: "white"
                     }}
                   >
                     Voltar
@@ -407,71 +416,62 @@ class TherapeuticNoteDetails extends Component {
                         {/* /.card-body */}
                       </div>
                     </div>
-                    {hasImageFiles ? (
-                      <div className="container row">
-                        <h1>Imagens</h1>
-                      </div>
-                    ) : null}
-                    <div className="row">{image_files}</div>
-                    {hasApplicationFiles ? (
-                      <div className="container row">
-                        <h1>Ficheiros</h1>
-                      </div>
-                    ) : null}
-                    <div className="row">{application_files}</div>
-                    {hasAudioFiles ? (
-                      <div className="container row">
-                        <h1>Audio</h1>
-                      </div>
-                    ) : null}
-                    <div className="row">{audio_files}</div>
-                    {hasVideoFiles ? (
-                      <div className="container row">
-                        <h1>Video</h1>
-                      </div>
-                    ) : null}
-                    <div className="row">{video_files}</div>
                   </div>
                 </div>
               </div>
+
+              {hasImageFiles ? (
+                <div className="container row">
+                  <h1>Imagens</h1>
+                </div>
+              ) : null}
+              <div className="row">{image_files}</div>
+              {hasApplicationFiles ? (
+                <div className="container row">
+                  <h1>Ficheiros</h1>
+                </div>
+              ) : null}
+              <div className="row">{application_files}</div>
+              {hasAudioFiles ? (
+                <div className="container row">
+                  <h1>Audio</h1>
+                </div>
+              ) : null}
+              <div className="row">{audio_files}</div>
+              {hasVideoFiles ? (
+                <div className="container row">
+                  <h1>Video</h1>
+                </div>
+              ) : null}
+              <div className="row">{video_files}</div>
               {feedback
                 ? feedback.map(elem => (
-                    <div class="post card">
-                      <div class="user-block card-header">
-                        <div style={{ display: "flex" }}>
-                          <img
-                            src={user_img}
-                            alt="user image"
-                            style={{ width: "7%", borderRadius: "50%" }}
-                            className="mr-2"
-                          />
-                          <div style={{ flexDirection: "column" }}>
-                            <div class="username">
-                              <a href="#">
-                                {" "}
-                                {this.props.user.name ? (
-                                  <p class="text-center">
-                                    {this.props.user.name}
-                                  </p>
-                                ) : null}
-                              </a>
-                            </div>
-                            <div class="description">
-                              {elem.date ? (
-                                <p className="text-center">
-                                  <small class="text-muted">
-                                    {elem.date.slice(0, 10)}
-                                  </small>
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
+                    <div
+                      className="card-footer card-comments mt-5 mb-5"
+                      style={{ backgroundColor: "#f4f6f9" }}
+                    >
+                      <div className="card-comment">
+                        <img
+                          className="img-circle img-sm"
+                          src={user_img}
+                          alt="User Image"
+                        />
+                        <div className="comment-text">
+                          {elem.user.name ? (
+                            <span className="username">
+                              {this.props.user.name}
+                              <span className="text-muted float-right">
+                                {elem.date.slice(0, 10)}
+                              </span>
+                            </span>
+                          ) : null}
+                          {elem.observation}{" "}
                         </div>
                       </div>
-                      <p className="card-body">{elem.observation} </p>
                     </div>
                   ))
                 : null}
+
               <div className="post-form mb-3 mt-3">
                 <div className="card card-info">
                   <div className="card-header bg-info text-white">
