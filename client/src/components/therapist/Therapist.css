@@ -1,3 +1,32 @@
 .buttons * {
   margin-right: 2%;
 }
+
+.info-box-custom {
+  min-height: 76px !important;
+}
+
+.info-box-custom:nth-child(odd) {
+  margin-bottom: 12px !important;
+  margin-top: 0px !important;
+}
+.info-box-custom:nth-child(even) {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.ver-todos {
+  margin-top: 22px;
+}
+
+.card-widget {
+  margin-bottom: 0px !important;
+}
+
+.card-footer .card-footer-custom {
+  border-right: none !important;
+}
+
+.widget-user-header.widget-user-header-custom {
+  height: 164px;
+}

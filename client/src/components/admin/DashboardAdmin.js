@@ -27,6 +27,10 @@ class DashboardAdmin extends Component {
     this.props.getTherapists();
     this.props.getParents();
     this.props.getPatients();
+    document.getElementsByClassName(
+      "info-box"
+    )[0].style.backgroundColor = "#E8E8E8";
+
   }
 
   render() {
@@ -97,21 +101,31 @@ class DashboardAdmin extends Component {
                   </div>
                   <div className="row">
                     <div
-                      className="col-12 col-sm-6 col-md-3"
-                      onClick={() =>
+                      className="col-12 col-sm-6 col-md-3 terapeutas"
+                      onClick={() => {
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[0].style.backgroundColor = "#E8E8E8";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[1].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[2].style.backgroundColor = "white";
+
                         this.setState({
                           therapist: true,
                           patient: false,
                           parent: false
-                        })
-                      }
+                        });
+                      }}
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="info-box mb-3">
-                        <span className="info-box-icon bg-warning elevation-1">
+                      <div className="info-box mb-3 terapeutas">
+                        <span className="info-box-icon bg-warning elevation-1 ">
                           <i className="fa fa-users" />
                         </span>
-                        <div className="info-box-content">
+                        <div className="info-box-content ">
                           <span className="info-box-text">Terapeutas</span>
                           <span className="info-box-number">
                             {therapists ? therapists.length : null}
@@ -121,13 +135,23 @@ class DashboardAdmin extends Component {
                     </div>
                     <div
                       className="col-12 col-sm-6 col-md-3"
-                      onClick={() =>
+                      onClick={() => {
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[0].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[1].style.backgroundColor = "#E8E8E8";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[2].style.backgroundColor = "white";
+
                         this.setState({
                           therapist: false,
                           patient: true,
                           parent: false
-                        })
-                      }
+                        });
+                      }}
                     >
                       <div
                         className="info-box mb-3"
@@ -147,13 +171,23 @@ class DashboardAdmin extends Component {
                     <div className="clearfix hidden-md-up" />
                     <div
                       className="col-12 col-sm-6 col-md-3"
-                      onClick={() =>
+                      onClick={() => {
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[0].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[1].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[2].style.backgroundColor = "#E8E8E8";
+
                         this.setState({
                           therapist: false,
                           patient: false,
                           parent: true
-                        })
-                      }
+                        });
+                      }}
                     >
                       <div
                         className="info-box mb-3"
@@ -171,7 +205,12 @@ class DashboardAdmin extends Component {
                       </div>
                     </div>
                   </div>
-                  <hr />
+
+                  <div className="row">
+                    <div className="col-10">
+                      <hr />
+                    </div>
+                  </div>
 
                   {this.state.therapist ? therapistContent : null}
 

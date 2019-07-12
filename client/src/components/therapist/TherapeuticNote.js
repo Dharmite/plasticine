@@ -18,7 +18,8 @@ class TherapeuticNote extends Component {
       date
     } = this.props.TherapeuticNote;
 
-    console.log(user);
+    console.log(user._id, "user_id");
+    console.log(this.props.user.id, "props.id");
 
     return (
       <div>
@@ -69,18 +70,84 @@ class TherapeuticNote extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="card card-body bg-light mb-3">
-            <div className="col-lg-6 col-md-12 col-12">
-              <h3>{title}</h3>
-              <p>
-                <b>Observação:</b> {observation}
-              </p>
-              <p>{date.slice(0, 10)}</p>
-            </div>
-            <div className="card-footer" style={{ backgroundColor: "#f8f9fa" }}>
-              <div className="row">
-                <div className="col-lg-4 col-md-4 col-lg-4 col-md-4 col-sm-4">
-                  <div className="description-block">
+          {this.props.user ? (
+            user ? (
+              this.props.user.id == user._id ? (
+                <div className="card card-body">
+                  <div className="col-lg-12 col-md-12 col-sm-12">
+                    <div className="row" style={{ display: "flex" }}>
+       
+                      <div className="col-12">
+                        <p style={{ float: "right" }}>{date.slice(0, 10)}</p>
+
+                        <h3>{title}</h3>
+                        <p>
+                          <b>Observação:</b> {observation}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="description-block mr-3">
+                        <Link
+                          className="btn"
+                          style={{ border: "1px solid black" }}
+                          to={`/paciente/${patient}/registo/${_id}`}
+                        >
+                          Detalhes
+                        </Link>
+                      </div>
+                      <div className="description-block mr-3">
+                        <Link
+                          className="btn"
+                          style={{ border: "1px solid black" }}
+                          to={`/paciente/${patient}/registo/${_id}/editar`}
+                        >
+                          Editar
+                        </Link>
+                      </div>
+                      <div className="description-block mr-3">
+                        {user ? (
+                          this.props.auth ? (
+                            this.props.auth.user.id == user._id ? (
+                              <button
+                                className="btn"
+                                data-toggle="modal"
+                                data-target="#removeResourceModal"
+                                style={{ border: "1px solid black" }}
+                              >
+                                Apagar
+                              </button>
+                            ) : null
+                          ) : null
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) :                 <div className="card card-body">
+              <div className="col-lg-12 col-md-12 col-sm-12">
+                <div className="row" style={{ display: "flex" }}>
+                  <div className="col-2">
+                    <img
+                      class="profile-user-img img-responsive img-circle"
+                      src="../../dist/img/user4-128x128.jpg"
+                      alt="User profile picture"
+                    />
+                    {user ? (
+                      <p className="text-muted mt-2">{user.name}</p>
+                    ) : null}
+                  </div>
+                  <div className="col-10">
+                    <p style={{ float: "right" }}>{date.slice(0, 10)}</p>
+
+                    <h3>{title}</h3>
+                    <p>
+                      <b>Observação:</b> {observation}
+                    </p>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="description-block mr-3">
                     <Link
                       className="btn"
                       style={{ border: "1px solid black" }}
@@ -89,9 +156,7 @@ class TherapeuticNote extends Component {
                       Detalhes
                     </Link>
                   </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-4">
-                  <div className="description-block ">
+                  <div className="description-block mr-3">
                     <Link
                       className="btn"
                       style={{ border: "1px solid black" }}
@@ -100,9 +165,7 @@ class TherapeuticNote extends Component {
                       Editar
                     </Link>
                   </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-4">
-                  <div className="description-block">
+                  <div className="description-block mr-3">
                     {user ? (
                       this.props.auth ? (
                         this.props.auth.user.id == user._id ? (
@@ -121,7 +184,8 @@ class TherapeuticNote extends Component {
                 </div>
               </div>
             </div>
-          </div>
+            ) : null
+          ) : null}
         </div>
       </div>
     );

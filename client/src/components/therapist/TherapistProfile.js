@@ -48,54 +48,34 @@ class TherapistProfile extends Component {
                 </div>
               </div>
 
-              <div class="container row mb-2">
-                <div class="col-sm-6">
-                  <h1>Perfil</h1>
-                </div>
-              </div>
-
               <section class="content">
                 <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="card card-primary card-outline">
-                        <div class="card-body box-profile">
-                          <div class="text-center">
-                            <img
-                              class="profile-user-img img-responsive img-circle"
-                              src="../../dist/img/user4-128x128.jpg"
-                              alt="User profile picture"
-                            />
-                          </div>
+                  <div className="card card-body bg-warning text-white mb-3">
+                    <div className="row">
+                      <div className="col-lg-3 col-md-3">
+                        <img
+                          className="rounded-circle"
+                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                          alt=""
+                        />
+                      </div>
+                      <div className="col-lg-4 col-md-4 border-right">
+                        {name ? <h1 className="display-4">{name}</h1> : null}
+                        {email ? <p className="lead">Email: {email}</p> : null}
+                        {specialty ? <p>{specialty}</p> : null}
+                      </div>
 
-                          <h3 class="profile-username text-center">{name}</h3>
-                          <p class="text-muted text-center">
-                            {email ? (
-                              <i className="fas fa-envelope-square"> </i>
-                            ) : null}{" "}
-                            {email}
-                          </p>
-                          <hr />
-                          <p class="text-muted text-center">{specialty}</p>
+                      <div className="col-lg-4 col-md-4 ">
+                        {resources ? <p>Recursos {resources.length}</p> : null}
 
-                          <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                              <b>Recursos</b>{" "}
-                              <a class="float-right">
-                                {resources ? resources.length : null}
-                              </a>
-                            </li>
-                            <li class="list-group-item">
-                              <b>Crianças</b>{" "}
-                              <a class="float-right">
-                                {patient ? patient.length : null}
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
+                        {patient ? <p>Crianças: {patient.length} </p> : null}
                       </div>
                     </div>
-                    <div class="col-md-6">
+                  </div>
+
+                  <div class="row">
+
+                    <div class="col-md-9">
                       {resources ? (
                         resources.length > 0 ? (
                           resources.map(resource => (
