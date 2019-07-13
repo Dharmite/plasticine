@@ -59,44 +59,40 @@ class ParentProfile extends Component {
 
               <section class="content">
                 <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="card card-primary card-outline">
-                        <div class="card-body box-profile">
-                          <div class="text-center">
-                            <img
-                              class="profile-user-img img-responsive img-circle"
-                              src="../../dist/img/user4-128x128.jpg"
-                              alt="User profile picture"
-                            />
-                          </div>
-
-                          <h3 class="profile-username text-center">{name}</h3>
-                          <p class="text-muted text-center">
-                            {email ? (
-                              <i className="fas fa-envelope-square"> </i>
-                            ) : null}{" "}
-                            {email}
+                  <div className="card card-body bg-info text-white mb-3">
+                    <div className="row">
+                      <div className="col-lg-2 col-md-2">
+                        <img
+                          className="img-circle elevation-2"
+                          src="../dist/img/user7-128x128.jpg"
+                          alt="User Avatar"
+                        />
+                      </div>
+                      <div className="col-lg-4 col-md-4 border-right pl-0">
+                        {name ? <h3>{name}</h3> : null}
+                        {email ? (
+                          <p>
+                            <i className="fas fa-envelope-square" /> {email}
                           </p>
+                        ) : null}
+                      </div>
 
-                          <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                              <b>Notas</b>{" "}
-                              <a class="float-right">
-                                {notes ? notes.length : null}
-                              </a>
-                            </li>
-                            <li class="list-group-item">
-                              <b>Crianças</b>{" "}
-                              <a class="float-right">
-                                {patient ? patient.length : null}
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
+                      <div className="col-lg-4 col-md-4 pl-4">
+                        {notes ? (
+                          <h5>Numero de notas criados: {notes.length}</h5>
+                        ) : null}
+
+                        {patient ? (
+                          <h5>
+                            Numero de crianças associadas: {patient.length}{" "}
+                          </h5>
+                        ) : null}
                       </div>
                     </div>
-                    <div class="col-md-6">
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-8">
                       {notes ? (
                         notes.length > 0 ? (
                           notes.map(note => (
@@ -112,28 +108,38 @@ class ParentProfile extends Component {
                         )
                       ) : null}
                     </div>
-                    <div class="col-md-3">
-                      <div class="card card-primary card-outline">
-                        <div class="card-body box-profile">
-                          <h3 class="profile-username text-center">Crianças</h3>
+                    <div class="col-md-4">
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Crianças</h3>
+                        </div>
 
-                          <ul class="list-group list-group-unbordered mb-3">
+                        {/* /.card-header */}
+                        <div className="card-body p-0">
+                          <ul className="products-list product-list-in-card pl-2 pr-2">
                             {patient ? (
                               patient.length > 0 ? (
                                 patient.map(user => (
-                                  <li class="list-group-item">
-                                    <b>
+                                  <li class="item">
+                                    <div className="product-img">
+                                      <img
+                                        className="img-circle elevation-2"
+                                        src="../dist/img/user7-128x128.jpg"
+                                        alt="User Avatar"
+                                      />
+                                    </div>
+                                    <div className="product-info">
                                       <Link
                                         style={{ color: "black" }}
                                         to={`/paciente/ver/${user._id}`}
                                       >
                                         {user.name}
                                       </Link>
-                                    </b>{" "}
+                                    </div>
                                   </li>
                                 ))
                               ) : (
-                                <p>Sem pacientes</p>
+                                <p> Sem parentes associados </p>
                               )
                             ) : null}
                           </ul>

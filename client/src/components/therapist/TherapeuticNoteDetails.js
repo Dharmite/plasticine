@@ -247,9 +247,9 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "video/mpeg" ||
           file.fileType == "video/ogg" ||
           file.fileType == "video/mp4" ? (
-            <div className="col-md-12 mt-3">
+            <div className="col-md-12">
               <p>
-                <video controls style={{ width: "50%", height: "50%" }}>
+                <video controls style={{ width: "350px", height: "250px" }}>
                   <source
                     src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                     type="audio/mpeg"
@@ -326,95 +326,113 @@ class TherapeuticNoteDetails extends Component {
                 </div>
               </div>
 
-              <div class="card card-body mb-3 mt-3">
-                <div className="row d-flex justify-content-center">
-                  {" "}
-                  {title ? <h2>{title}</h2> : null}
-                </div>
-                <div class="row">
-                  <div class="col-md-2">
-                    <img
-                      class="rounded-circle d-none d-md-block"
-                      src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                      alt=""
-                      style={{ width: "100%" }}
-                    />
+              <div className="row">
+                <div className="col-md-8">
+                  <div class="card card-body mb-3 mt-3">
+                    {title ? <h2>{title}</h2> : null}
+                    <div className="row">
+                      <div class="col-md-3">
+                        <img
+                          src={user_img}
+                          className="img-circle elevation-2"
+                          alt="User Image"
+                          style={{ height: "128px", width: "128px" }}
+                        />
 
-                    <br />
-                    {user ? (
-                      <Link to={`/terapeuta/${user._id}`}>
-                        <p class="text-center">{user.name}</p>
-                      </Link>
-                    ) : null}
-                    {/* {user ? <p class="text-center">{user.name}</p> : null} */}
-                    {date ? (
-                      <p className="text-center">
-                        <small class="text-muted">{date.slice(0, 10)}</small>
-                      </p>
-                    ) : null}
-                  </div>
-                  <div class="col-md-10">
-                    <div className="row">
-                      {observation ? (
-                        <p class="lead">
-                          {" "}
-                          <b>Observação</b> {observation}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="row">
-                      {activity ? (
-                        <p class="lead">
-                          {" "}
-                          <b>Atividade:</b> {activity}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="row">
-                      {behavior ? (
-                        <p class="lead">
-                          {" "}
-                          <b>Comportamento:</b> {behavior}
-                        </p>
-                      ) : null}
-                    </div>
-                    <hr />
-                    <div className="row">
-                      {availableTo ? (
-                        <div className="col-md-12">
+                        <br />
+                        {user ? (
+                          <Link to={`/terapeuta/${user._id}`}>
+                            <p className="mt-3">{user.name}</p>
+                          </Link>
+                        ) : null}
+                        {/* {user ? <p class="text-center">{user.name}</p> : null} */}
+                        {date ? (
                           <p>
-                            <b>Disponível para:</b>
+                            <small class="text-muted">
+                              {date.slice(0, 10)}
+                            </small>
                           </p>
-                        </div>
-                      ) : null}
-                      <div className="card">
-                        <div className="card-header">
-                          <h3 className="card-title">Utilizadores</h3>
-                          <div className="card-tools">
-                            <span className="badge badge-danger">
-                              {availableTo ? availableTo.length : null} Membros
-                            </span>
-                          </div>
-                        </div>
-                        {/* /.card-header */}
-                        <div className="card-body p-0">
-                          <ul className="users-list clearfix">
-                            {availableTo
-                              ? availableTo.map(elem => (
-                                  <li>
-                                    <img src={user_img} alt="User Image" />
-                                    <Link to={`/terapeuta/${elem._id}`}>
-                                      {" "}
-                                      {elem.name}{" "}
-                                    </Link>{" "}
-                                  </li>
-                                ))
-                              : null}
-                          </ul>
-                          {/* /.users-list */}
-                        </div>
-                        {/* /.card-body */}
+                        ) : null}
                       </div>
+
+                      <div class="col-md-9">
+                        <div className="row">
+                          {observation ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Observação</b> {observation}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="row">
+                          {activity ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Atividade:</b> {activity}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="row">
+                          {behavior ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Comportamento:</b> {behavior}
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4 mt-3">
+                  {" "}
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Utilizadores</h3>
+                    </div>
+
+                    {/* /.card-header */}
+                    <div className="card-body p-0">
+                      <ul className="products-list product-list-in-card pl-2 pr-2">
+                        {availableTo
+                          ? availableTo.map(elem => (
+                              <li class="item">
+                                <li className="product-img">
+                                  <div className="product-img">
+                                    <img
+                                      src={user_img}
+                                      alt="Product Image"
+                                      className="img-circle"
+                                    />
+                                  </div>
+                                  <div className="product-info">
+                                    <a className="product-title">
+                                      <Link
+                                        className="product-description"
+                                        to={`/terapeuta/${elem._id}`}
+                                      >
+                                        {elem.name}
+                                      </Link>
+                                      <span class="badge float-right"> </span>
+                                    </a>
+
+                                    <span
+                                      className="product-description"
+                                      style={{ marginRight: "0px!important" }}
+                                    >
+                                      <b>Email: </b>
+                                      {elem.email}
+                                    </span>
+                                    <span className="product-description">
+                                      <b>Especialidade: </b>
+                                      {elem.specialty}
+                                    </span>
+                                  </div>
+                                </li>
+                              </li>
+                            ))
+                          : null}
+                      </ul>
                     </div>
                   </div>
                 </div>

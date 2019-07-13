@@ -83,19 +83,27 @@ class Resource extends Component {
               <div class="row">
                 <div class="col-2-lg">
                   <img
-                    class="profile-user-img img-responsive img-circle"
-                    src="../../dist/img/user4-128x128.jpg"
-                    alt="User profile picture"
-                  />
+                    className="img-circle elevation-2"
+                    src="../dist/img/user7-128x128.jpg"
+                    alt="User Avatar"
+                  />{" "}
                   {user ? <p className="text-muted mt-2">{user.name}</p> : null}
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12">
-                  {category ? (
-                    <h4 style={{ marginBottom: "16px" }}>{category}</h4>
-                  ) : null}
-                  {subCategory ? (
-                    <h6 style={{ marginBottom: "16px" }}>{subCategory}</h6>
-                  ) : null}
+                  <p>
+                    {" "}
+                    {category ? (
+                      <span style={{ marginBottom: "16px", fontSize: "28px" }}>
+                        <b>{category} / </b>
+                      </span>
+                    ) : null}
+                    {subCategory ? (
+                      <span style={{ marginBottom: "16px", fontSize: "18px" }}>
+                        <b>{subCategory}</b>
+                      </span>
+                    ) : null}
+                  </p>
+
                   {observation ? (
                     <p style={{ marginBottom: "16px" }}>{observation}</p>
                   ) : null}

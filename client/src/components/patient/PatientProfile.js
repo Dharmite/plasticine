@@ -27,7 +27,7 @@ import user_img from "../../img/user1.jpg";
 
 class PatientProfile extends Component {
   state = {
-    showTherapists: true,
+    showTherapists: false,
     showParents: false,
     selectedTherapist: "",
     selectedParent: "",
@@ -375,21 +375,22 @@ class PatientProfile extends Component {
                       <div className="col-md-12">
                         <div className="card card-body bg-success text-white mb-3">
                           <div className="row">
-                            <div className="col-lg-3 col-md-3">
+                            <div className="col-lg-2 col-md-2">
                               <img
-                                className="rounded-circle"
-                                src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                                alt=""
-                              />
+                                className="img-circle elevation-2"
+                                src={user_img}
+                                alt="User Avatar"
+                              />{" "}
                             </div>
-                            <div className="col-lg-9 col-md-9">
-                              {name ? (
-                                <h1 className="display-4">{name}</h1>
-                              ) : null}
+                            <div className="col-lg-4 col-md-4">
+                              {name ? <h3>{name}</h3> : null}
                               {age ? (
-                                <p className="lead">Idade: {age}</p>
+                                <p>
+                                  Idade:
+                                  {age}
+                                </p>
                               ) : null}
-                              {schoolName ? <p>{schoolName}</p> : null}
+                              {schoolName ? <p>Escola: {schoolName}</p> : null}
                             </div>
                           </div>
                         </div>
@@ -405,22 +406,6 @@ class PatientProfile extends Component {
                           </div>
                         </div>
 
-                        {isTherapist ? (
-                          <div className="btn-group mb-4 mr-4" role="group">
-                            <Link
-                              className="btn"
-                              style={{
-                                border: "1px solid black",
-                                backgroundColor: "white"
-                              }}
-                              to={`/paciente/${_id}/registo/adicionar`}
-                            >
-                              <i className="far fa-clipboard text-info mr-1" />{" "}
-                              Criar nota
-                            </Link>
-                          </div>
-                        ) : null}
-
                         {isAdmin ? (
                           <div
                             className="btn-group mb-4"
@@ -428,11 +413,14 @@ class PatientProfile extends Component {
                             id="associateUser"
                           >
                             <a
-                              className="btn btn-light"
-                              style={{ border: "1px solid black" }}
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
                               onClick={() =>
                                 this.setState({
-                                  showTherapists: true,
+                                  showTherapists: !this.state.showTherapists,
                                   showParents: false
                                 })
                               }
@@ -442,17 +430,76 @@ class PatientProfile extends Component {
                             </a>
 
                             <a
-                              className="btn btn-light"
-                              style={{ border: "1px solid black" }}
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
                               onClick={() =>
                                 this.setState({
-                                  showParents: true,
+                                  showParents: !this.state.showParents,
                                   showTherapists: false
                                 })
                               }
                             >
                               <i className="fas fa-user-circle text-info mr-1" />{" "}
                               Associar Parente
+                            </a>
+                            <a
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
+                            >
+                              <Link
+                                to={`/paciente/${_id}/medicamento/adicionar`}
+                                style={{ color: "black" }}
+                              >
+                                <i className="fas fa-pills text-info mr-1" />{" "}
+                                Adicionar medicamento
+                              </Link>
+                            </a>
+                          </div>
+                        ) : null}
+
+                        {isTherapist ? (
+                          <div
+                            className="btn-group mb-4"
+                            role="group"
+                            id="associateUser"
+                          >
+                            <a
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
+                            >
+                              {" "}
+                              <Link
+                                style={{ color: "black" }}
+                                to={`/paciente/${_id}/registo/adicionar`}
+                              >
+                                <i className="far fa-clipboard text-info mr-1" />{" "}
+                                Criar nota
+                              </Link>
+                            </a>
+
+                            <a
+                              className="btn"
+                              style={{
+                                border: "1px solid black",
+                                backgroundColor: "white"
+                              }}
+                            >
+                              <Link
+                                to={`/paciente/${_id}/medicamento/adicionar`}
+                                style={{ color: "black" }}
+                              >
+                                <i className="fas fa-pills text-info mr-1" />{" "}
+                                Adicionar medicamento
+                              </Link>
                             </a>
                           </div>
                         ) : null}
@@ -547,20 +594,6 @@ class PatientProfile extends Component {
                             {errors.err}
                           </div>
                         ) : null}
-
-                        <div className="btn-group mb-4" role="group">
-                          <Link
-                            to={`/paciente/${_id}/medicamento/adicionar`}
-                            className="btn"
-                            style={{
-                              border: "1px solid black",
-                              backgroundColor: "white"
-                            }}
-                          >
-                            <i className="far fa-clipboard text-info mr-1" />{" "}
-                            Adicionar medicamento
-                          </Link>
-                        </div>
 
                         <div className="row">
                           <div className="col-lg-8 col-md-8 col-sm-12">
@@ -770,15 +803,14 @@ class PatientProfile extends Component {
                                           <img
                                             src={user_img}
                                             alt="Product Image"
-                                            className="img-size-50"
+                                            className="img-circle"
                                           />
                                         </div>
                                         <div className="product-info">
                                           <a
-                                            href="javascript:void(0)"
                                             className="product-title"
                                           >
-                                            {elem.name}
+                                            <Link className="product-description" to={`/terapeuta/${elem._id}`} >{elem.name}</Link>
                                             <span class="badge float-right">
                                               {" "}
                                               {isAdmin ? (
@@ -833,15 +865,14 @@ class PatientProfile extends Component {
                                           <img
                                             src={user_img}
                                             alt="Product Image"
-                                            className="img-size-50"
+                                            className="img-circle"
                                           />
                                         </div>
                                         <div className="product-info">
                                           <a
-                                            href="javascript:void(0)"
                                             className="product-title"
                                           >
-                                            {elem.name}
+                                            <Link className="product-description" to={`/parente/${elem._id}`} >{elem.name}</Link>
                                             <span class="badge float-right">
                                               {" "}
                                               {isAdmin ? (

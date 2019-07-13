@@ -52,30 +52,41 @@ class TherapistProfile extends Component {
                 <div class="container-fluid">
                   <div className="card card-body bg-warning text-white mb-3">
                     <div className="row">
-                      <div className="col-lg-3 col-md-3">
+                      <div className="col-lg-2 col-md-2">
                         <img
-                          className="rounded-circle"
-                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                          alt=""
+                          className="img-circle elevation-2"
+                          src="../dist/img/user7-128x128.jpg"
+                          alt="User Avatar"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4 border-right">
-                        {name ? <h1 className="display-4">{name}</h1> : null}
-                        {email ? <p className="lead">Email: {email}</p> : null}
+                      <div className="col-lg-4 col-md-4 border-right pl-0">
+                        {name ? <h3>{name}</h3> : null}
+                        {email ? (
+                          <p>
+                            <i className="fas fa-envelope-square" /> {email}
+                          </p>
+                        ) : null}
                         {specialty ? <p>{specialty}</p> : null}
                       </div>
 
-                      <div className="col-lg-4 col-md-4 ">
-                        {resources ? <p>Recursos {resources.length}</p> : null}
+                      <div className="col-lg-4 col-md-4 pl-4">
+                        {resources ? (
+                          <h5>
+                            Numero de recursos criados: {resources.length}
+                          </h5>
+                        ) : null}
 
-                        {patient ? <p>Crianças: {patient.length} </p> : null}
+                        {patient ? (
+                          <h5>
+                            Numero de crianças tratadas: {patient.length}{" "}
+                          </h5>
+                        ) : null}
                       </div>
                     </div>
                   </div>
 
                   <div class="row">
-
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                       {resources ? (
                         resources.length > 0 ? (
                           resources.map(resource => (
@@ -88,28 +99,38 @@ class TherapistProfile extends Component {
                         )
                       ) : null}
                     </div>
-                    <div class="col-md-3">
-                      <div class="card card-primary card-outline">
-                        <div class="card-body box-profile">
-                          <h3 class="profile-username text-center">Crianças</h3>
+                    <div class="col-md-4">
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Crianças</h3>
+                        </div>
 
-                          <ul class="list-group list-group-unbordered mb-3">
+                        {/* /.card-header */}
+                        <div className="card-body p-0">
+                          <ul className="products-list product-list-in-card pl-2 pr-2">
                             {patient ? (
                               patient.length > 0 ? (
                                 patient.map(user => (
-                                  <li class="list-group-item">
-                                    <b>
+                                  <li class="item">
+                                    <div className="product-img">
+                                      <img
+                                        className="img-circle elevation-2"
+                                        src="../dist/img/user7-128x128.jpg"
+                                        alt="User Avatar"
+                                      />
+                                    </div>
+                                    <div className="product-info">
                                       <Link
                                         style={{ color: "black" }}
                                         to={`/paciente/ver/${user._id}`}
                                       >
                                         {user.name}
                                       </Link>
-                                    </b>{" "}
+                                    </div>
                                   </li>
                                 ))
                               ) : (
-                                <p>Sem pacientes</p>
+                                <p> Sem parentes associados </p>
                               )
                             ) : null}
                           </ul>
