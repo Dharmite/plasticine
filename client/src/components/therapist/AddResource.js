@@ -32,6 +32,12 @@ class AddResource extends Component {
     errors: {}
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -518,7 +524,8 @@ AddResource.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  loaded: state.resource.loaded
+  loaded: state.resource.loaded,
+  errors: state.errors
 });
 
 export default connect(

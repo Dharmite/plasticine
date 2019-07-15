@@ -87,7 +87,7 @@ export const addTherapeuticNote = (
         payload: res.data
       });
       dispatch(clearErrors());
-      history.push("/terapeuta-dashboard");
+      history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
       console.log(err);
@@ -316,6 +316,7 @@ export const addTherapistPatient = (therapist_name, patient_id) => dispatch => {
 };
 
 export const removeTherapistPatient = (id, therapist_id) => dispatch => {
+  console.log("entrei!!");
   axios
     .delete(`/api/patient-profile/${id}/therapist/${therapist_id}`)
     .then(res => {

@@ -14,7 +14,7 @@ class TherapistProfile extends Component {
   }
 
   render() {
-    const { name, email, specialty, resources, patient } = this.props.therapist;
+    const { name, email, specialty, resources, patient, account_status } = this.props.therapist;
 
     let userType;
 
@@ -50,40 +50,79 @@ class TherapistProfile extends Component {
 
               <section class="content">
                 <div class="container-fluid">
-                  <div className="card card-body bg-warning text-white mb-3">
-                    <div className="row">
-                      <div className="col-lg-2 col-md-2">
-                        <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
-                          alt="User Avatar"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4 border-right pl-0">
-                        {name ? <h3>{name}</h3> : null}
-                        {email ? (
-                          <p>
-                            <i className="fas fa-envelope-square" /> {email}
-                          </p>
-                        ) : null}
-                        {specialty ? <p>{specialty}</p> : null}
-                      </div>
+                  {account_status ? (
+                    account_status == "active" ? (
+                      <div className="card card-body mb-3" style={{backgroundColor:"#FFE4B5"}}>
+                        <div className="row">
+                          <div className="col-lg-2 col-md-2">
+                            <img
+                              className="img-circle elevation-2"
+                              src="../dist/img/user7-128x128.jpg"
+                              alt="User Avatar"
+                            />
+                          </div>
+                          <div className="col-lg-4 col-md-4 border-right pl-0">
+                            {name ? <h3>{name}</h3> : null}
+                            {email ? (
+                              <p>
+                                <i className="fas fa-envelope-square" /> {email}
+                              </p>
+                            ) : null}
+                            {specialty ? <p>{specialty}</p> : null}
+                          </div>
 
-                      <div className="col-lg-4 col-md-4 pl-4">
-                        {resources ? (
-                          <h5>
-                            Numero de recursos criados: {resources.length}
-                          </h5>
-                        ) : null}
+                          <div className="col-lg-4 col-md-4 pl-4">
+                            {resources ? (
+                              <h5>
+                                Recursos criados: {resources.length}
+                              </h5>
+                            ) : null}
 
-                        {patient ? (
-                          <h5>
-                            Numero de crianças tratadas: {patient.length}{" "}
-                          </h5>
-                        ) : null}
+                            {patient ? (
+                              <h5>
+                                Crianças: {patient.length}{" "}
+                              </h5>
+                            ) : null}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    ) : (
+                      <div className="card card-body bg-secondary text-white mb-3">
+                        <div className="row">
+                          <div className="col-lg-2 col-md-2">
+                            <img
+                              className="img-circle elevation-2"
+                              src="../dist/img/user7-128x128.jpg"
+                              alt="User Avatar"
+                            />
+                          </div>
+                          <div className="col-lg-4 col-md-4 border-right pl-0">
+                            {name ? <h3>{name}</h3> : null}
+                            {email ? (
+                              <p>
+                                <i className="fas fa-envelope-square" /> {email}
+                              </p>
+                            ) : null}
+                            {specialty ? <p>{specialty}</p> : null}
+                          </div>
+
+                          <div className="col-lg-4 col-md-4 pl-4">
+                            {resources ? (
+                              <h5>
+                                Numero de recursos criados: {resources.length}
+                              </h5>
+                            ) : null}
+
+                            {patient ? (
+                              <h5>
+                                Numero de crianças tratadas: {patient.length}{" "}
+                              </h5>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  ) : null}
 
                   <div class="row">
                     <div class="col-md-8">

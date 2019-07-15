@@ -247,7 +247,8 @@ class AddTherapeuticNote extends Component {
                       ) : null}
                       {therapist
                         ? therapist.map(elem =>
-                            elem._id !== this.props.auth.user.id ? (
+                            elem._id !== this.props.auth.user.id &&
+                            elem.account_status == "active" ? (
                               <div class="form-check mb-1">
                                 <input
                                   class="form-check-input"
@@ -313,7 +314,7 @@ class AddTherapeuticNote extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar registo"
+                      value="Adicionar nota"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

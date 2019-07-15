@@ -122,7 +122,7 @@ class DashboardAdmin extends Component {
                       style={{ cursor: "pointer" }}
                     >
                       <div className="info-box mb-3 terapeutas">
-                        <span className="info-box-icon bg-warning elevation-1 ">
+                        <span className="info-box-icon elevation-1 " style={{backgroundColor:"#FFE4B5"}}>
                           <i className="fa fa-users" />
                         </span>
                         <div className="info-box-content ">

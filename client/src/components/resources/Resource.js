@@ -87,7 +87,12 @@ class Resource extends Component {
                     src="../dist/img/user7-128x128.jpg"
                     alt="User Avatar"
                   />{" "}
-                  {user ? <p className="text-muted mt-2">{user.name}</p> : null}
+                  {user ? <p className="text-center text-muted mt-1">{user.name}</p> : null}
+                  {date ? (
+                      <p className="text-center">
+                        <small class="text-muted">{date.slice(0, 10)}</small>
+                      </p>
+                    ) : null}
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12">
                   <p>

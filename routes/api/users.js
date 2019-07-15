@@ -92,6 +92,12 @@ router.post("/login", (req, res) => {
           .json({ email: "Não existe nenhuma conta com este email" });
       }
 
+      if (user.account_status == "desactive") {
+        return res
+          .status(403)
+          .json({ email: "Esta conta encontra-se desativa" });
+      }
+
       // check user password
       // User password is plain text but in the db the password is encrypted
 
@@ -176,6 +182,7 @@ router.get(
   (req, res) => {
     Therapist.findById(req.params.therapist_id)
       .populate("patient")
+      .populate("previousPatients")
       .populate("notes")
       .populate("resources")
       .populate("therapeuticnote")
@@ -344,7 +351,8 @@ router.post(
 
     const newParent = {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
+      account_status: req.body.account_status
     };
 
     Parent.findByIdAndUpdate(req.params.parent_id, newParent).then(parent => {
@@ -369,10 +377,12 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors);
     }
+    console.log(req.body.account_status);
     const newTherapist = {
       name: req.body.name,
       email: req.body.email,
-      specialty: req.body.specialty
+      specialty: req.body.specialty,
+      account_status: req.body.account_status
     };
 
     Therapist.findByIdAndUpdate(req.params.therapist_id, newTherapist).then(

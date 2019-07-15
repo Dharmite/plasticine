@@ -20,14 +20,16 @@ class EditParent extends Component {
   state = {
     name: "",
     email: "",
+    account_status: "",
     errors: {}
   };
 
   componentWillReceiveProps(nextProps, nextState) {
-    const { name, email } = nextProps.parent;
+    const { name, email, account_status } = nextProps.parent;
     this.setState({
       name,
-      email
+      email,
+      account_status
     });
 
     if (nextProps.errors) {
@@ -40,10 +42,16 @@ class EditParent extends Component {
     this.props.getParent(id);
   }
 
+  radioChange = event => {
+    this.setState({
+      account_status: event.target.value
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email } = this.state;
+    const { name, email, account_status } = this.state;
 
     // Check For Errors --> Validation
     const { id } = this.props.match.params;
@@ -51,7 +59,8 @@ class EditParent extends Component {
     const newParent = {
       id,
       name,
-      email
+      email,
+      account_status
     };
 
     this.props.updateParent(newParent, this.props.history);
@@ -61,6 +70,7 @@ class EditParent extends Component {
       name: "",
       email: "",
       password: "",
+      account_status: "",
       errors: {}
     });
   };
@@ -68,7 +78,7 @@ class EditParent extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, errors } = this.state;
+    const { name, email, account_status, errors } = this.state;
 
     return (
       <div>
@@ -82,9 +92,9 @@ class EditParent extends Component {
                 className="btn mt-3"
                 style={{
                   border: "1px solid black",
-                  backgroundColor:"white"
+                  backgroundColor: "white"
                 }}
-            data-toggle="modal"
+                data-toggle="modal"
                 data-target="#backModal"
               >
                 Voltar
@@ -152,6 +162,52 @@ class EditParent extends Component {
                       onChange={this.onChange}
                       error={errors.email}
                     />
+
+                    {account_status ? (
+                      account_status == "active" ? (
+                        <p>
+                          <label>Estado da conta: </label>{" "}
+                          <input
+                            type="radio"
+                            name="account_status"
+                            value="active"
+                            onChange={this.radioChange}
+                            checked
+                          />{" "}
+                          Ativa{" "}
+                          <span>
+                            <input
+                              type="radio"
+                              name="account_status"
+                              value="desactive"
+                              onChange={this.radioChange}
+                            />{" "}
+                            Desativa
+                          </span>
+                        </p>
+                      ) : (
+                        <p>
+                          <label>Estado da conta: </label>{" "}
+                          <input
+                            type="radio"
+                            name="account_status"
+                            value="desactive"
+                            onChange={this.radioChange}
+                            checked
+                          />{" "}
+                          Desativa{" "}
+                          <span>
+                            <input
+                              type="radio"
+                              name="account_status"
+                              value="active"
+                              onChange={this.radioChange}
+                            />{" "}
+                            Ativa
+                          </span>
+                        </p>
+                      )
+                    ) : null}
 
                     <input
                       type="submit"

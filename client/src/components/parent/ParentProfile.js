@@ -14,9 +14,7 @@ class ParentProfile extends Component {
   }
 
   render() {
-    const { name, email, notes, patient } = this.props.parent;
-
-    console.log(patient, "patient");
+    const { name, email, notes, patient, account_status } = this.props.parent;
 
     let userType;
 
@@ -59,37 +57,73 @@ class ParentProfile extends Component {
 
               <section class="content">
                 <div class="container-fluid">
-                  <div className="card card-body bg-info text-white mb-3">
-                    <div className="row">
-                      <div className="col-lg-2 col-md-2">
-                        <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
-                          alt="User Avatar"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4 border-right pl-0">
-                        {name ? <h3>{name}</h3> : null}
-                        {email ? (
-                          <p>
-                            <i className="fas fa-envelope-square" /> {email}
-                          </p>
-                        ) : null}
-                      </div>
+                  {account_status ? (
+                    account_status == "active" ? (
+                      <div className="card card-body bg-info text-white mb-3">
+                        <div className="row">
+                          <div className="col-lg-2 col-md-2">
+                            <img
+                              className="img-circle elevation-2"
+                              src="../dist/img/user7-128x128.jpg"
+                              alt="User Avatar"
+                            />
+                          </div>
+                          <div className="col-lg-4 col-md-4 border-right pl-0">
+                            {name ? <h3>{name}</h3> : null}
+                            {email ? (
+                              <p>
+                                <i className="fas fa-envelope-square" /> {email}
+                              </p>
+                            ) : null}
+                          </div>
 
-                      <div className="col-lg-4 col-md-4 pl-4">
-                        {notes ? (
-                          <h5>Numero de notas criados: {notes.length}</h5>
-                        ) : null}
+                          <div className="col-lg-4 col-md-4 pl-4">
+                            {notes ? (
+                              <h5>Notas criados: {notes.length}</h5>
+                            ) : null}
 
-                        {patient ? (
-                          <h5>
-                            Numero de crianças associadas: {patient.length}{" "}
-                          </h5>
-                        ) : null}
+                            {patient ? (
+                              <h5>
+                                Crianças: {patient.length}{" "}
+                              </h5>
+                            ) : null}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    ) : (
+                      <div className="card card-body bg-secondary text-white mb-3">
+                        <div className="row">
+                          <div className="col-lg-2 col-md-2">
+                            <img
+                              className="img-circle elevation-2"
+                              src="../dist/img/user7-128x128.jpg"
+                              alt="User Avatar"
+                            />
+                          </div>
+                          <div className="col-lg-4 col-md-4 border-right pl-0">
+                            {name ? <h3>{name}</h3> : null}
+                            {email ? (
+                              <p>
+                                <i className="fas fa-envelope-square" /> {email}
+                              </p>
+                            ) : null}
+                          </div>
+
+                          <div className="col-lg-4 col-md-4 pl-4">
+                            {notes ? (
+                              <h5>Numero de notas criados: {notes.length}</h5>
+                            ) : null}
+
+                            {patient ? (
+                              <h5>
+                                Numero de crianças associadas: {patient.length}{" "}
+                              </h5>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  ) : null}
 
                   <div class="row">
                     <div class="col-md-8">

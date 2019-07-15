@@ -22,16 +22,18 @@ class EditTherapist extends Component {
     name: "",
     email: "",
     specialty: "",
+    account_status: "",
     errors: {}
   };
 
   componentWillReceiveProps(nextProps, nextState) {
-    const { name, email, specialty } = nextProps.therapist;
+    const { name, email, specialty, account_status } = nextProps.therapist;
 
     this.setState({
       name,
       email,
-      specialty
+      specialty,
+      account_status
     });
 
     if (nextProps.errors) {
@@ -44,6 +46,12 @@ class EditTherapist extends Component {
     this.props.getTherapist(id);
   }
 
+  radioChange = event => {
+    this.setState({
+      account_status: event.target.value
+    });
+  };
+
   handleSelectionChanged = e => {
     this.setState({
       specialty: e.target.value
@@ -53,14 +61,15 @@ class EditTherapist extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, specialty } = this.state;
+    const { name, email, specialty, account_status } = this.state;
     const { id } = this.props.match.params;
 
     const newTherapist = {
       id,
       name,
       email,
-      specialty
+      specialty,
+      account_status
     };
 
     // Check For Errors
@@ -81,6 +90,7 @@ class EditTherapist extends Component {
       name: "",
       email: "",
       specialty: "",
+      account_status: "",
       errors: {}
     });
   };
@@ -88,7 +98,9 @@ class EditTherapist extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, specialty, errors } = this.state;
+    const { name, email, specialty, errors, account_status } = this.state;
+
+    console.log(account_status, "therapist");
 
     // Select options for status
     const options = [
@@ -182,7 +194,6 @@ class EditTherapist extends Component {
                       onChange={this.onChange}
                       error={errors.name}
                     />
-
                     <SelectListGroup
                       name="specialty"
                       value={specialty}
@@ -191,6 +202,53 @@ class EditTherapist extends Component {
                       onChange={this.handleSelectionChanged}
                       options={options}
                     />
+                    {account_status ? (
+                      account_status == "active" ? (
+                        <p>
+                          <label>Estado da conta: </label>{" "}
+                          <input
+                            type="radio"
+                            name="account_status"
+                            value="active"
+                            onChange={this.radioChange}
+                            checked
+                          />{" "}
+                          Ativa{" "}
+                          <span>
+                            <input
+                              type="radio"
+                              name="account_status"
+                              value="desactive"
+                              onChange={this.radioChange}
+                              
+                            />{" "}
+                            Desativa
+                          </span>
+                        </p>
+                      ) : (
+                        <p>
+                          <label>Estado da conta: </label>{" "}
+                          <input
+                            type="radio"
+                            name="account_status"
+                            value="desactive"
+                            onChange={this.radioChange}
+                            checked
+                          />{" "}
+                          Desativa{" "}
+                          <span>
+                            <input
+                              type="radio"
+                              name="account_status"
+                              value="active"
+                              onChange={this.radioChange}
+
+                            />{" "}
+                            Ativa
+                          </span>
+                        </p>
+                      )
+                    ) : null}
 
                     <input
                       type="submit"

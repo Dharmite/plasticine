@@ -7,7 +7,14 @@ import "./Therapist.css";
 
 class Therapist extends Component {
   render() {
-    const { _id, name, email, specialty, patient } = this.props.therapist;
+    const {
+      _id,
+      name,
+      email,
+      specialty,
+      patient,
+      account_status
+    } = this.props.therapist;
 
     const show_patients = patient.slice(0, 2);
 
@@ -20,7 +27,47 @@ class Therapist extends Component {
           >
             <div className="col-md-7 col-sm-12 pr-3 pl-3 pt-3">
               <div className="card-widget widget-user-2">
-                <div className="widget-user-header widget-user-header-custom bg-warning">
+                {account_status ? (
+                  account_status == "active" ? (
+                    <div className="widget-user-header widget-user-header-custom" style={{backgroundColor:"#FFE4B5"}}>
+                      <div className="widget-user-image">
+                        <img
+                          className="img-circle elevation-2"
+                          src="../dist/img/user7-128x128.jpg"
+                          alt="User Avatar"
+                        />
+                      </div>
+                      <h3 className="widget-user-username">
+                        {" "}
+                        <Link to={`/terapeuta/${_id}`}>{name}</Link>
+                      </h3>
+                      <h6 className="widget-user-desc">{specialty}</h6>
+                      <p className="widget-user-desc">
+                        <i className="fas fa-envelope-square"> </i> {email}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="widget-user-header widget-user-header-custom bg-secondary">
+                      <div className="widget-user-image">
+                        <img
+                          className="img-circle elevation-2"
+                          src="../dist/img/user7-128x128.jpg"
+                          alt="User Avatar"
+                        />
+                      </div>
+                      <h3 className="widget-user-username">
+                        {" "}
+                        <Link to={`/terapeuta/${_id}`}>{name}</Link>
+                      </h3>
+                      <h6 className="widget-user-desc">{specialty}</h6>
+                      <p className="widget-user-desc">
+                        <i className="fas fa-envelope-square"> </i> {email}
+                      </p>
+                      <p className="widget-user-desc">Conta desativa</p>
+                    </div>
+                  )
+                ) : null}
+                {/* <div className="widget-user-header widget-user-header-custom bg-warning">
                   <div className="widget-user-image">
                     <img
                       className="img-circle elevation-2"
@@ -36,7 +83,7 @@ class Therapist extends Component {
                   <p className="widget-user-desc">
                     <i className="fas fa-envelope-square"> </i> {email}
                   </p>
-                </div>
+                </div> */}
                 <div className="card-footer card-footer-custom bg-white">
                   <div className="row">
                     <div className="col-sm-6">
@@ -57,17 +104,19 @@ class Therapist extends Component {
                     </div>
                     <div className="col-sm-6">
                       <div className="description-block bg-white">
-                        <Link
-                          to={`/terapeuta/editar/${_id}`}
-                          className="btn bg-white"
-                          style={{
-                            border: "1px solid",
-                            width: "100%",
-                            height: "100%"
-                          }}
-                        >
-                          Editar
-                        </Link>
+                        {this.props.isAdmin ? (
+                          <Link
+                            to={`/terapeuta/editar/${_id}`}
+                            className="btn bg-white"
+                            style={{
+                              border: "1px solid",
+                              width: "100%",
+                              height: "100%"
+                            }}
+                          >
+                            Editar
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -121,7 +170,12 @@ Therapist.propTypes = {
   therapist: PropTypes.object.isRequired
 };
 
+const mapStateToProps = state => ({
+  isAdmin: state.auth.isAdmin,
+  errors: state.errors
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   {}
 )(Therapist);

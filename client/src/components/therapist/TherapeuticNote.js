@@ -18,9 +18,6 @@ class TherapeuticNote extends Component {
       date
     } = this.props.TherapeuticNote;
 
-    console.log(user._id, "user_id");
-    console.log(this.props.user.id, "props.id");
-
     return (
       <div>
         <div

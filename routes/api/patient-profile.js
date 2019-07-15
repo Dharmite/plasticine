@@ -546,17 +546,8 @@ router.delete(
                       .map(patient => patient.id)
                       .indexOf(req.params.patient_id);
                     // Splice out of array
-                    therapist.patient.splice(removeIndex, 1);
-                    therapist.previousPatients.push({
-                      name: patient.name,
-                      age: patient.age,
-                      clinicalStatus: patient.clinicalStatus,
-                      schoolName: patient.schoolName,
-                      schoolSchedule: patient.schoolSchedule,
-                      medicine: patient.medicine,
-                      parent: patient.parent,
-                      therapeuticNote: patient.therapeuticNote
-                    });
+                    let old_patient = therapist.patient.splice(removeIndex, 1);
+                    therapist.previousPatients.push(old_patient);
                     therapist
                       .save()
                       .then(therapist => res.json(patient))

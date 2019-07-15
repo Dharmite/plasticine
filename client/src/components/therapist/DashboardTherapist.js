@@ -7,28 +7,74 @@ import Navbar from "../layout/Navbar";
 import { getTherapist } from "../../actions/therapistActions";
 import Patient from "../patient/Patient";
 
-
 class DashboardTherapist extends Component {
+  state = {
+    patients: true,
+    previousPatients: false
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getTherapist(this.props.user.id);
+    document.getElementsByClassName("info-box")[0].style.backgroundColor =
+      "#E8E8E8";
   }
 
   render() {
-    const { patient } = this.props.therapist;
+    const { patient, previousPatients } = this.props.therapist;
+
     let patientContent;
-    if(patient){
+    if (patient) {
       patientContent =
-      patient.length > 0 ? (
-        patient.map(patient => (
-          <Patient key={patient.id} patient={patient} />
-        ))
-      ) : (
-        <h6 className="mt-4">Nenhum paciente disponível</h6>
-      );
+        patient.length > 0 ? (
+          patient.map(patient => <Patient key={patient.id} patient={patient} />)
+        ) : (
+          <h6 className="mt-4">Nenhum paciente disponível</h6>
+        );
     }
-      
-    
+
+    let previousPatientsContent;
+    if (previousPatients) {
+      previousPatientsContent =
+        previousPatients.length > 0 ? (
+          previousPatients.map(patient => (
+            <div className="row  mb-5">
+              <div className="col-md-10">
+                <div
+                  className="row card"
+                  style={{ display: "flex", flexDirection: "row" }}
+                >
+                  <div className="col-md-12 col-sm-12 pr-2 pl-2 pt-2 pb-2">
+                    <div className="card-widget widget-user-2">
+                      <div className="widget-user-header widget-user-header-custom bg-success">
+                        <div className="widget-user-image">
+                          <img
+                            className="img-circle elevation-2"
+                            src="../dist/img/user7-128x128.jpg"
+                            alt="User Avatar"
+                          />
+                        </div>
+                        <h1 className="widget-user-username">
+                          {" "}
+                          <b>{patient.name}</b>
+                        </h1>
+                        <h6 className="widget-user-desc">
+                          <b>Idade:</b> {patient.age}
+                        </h6>
+                        <p className="widget-user-desc">
+                          <b>Estado clinico:</b> {patient.clinicalStatus}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <h6 className="mt-4">Nenhum paciente disponível</h6>
+        );
+    }
+
     return (
       <div>
         <Navbar />
@@ -37,99 +83,80 @@ class DashboardTherapist extends Component {
             <div class="container-fluid">
               <Sidebar />
 
+              <div className="row">
+                <div className="col-md-12">
+                  <h1 className="display-4">Perfil de terapeuta</h1>
+                  <p className="lead text-muted">
+                    Bem vindo {this.props.user.name}
+                  </p>
+                </div>
+              </div>
 
               <div className="row">
-                    <div className="col-md-12">
-                      <h1 className="display-4">Perfil de terapeuta</h1>
-                      <p className="lead text-muted">
-                        Bem vindo {this.props.user.name}
-                      </p>
+                <div
+                  className="col-12 col-sm-6 col-md-3"
+                  onClick={() => {
+                    document.getElementsByClassName(
+                      "info-box"
+                    )[0].style.backgroundColor = "#E8E8E8";
+                    document.getElementsByClassName(
+                      "info-box"
+                    )[1].style.backgroundColor = "white";
+
+                    this.setState({
+                      patients: true,
+                      previousPatients: false
+                    });
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="info-box mb-3">
+                    <span className="info-box-icon bg-success elevation-1">
+                      <i class="fas fa-child" />{" "}
+                    </span>
+                    <div className="info-box-content">
+                      <span className="info-box-text">Pacientes atuais</span>
+                      <span className="info-box-number">
+                        {patient ? patient.length : null}
+                      </span>
                     </div>
+                  </div>
                 </div>
 
-                  <div className="row">
+                <div
+                  className="col-12 col-sm-6 col-md-3"
+                  onClick={() => {
+                    document.getElementsByClassName(
+                      "info-box"
+                    )[0].style.backgroundColor = "white";
+                    document.getElementsByClassName(
+                      "info-box"
+                    )[1].style.backgroundColor = "#E8E8E8";
 
-                    <div
-                      className="col-12 col-sm-6 col-md-3"
-                    >
-                      <div
-                        className="info-box mb-3"
-                      >
-                        <span className="info-box-icon bg-success elevation-1">
-                          <i class="fas fa-child" />{" "}
-                        </span>
-                        <div className="info-box-content">
-                          <span className="info-box-text">Pacientes</span>
-                          <span className="info-box-number">
-                            {patient ? patient.length : null}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="clearfix hidden-md-up" />
-   
-                  </div>
-                  <hr />
-
-                  {patient ? patientContent : null}
-
-
-              {/* {patient ? patient.length > 0 ? (
-                patient.map(patient => (
-                  <div className="card card-body bg-light mb-3">
-                    <div className="row">
-                      <div className="col-2">
-                        <img
-                          className="rounded-circle"
-                          style={{ width: "100%" }}
-                          src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-12 col-12">
-                        <h3>{patient.name}</h3>
-                        <p>Idade: {patient.age}</p>
-                        <p>Escola: {patient.schoolName}</p>
-
-                        <div className="row">
-                          <div className="col-3">
-                            <Link
-                              to={`/paciente/ver/${patient._id}`}
-                              class="btn btn-info"
-                              style={{ width: "100%" }}
-                            >
-                              Ver
-                            </Link>
-                          </div>
-
-                          <div className="col-5">
-                            <Link
-                              to={`/paciente/${patient._id}/registo/adicionar`}
-                              className="btn btn-info"
-                              style={{ width: "100%" }}
-                            >
-                              Criar registo
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-4 d-lg-block">
-                        <h4>Terapeutas</h4>
-                        <ul className="list-group">
-                          {patient.therapist.map(user => (
-                            <li className="list-group-item">
-                              <i className="fa fa-check pr-1" />
-                              {user.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    this.setState({
+                      patients: false,
+                      previousPatients: true
+                    });
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="info-box mb-3">
+                    <span className="info-box-icon bg-success elevation-1">
+                      <i class="fas fa-child" />{" "}
+                    </span>
+                    <div className="info-box-content">
+                      <span className="info-box-text">Antigos pacientes</span>
+                      <span className="info-box-number">
+                        {previousPatients ? previousPatients.length : null}
+                      </span>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>Sem pacientes</p>
-              ): null} */}
+                </div>
+              </div>
+              <hr />
+
+              {this.state.patients ? patientContent : null}
+              {this.state.previousPatients ? previousPatientsContent : null}
             </div>
           </section>
         </div>
@@ -154,5 +181,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {getTherapist}
+  { getTherapist }
 )(withRouter(DashboardTherapist));

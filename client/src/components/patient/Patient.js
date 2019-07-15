@@ -6,7 +6,11 @@ import { connect } from "react-redux";
 class Patient extends Component {
   render() {
     const { _id, name, age, therapist } = this.props.patient;
-    const show_therapists = therapist.slice(0, 2);
+
+    let show_therapists = therapist.filter(
+      user => user.account_status == "active"
+    );
+    show_therapists = show_therapists.slice(0, 2);
 
     return (
       <div className="row  mb-5">
@@ -51,17 +55,19 @@ class Patient extends Component {
                     </div>
                     <div className="col-sm-6">
                       <div className="description-block bg-white">
-                        <Link
-                          to={`/paciente/editar/${_id}`}
-                          className="btn bg-white"
-                          style={{
-                            border: "1px solid",
-                            width: "100%",
-                            height: "100%"
-                          }}
-                        >
-                          Editar
-                        </Link>
+                        {this.props.isAdmin ? (
+                          <Link
+                            to={`/paciente/editar/${_id}`}
+                            className="btn bg-white"
+                            style={{
+                              border: "1px solid",
+                              width: "100%",
+                              height: "100%"
+                            }}
+                          >
+                            Editar
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -70,7 +76,7 @@ class Patient extends Component {
             </div>
             <div className="col-md-5 col-sm-12 border-left info-box-group pr-3 pl-3 pt-3">
               {show_therapists.map(user => (
-                <div className="info-box mb-3 bg-warning info-box-custom">
+                <div className="info-box mb-3 info-box-custom" style={{backgroundColor:"#FFE4B5"}}>
                   <span className="info-box-icon">
                     <i className="fas fa-child" />
                   </span>
@@ -84,7 +90,7 @@ class Patient extends Component {
 
               {show_therapists ? (
                 therapist.length == 0 ? (
-                  <h4 className="text-center">Sem pacientes</h4>
+                  <h4 className="text-center">Sem terapeutas</h4>
                 ) : null
               ) : null}
 
@@ -115,7 +121,12 @@ Patient.propTypes = {
   patient: PropTypes.object.isRequired
 };
 
+const mapStateToProps = state => ({
+  isAdmin: state.auth.isAdmin,
+  errors: state.errors
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   {}
 )(Patient);
