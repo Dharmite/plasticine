@@ -3,6 +3,8 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeTherapeuticNote } from "../../actions/patientActions";
+import doctor_pic from "../../img/doctor.png";
+import user_pic from "../../img/user.png";
 
 class TherapeuticNote extends Component {
   onClickRemoveResource = resource_id => {
@@ -73,7 +75,6 @@ class TherapeuticNote extends Component {
                 <div className="card card-body">
                   <div className="col-lg-12 col-md-12 col-sm-12">
                     <div className="row" style={{ display: "flex" }}>
-       
                       <div className="col-12">
                         <p style={{ float: "right" }}>{date.slice(0, 10)}</p>
 
@@ -93,15 +94,23 @@ class TherapeuticNote extends Component {
                           Detalhes
                         </Link>
                       </div>
-                      <div className="description-block mr-3">
-                        <Link
-                          className="btn"
-                          style={{ border: "1px solid black" }}
-                          to={`/paciente/${patient}/registo/${_id}/editar`}
-                        >
-                          Editar
-                        </Link>
-                      </div>
+
+                      {user ? (
+                        this.props.auth ? (
+                          this.props.auth.user.id == user._id ? (
+                            <div className="description-block mr-3">
+                              <Link
+                                className="btn"
+                                style={{ border: "1px solid black" }}
+                                to={`/paciente/${patient}/registo/${_id}/editar`}
+                              >
+                                Editar
+                              </Link>
+                            </div>
+                          ) : null
+                        ) : null
+                      ) : null}
+
                       <div className="description-block mr-3">
                         {user ? (
                           this.props.auth ? (
@@ -121,66 +130,86 @@ class TherapeuticNote extends Component {
                     </div>
                   </div>
                 </div>
-              ) :                 <div className="card card-body">
-              <div className="col-lg-12 col-md-12 col-sm-12">
-                <div className="row" style={{ display: "flex" }}>
-                  <div className="col-2">
-                    <img
-                      class="profile-user-img img-responsive img-circle"
-                      src="../../dist/img/user4-128x128.jpg"
-                      alt="User profile picture"
-                    />
-                    {user ? (
-                      <p className="text-muted mt-2">{user.name}</p>
-                    ) : null}
-                  </div>
-                  <div className="col-10">
-                    <p style={{ float: "right" }}>{date.slice(0, 10)}</p>
+              ) : (
+                <div className="card card-body">
+                  <div className="col-lg-12 col-md-12 col-sm-12">
+                    <div className="row" style={{ display: "flex" }}>
+                      <div className="col-2">
+                        {user.specialty ? (
+                          <img
+                            class="profile-user-img img-circle elevation-1"
+                            src={doctor_pic}
+                            alt="User profile picture"
+                            style={{ border: "none" }}
 
-                    <h3>{title}</h3>
-                    <p>
-                      <b>Observação:</b> {observation}
-                    </p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="description-block mr-3">
-                    <Link
-                      className="btn"
-                      style={{ border: "1px solid black" }}
-                      to={`/paciente/${patient}/registo/${_id}`}
-                    >
-                      Detalhes
-                    </Link>
-                  </div>
-                  <div className="description-block mr-3">
-                    <Link
-                      className="btn"
-                      style={{ border: "1px solid black" }}
-                      to={`/paciente/${patient}/registo/${_id}/editar`}
-                    >
-                      Editar
-                    </Link>
-                  </div>
-                  <div className="description-block mr-3">
-                    {user ? (
-                      this.props.auth ? (
-                        this.props.auth.user.id == user._id ? (
-                          <button
-                            className="btn"
-                            data-toggle="modal"
-                            data-target="#removeResourceModal"
-                            style={{ border: "1px solid black" }}
-                          >
-                            Apagar
-                          </button>
+                          />
+                        ) : (
+                          <img
+                            class="profile-user-img img-circle elevation-1"
+                            style={{ border: "none" }}
+                            src={user_pic}
+                            alt="User profile picture"
+                          />
+                        )}
+
+                        {user ? (
+                          <p className="text-muted mt-2">{user.name}</p>
+                        ) : null}
+                      </div>
+                      <div className="col-10">
+                        <p style={{ float: "right" }}>{date.slice(0, 10)}</p>
+
+                        <h3>{title}</h3>
+                        <p>
+                          <b>Observação:</b> {observation}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="description-block mr-3">
+                        <Link
+                          className="btn"
+                          style={{ border: "1px solid black" }}
+                          to={`/paciente/${patient}/registo/${_id}`}
+                        >
+                          Detalhes
+                        </Link>
+                      </div>
+                      {user ? (
+                        this.props.auth ? (
+                          this.props.auth.user.id == user._id ? (
+                            <div className="description-block mr-3">
+                              <Link
+                                className="btn"
+                                style={{ border: "1px solid black" }}
+                                to={`/paciente/${patient}/registo/${_id}/editar`}
+                              >
+                                Editar
+                              </Link>
+                            </div>
+                          ) : null
                         ) : null
-                      ) : null
-                    ) : null}
+                      ) : null}{" "}
+                      <div className="description-block mr-3">
+                        {user ? (
+                          this.props.auth ? (
+                            this.props.auth.user.id == user._id ? (
+                              <button
+                                className="btn"
+                                data-toggle="modal"
+                                data-target="#removeResourceModal"
+                                style={{ border: "1px solid black" }}
+                              >
+                                Apagar
+                              </button>
+                            ) : null
+                          ) : null
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              )
             ) : null
           ) : null}
         </div>

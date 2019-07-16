@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import doctor_pic from '../../img/doctor.png'
+
 
 import { removeResource } from "../../actions/resourceActions";
 
@@ -82,11 +84,11 @@ class Resource extends Component {
             <div>
               <div class="row">
                 <div class="col-2-lg">
-                  <img
-                    className="img-circle elevation-2"
-                    src="../dist/img/user7-128x128.jpg"
-                    alt="User Avatar"
-                  />{" "}
+                <img
+                          className="img-circle elevation-1"
+                          src={doctor_pic}
+                          alt="User Avatar"
+                        />{" "}
                   {user ? <p className="text-center text-muted mt-1">{user.name}</p> : null}
                   {date ? (
                       <p className="text-center">

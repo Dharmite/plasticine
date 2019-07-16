@@ -114,6 +114,7 @@ export const removeTherapeuticNote = note_id => async dispatch => {
 };
 
 export const updateTherapeuticNote = (
+  patient_id,
   note_id,
   newTherapeuticNote,
   history
@@ -132,7 +133,7 @@ export const updateTherapeuticNote = (
         payload: res.data
       });
       dispatch(clearErrors());
-      history.push("/terapeuta-dashboard");
+      history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
       console.log(err);

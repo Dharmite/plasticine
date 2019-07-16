@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import user_pic from '../../img/user.png'
+
+
 class Parent extends Component {
   render() {
     const { _id, name, email, patient, account_status } = this.props.parent;
@@ -22,9 +25,9 @@ class Parent extends Component {
                   account_status == "active" ? (
                     <div className="widget-user-header widget-user-header-custom bg-info">
                       <div className="widget-user-image">
-                        <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
+                      <img
+                          className="img-circle"
+                          src={user_pic}
                           alt="User Avatar"
                         />
                       </div>
@@ -40,19 +43,19 @@ class Parent extends Component {
                     <div className="widget-user-header widget-user-header-custom bg-secondary">
                       <div className="widget-user-image">
                         <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
+                          className="img-circle"
+                          src={user_pic}
                           alt="User Avatar"
                         />
                       </div>
                       <h3 className="widget-user-username">
                         {" "}
-                        <Link to={`/parente/${_id}`}>{name}</Link>
+                        <Link  to={`/parente/${_id}`}>{name}</Link>
                       </h3>
                       <p className="widget-user-desc">
                         <i className="fas fa-envelope-square"> </i> {email}
                       </p>
-                      <p className="widget-user-desc">Conta desativa</p>
+                      <p className="widget-user-desc">Conta desativada</p>
                     </div>
                   )
                 ) : null}

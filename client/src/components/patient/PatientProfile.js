@@ -4,6 +4,9 @@ import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
+import kid from '../../img/kid.png'
+import user from '../../img/user.png'
+
 
 import {
   getPatient,
@@ -24,7 +27,7 @@ import { getParents } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import user_img from "../../img/user1.jpg";
+import doctor_pic from "../../img/doctor.png";
 
 class PatientProfile extends Component {
   state = {
@@ -396,61 +399,61 @@ class PatientProfile extends Component {
                       </div>
                     </div>
                   </div>{" "}
-    
                   <div className="profile">
                     <div className="container">
-                    {isAdmin ? (
-                    <div className="col-md-8 mb-3 pt-3">
-                      <Link
-                        to="/admin-dashboard"
-                        className="btn"
-                        style={{
-                          border: "1px solid black",
-                          backgroundColor: "white"
-                        }}
-                      >
-                        Voltar
-                      </Link>
-                    </div>
-                  ) : null}
-                  {isTherapist ? (
-                    <div className="col-md-8 mb-3 pt-3">
-                      <Link
-                        to="/terapeuta-dashboard"
-                        className="btn"
-                        style={{
-                          border: "1px solid black",
-                          backgroundColor: "white"
-                        }}
-                      >
-                        Voltar
-                      </Link>
-                    </div>
-                  ) : null}
-                  {isParent ? (
-                    <div className="col-md-8 mb-3 pt-3">
-                      <Link
-                        to="/parente-dashboard"
-                        className="btn"
-                        style={{
-                          border: "1px solid black",
-                          backgroundColor: "white"
-                        }}
-                      >
-                        Voltar
-                      </Link>
-                    </div>
-                  ) : null}
+                      {isAdmin ? (
+                        <div className="col-md-8 mb-3 pt-3">
+                          <Link
+                            to="/admin-dashboard"
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              backgroundColor: "white"
+                            }}
+                          >
+                            Voltar
+                          </Link>
+                        </div>
+                      ) : null}
+                      {isTherapist ? (
+                        <div className="col-md-8 mb-3 pt-3">
+                          <Link
+                            to="/terapeuta-dashboard"
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              backgroundColor: "white"
+                            }}
+                          >
+                            Voltar
+                          </Link>
+                        </div>
+                      ) : null}
+                      {isParent ? (
+                        <div className="col-md-8 mb-3 pt-3">
+                          <Link
+                            to="/parente-dashboard"
+                            className="btn"
+                            style={{
+                              border: "1px solid black",
+                              backgroundColor: "white"
+                            }}
+                          >
+                            Voltar
+                          </Link>
+                        </div>
+                      ) : null}
                       <div className="row">
                         <div className="col-md-12">
                           <div className="card card-body bg-success text-white mb-3">
                             <div className="row">
-                              <div className="col-lg-2 col-md-2">
+                              <div className="col-lg-3 col-md-3">
                                 <img
-                                  className="img-circle elevation-2"
-                                  src={user_img}
+                                  className="img-circle elevation-1"
+                                  style={{height:"128px",width:"128px"}}
+                                  src={kid}
                                   alt="User Avatar"
-                                />{" "}
+                                />
                               </div>
                               <div className="col-lg-4 col-md-4">
                                 {name ? <h3>{name}</h3> : null}
@@ -942,7 +945,7 @@ class PatientProfile extends Component {
                                         <li className="item">
                                           <div className="product-img">
                                             <img
-                                              src={user_img}
+                                              src={doctor_pic}
                                               alt="Product Image"
                                               className="img-circle"
                                             />
@@ -1004,7 +1007,7 @@ class PatientProfile extends Component {
                                         <li className="item">
                                           <div className="product-img">
                                             <img
-                                              src={user_img}
+                                              src={user}
                                               alt="Product Image"
                                               className="img-circle"
                                             />

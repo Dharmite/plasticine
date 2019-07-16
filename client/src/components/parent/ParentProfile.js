@@ -6,6 +6,10 @@ import { getParent } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import user_pic from '../../img/user.png'
+import kid from '../../img/kid.png'
+
+
 
 class ParentProfile extends Component {
   componentDidMount() {
@@ -49,11 +53,7 @@ class ParentProfile extends Component {
                 </div>
               </div>
 
-              <div class="container row mb-2">
-                <div class="col-sm-6">
-                  <h1>Perfil</h1>
-                </div>
-              </div>
+
 
               <section class="content">
                 <div class="container-fluid">
@@ -63,8 +63,9 @@ class ParentProfile extends Component {
                         <div className="row">
                           <div className="col-lg-2 col-md-2">
                             <img
-                              className="img-circle elevation-2"
-                              src="../dist/img/user7-128x128.jpg"
+                              className="img-circle elevation-1"
+                              src={user_pic}
+                              style={{height:"128px",width:"128px"}}
                               alt="User Avatar"
                             />
                           </div>
@@ -93,10 +94,11 @@ class ParentProfile extends Component {
                     ) : (
                       <div className="card card-body bg-secondary text-white mb-3">
                         <div className="row">
-                          <div className="col-lg-2 col-md-2">
-                            <img
-                              className="img-circle elevation-2"
-                              src="../dist/img/user7-128x128.jpg"
+                          <div className="col-lg-4 col-md-4">
+                          <img
+                              className="img-circle elevation-1"
+                              src={user_pic}
+                              style={{height:"128px",width:"128px"}}
                               alt="User Avatar"
                             />
                           </div>
@@ -125,7 +127,8 @@ class ParentProfile extends Component {
                     )
                   ) : null}
 
-                  <div class="row">
+                  <div><h2>Notas</h2></div>
+                  <div class="row">                    
                     <div class="col-md-8">
                       {notes ? (
                         notes.length > 0 ? (
@@ -157,8 +160,8 @@ class ParentProfile extends Component {
                                   <li class="item">
                                     <div className="product-img">
                                       <img
-                                        className="img-circle elevation-2"
-                                        src="../dist/img/user7-128x128.jpg"
+                                        className="img-circle elevation-1 bg-success"
+                                        src={kid}
                                         alt="User Avatar"
                                       />
                                     </div>

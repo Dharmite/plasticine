@@ -289,8 +289,17 @@ router.post(
   (req, res) => {
     upload(req, res, err => {
       let upload_files = [];
-      console.log(req.files, "files");
-      if(req.files.length > 0) {
+
+      let availableTo;
+
+      if (req.body.availableTo == "") {
+        availableTo = [req.user.id];
+      } else {
+        availableTo = req.body.availableTo.split(" ");
+        availableTo.push(req.user.id);
+      }
+
+      if (req.files.length > 0) {
         req.files.forEach(file => {
           let fileObj = {
             filename: file.filename,
@@ -301,7 +310,7 @@ router.post(
           };
           upload_files.push(fileObj);
         });
-  
+
         TherapeuticNote.findByIdAndUpdate(
           req.params.note_id,
           {
@@ -310,6 +319,7 @@ router.post(
             observation: req.body.observation,
             activity: req.body.activity,
             behavior: req.body.behavior,
+            availableTo: availableTo,
             files: upload_files
           },
           { new: true }
@@ -322,9 +332,13 @@ router.post(
             }
           })
           .catch(err => res.json(err));
-  
-      }else{
-        console.log("entrei");
+      } else {
+        if (req.body.availableTo == "") {
+          availableTo = [req.user.id];
+        } else {
+          availableTo = req.body.availableTo.split(" ");
+          availableTo.push(req.user.id);
+        }
         TherapeuticNote.findByIdAndUpdate(
           req.params.note_id,
           {
@@ -332,6 +346,7 @@ router.post(
             title: req.body.title,
             observation: req.body.observation,
             activity: req.body.activity,
+            availableTo: availableTo,
             behavior: req.body.behavior
           },
           { new: true }
@@ -344,7 +359,6 @@ router.post(
             }
           })
           .catch(err => res.json(err));
-  
       }
     });
   }

@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 
 import "./Therapist.css";
 
+import doctor_pic from '../../img/doctor.png'
+
 class Therapist extends Component {
   render() {
     const {
@@ -32,10 +34,11 @@ class Therapist extends Component {
                     <div className="widget-user-header widget-user-header-custom" style={{backgroundColor:"#FFE4B5"}}>
                       <div className="widget-user-image">
                         <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
+                          className="img-circle elevation-1"
+                          src={doctor_pic}
                           alt="User Avatar"
                         />
+                        {/* <i className="fa fa-users img-circle elevation-2" style={{fontSize:"28px"}}/> */}
                       </div>
                       <h3 className="widget-user-username">
                         {" "}
@@ -49,9 +52,9 @@ class Therapist extends Component {
                   ) : (
                     <div className="widget-user-header widget-user-header-custom bg-secondary">
                       <div className="widget-user-image">
-                        <img
-                          className="img-circle elevation-2"
-                          src="../dist/img/user7-128x128.jpg"
+                      <img
+                          className="img-circle elevation-1"
+                          src={doctor_pic}
                           alt="User Avatar"
                         />
                       </div>
@@ -63,7 +66,7 @@ class Therapist extends Component {
                       <p className="widget-user-desc">
                         <i className="fas fa-envelope-square"> </i> {email}
                       </p>
-                      <p className="widget-user-desc">Conta desativa</p>
+                      <p className="widget-user-desc">Conta desativada</p>
                     </div>
                   )
                 ) : null}

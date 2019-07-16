@@ -11,7 +11,8 @@ import {
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import user_img from "../../img/user1.jpg";
+import doctor_pic from "../../img/doctor.png";
+import user_pic from '../../img/user.png'
 
 
 class ResourceDetails extends Component {
@@ -335,7 +336,7 @@ class ResourceDetails extends Component {
                     <a href="profile.html">
                       <img
                         class="rounded-circle d-none d-md-block"
-                        src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                        src={doctor_pic}
                         alt=""
                         style={{ width: "100%" }}
                       />
@@ -417,17 +418,26 @@ class ResourceDetails extends Component {
                       style={{ backgroundColor: "#f4f6f9" }}
                     >
                       <div className="card-comment">
-                        <img
-                          className="img-circle img-sm"
-                          src={user_img}
-                          alt="User Image"
-                        />
+                      {elem.user.specialty ? (
+                          <img
+                            className="img-circle img-sm"
+                            src={doctor_pic}
+                            alt="User Image"
+                          />
+                        ) : (
+                          <img
+                            className="img-circle img-sm"
+                            src={user_pic}
+                            alt="User Image"
+                          />
+                        )}
                         <div className="comment-text">
                           {elem.user.name ? (
                             <span className="username">
-                              {this.props.user.name}
+                              <Link style={{color:"black"}} to = {`/terapeuta/${elem.user._id}`}>{elem.user.name}</Link>
                               <span className="text-muted float-right">
-                                {elem.date.slice(0, 10)}
+                              {elem.date.slice(0, 10)}{" "}
+                              {elem.date.slice(11,19)}
                               </span>
                             </span>
                           ) : null}

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import kid from '../../img/kid.png'
+
 
 class Patient extends Component {
   render() {
@@ -24,8 +26,8 @@ class Patient extends Component {
                 <div className="widget-user-header widget-user-header-custom bg-success">
                   <div className="widget-user-image">
                     <img
-                      className="img-circle elevation-2"
-                      src="../dist/img/user7-128x128.jpg"
+                      className="img-circle elevation-1"
+                      src={kid}
                       alt="User Avatar"
                     />
                   </div>
@@ -78,7 +80,7 @@ class Patient extends Component {
               {show_therapists.map(user => (
                 <div className="info-box mb-3 info-box-custom" style={{backgroundColor:"#FFE4B5"}}>
                   <span className="info-box-icon">
-                    <i className="fas fa-child" />
+                    <i className="fa fa-users" />
                   </span>
                   <div style={{ display: "flex" }}>
                     <div style={{ alignSelf: "center" }}>

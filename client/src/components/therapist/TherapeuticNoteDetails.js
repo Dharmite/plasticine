@@ -9,9 +9,11 @@ import {
   getComments
 } from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import user_img from "../../img/user1.jpg";
+import doctor_pic from "../../img/doctor.png";
+import user_pic from "../../img/user.png";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+
 
 class TherapeuticNoteDetails extends Component {
   state = {
@@ -333,7 +335,7 @@ class TherapeuticNoteDetails extends Component {
                     <div className="row">
                       <div class="col-md-3">
                         <img
-                          src={user_img}
+                          src={doctor_pic}
                           className="img-circle elevation-2"
                           alt="User Image"
                           style={{ height: "128px", width: "128px" }}
@@ -399,11 +401,19 @@ class TherapeuticNoteDetails extends Component {
                               <li class="item">
                                 <li className="product-img">
                                   <div className="product-img">
-                                    <img
-                                      src={user_img}
-                                      alt="Product Image"
-                                      className="img-circle"
-                                    />
+                                    {elem.specialty ? (
+                                      <img
+                                        src={doctor_pic}
+                                        alt="Product Image"
+                                        className="img-circle"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={user_pic}
+                                        alt="Product Image"
+                                        className="img-circle"
+                                      />
+                                    )}
                                   </div>
                                   <div className="product-info">
                                     <a className="product-title">
@@ -465,21 +475,36 @@ class TherapeuticNoteDetails extends Component {
               {feedback
                 ? feedback.map(elem => (
                     <div
-                      className="card-footer card-comments mt-5 mb-5"
+                      className="card p-3 card-comments mt-5 mb-5"
                       style={{ backgroundColor: "#f4f6f9" }}
                     >
                       <div className="card-comment">
-                        <img
-                          className="img-circle img-sm"
-                          src={user_img}
-                          alt="User Image"
-                        />
+                        {elem.user.specialty ? (
+                          <img
+                            className="img-circle img-sm"
+                            src={doctor_pic}
+                            alt="User Image"
+                          />
+                        ) : (
+                          <img
+                            className="img-circle img-sm"
+                            src={user_pic}
+                            alt="User Image"
+                          />
+                        )}
+
                         <div className="comment-text">
                           {elem.user.name ? (
                             <span className="username">
-                              {this.props.user.name}
+                              <Link
+                                style={{ color: "black" }}
+                                to={`/terapeuta/${elem.user._id}`}
+                              >
+                                {elem.user.name}
+                              </Link>
                               <span className="text-muted float-right">
-                                {elem.date.slice(0, 10)}
+                                {elem.date.slice(0, 10)}{" "}
+                                {elem.date.slice(11, 19)}
                               </span>
                             </span>
                           ) : null}

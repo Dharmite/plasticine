@@ -6,6 +6,8 @@ import { getTherapist } from "../../actions/therapistActions";
 import Resource from "../resources/Resource";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import doctor_pic from '../../img/doctor.png'
+
 
 class TherapistProfile extends Component {
   componentDidMount() {
@@ -55,11 +57,11 @@ class TherapistProfile extends Component {
                       <div className="card card-body mb-3" style={{backgroundColor:"#FFE4B5"}}>
                         <div className="row">
                           <div className="col-lg-2 col-md-2">
-                            <img
-                              className="img-circle elevation-2"
-                              src="../dist/img/user7-128x128.jpg"
-                              alt="User Avatar"
-                            />
+                          <img
+                          className="img-circle elevation-1"
+                          src={doctor_pic}
+                          alt="User Avatar"
+                        />
                           </div>
                           <div className="col-lg-4 col-md-4 border-right pl-0">
                             {name ? <h3>{name}</h3> : null}
@@ -126,6 +128,7 @@ class TherapistProfile extends Component {
 
                   <div class="row">
                     <div class="col-md-8">
+                      <h2>Recursos</h2>
                       {resources ? (
                         resources.length > 0 ? (
                           resources.map(resource => (
