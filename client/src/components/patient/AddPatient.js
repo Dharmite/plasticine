@@ -20,7 +20,7 @@ class AddPatient extends Component {
 
   state = {
     name: "",
-    age: "",
+    birthday: "",
     clinicalStatus: "",
     schoolName: "",
     schoolSchedule: "",
@@ -38,7 +38,7 @@ class AddPatient extends Component {
 
     const {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
@@ -46,7 +46,7 @@ class AddPatient extends Component {
 
     const newPatient = {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
@@ -70,7 +70,7 @@ class AddPatient extends Component {
   render() {
     const {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule,
@@ -156,13 +156,13 @@ class AddPatient extends Component {
                       error={errors.name}
                     />
                     <TextInputGroup
-                      label="Idade"
-                      name="age"
-                      type="number"
+                      label="Data de nascimento"
+                      name="birthday"
+                      type="date"
                       placeholder="Introduza a idade"
-                      value={age}
+                      value={birthday}
                       onChange={this.onChange}
-                      error={errors.age}
+                      error={errors.birthday}
                     />
                     <TextAreaFieldGroup
                       label="Estado clinico"

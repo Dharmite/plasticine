@@ -5,7 +5,7 @@ module.exports = function validatePatientInput(data) {
   let errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : "";
-  data.age = !isEmpty(data.age) ? data.age : "";
+  data.birthday = !isEmpty(data.birthday) ? data.birthday : "";
   data.clinicalStatus = !isEmpty(data.clinicalStatus)
     ? data.clinicalStatus
     : "";
@@ -21,12 +21,12 @@ module.exports = function validatePatientInput(data) {
     errors.name = "Este campo tem que ser preenchido";
   }
 
-  if (!Validator.isNumeric(data.age)) {
-    errors.age = "Este campo tem que ser preenchido com números";
-  }
+  // if (!Validator.isDar(data.birthday)) {
+  //   errors.birthday = "Este campo tem que ser preenchido";
+  // }
 
-  if (Validator.isEmpty(data.age)) {
-    errors.age = "Este campo tem que ser preenchido";
+  if (Validator.isEmpty(data.birthday)) {
+    errors.birthday = "Este campo tem que ser preenchido";
   }
 
   if (!Validator.isLength(data.clinicalStatus, { min: 2 })) {

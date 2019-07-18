@@ -3,15 +3,19 @@ const Schema = mongoose.Schema;
 
 // Check if there is a way to update age dynamically
 
+
 const PatientSchema = new Schema({
   name: {
     type: String,
     required: true
   },
 
-  age: {
+  birthday: {
     type: String,
     required: true
+  },
+  age: {
+    type: Number
   },
 
   clinicalStatus: {
@@ -89,5 +93,6 @@ const PatientSchema = new Schema({
     default: Date.now
   }
 });
+
 
 module.exports = Patient = mongoose.model("patient", PatientSchema);

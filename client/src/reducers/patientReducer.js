@@ -22,7 +22,8 @@ import {
   PATIENTS_LOADING,
   PATIENT_THERAPISTS_LOADING,
   ADD_COMMENT,
-  GET_COMMENTS
+  GET_COMMENTS,
+  LOADED
 } from "../actions/types";
 
 const initialState = {
@@ -36,11 +37,17 @@ const initialState = {
   note: {},
   loading_patients: false,
   loading_patientTherapists: false,
-  comments: []
+  comments: [],
+  loaded: 0
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case LOADED:
+      return {
+        ...state,
+        loaded: action.payload
+      };
     case PATIENTS_LOADING:
       return {
         ...state,

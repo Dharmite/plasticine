@@ -4,9 +4,8 @@ import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
-import kid from '../../img/kid.png'
-import user from '../../img/user.png'
-
+import kid from "../../img/kid.png";
+import user from "../../img/user.png";
 
 import {
   getPatient,
@@ -197,6 +196,8 @@ class PatientProfile extends Component {
     patientTherapists = patientTherapists.filter(
       user => user.account_status == "active"
     );
+
+    // console.log(medicine.sort(finishedDate), "medicine")
 
     let shared_notes = [];
     let shared = false;
@@ -450,7 +451,7 @@ class PatientProfile extends Component {
                               <div className="col-lg-3 col-md-3">
                                 <img
                                   className="img-circle elevation-1"
-                                  style={{height:"128px",width:"128px"}}
+                                  style={{ height: "128px", width: "128px" }}
                                   src={kid}
                                   alt="User Avatar"
                                 />
@@ -852,7 +853,15 @@ class PatientProfile extends Component {
                                             medicine.map(elem => (
                                               <div className="col-md-12">
                                                 <div className="card card-body mb-2">
-                                                  <h4>{elem.name} </h4>
+                                                  <h4>{elem.name} </h4>{" "}
+                                                  {new Date(Date.now()) >
+                                                  new Date(
+                                                    new Date(elem.finishedDate)
+                                                  ) ? (
+                                                    <p style={{ color: "red" }}>
+                                                      Expirado
+                                                    </p>
+                                                  ) : null}
                                                   <p>
                                                     <b>Observações:</b>{" "}
                                                     {elem.observation}
@@ -882,7 +891,6 @@ class PatientProfile extends Component {
                                                       )}
                                                     </p>
                                                   ) : null}
-
                                                   <div className="row">
                                                     <div className="description-block mr-3">
                                                       <button

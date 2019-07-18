@@ -196,8 +196,12 @@ export const addComment = (resource_id, newFeedback) => async dispatch => {
       `/api/resource/${resource_id}/feedback`,
       newFeedback
     );
+    // dispatch({
+    //   type: ADD_COMMENT,
+    //   payload: res.data
+    // });
     dispatch({
-      type: ADD_COMMENT,
+      type: GET_RESOURCE,
       payload: res.data
     });
 

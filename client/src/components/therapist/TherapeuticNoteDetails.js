@@ -14,7 +14,6 @@ import user_pic from "../../img/user.png";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
-
 class TherapeuticNoteDetails extends Component {
   state = {
     observation: "",
@@ -31,9 +30,13 @@ class TherapeuticNoteDetails extends Component {
     this.props.getComments(note_id);
   }
 
+  // componentDidUpdate() {
+  //   const { note_id } = this.props.match.params;
+  //   this.props.getComments(note_id);
+  // }
   componentDidUpdate() {
     const { note_id } = this.props.match.params;
-    this.props.getComments(note_id);
+    this.props.getTherapeuticNote(note_id);
   }
 
   onSubmit = e => {
@@ -472,14 +475,15 @@ class TherapeuticNoteDetails extends Component {
                 </div>
               ) : null}
               <div className="row">{video_files}</div>
+
               {feedback
                 ? feedback.map(elem => (
                     <div
-                      className="card p-3 card-comments mt-5 mb-5"
-                      style={{ backgroundColor: "#f4f6f9" }}
+                      className="card card-body card-comments mt-5 mb-5"
+                      style={{ backgroundColor: "white" }}
                     >
                       <div className="card-comment">
-                        {elem.user.specialty ? (
+                        {elem.user.userType == "therapist" ? (
                           <img
                             className="img-circle img-sm"
                             src={doctor_pic}
@@ -494,7 +498,7 @@ class TherapeuticNoteDetails extends Component {
                         )}
 
                         <div className="comment-text">
-                          {elem.user.name ? (
+                          {elem.user.userType == "therapist" ? (
                             <span className="username">
                               <Link
                                 style={{ color: "black" }}
@@ -507,7 +511,20 @@ class TherapeuticNoteDetails extends Component {
                                 {elem.date.slice(11, 19)}
                               </span>
                             </span>
-                          ) : null}
+                          ) : (
+                            <span className="username">
+                              <Link
+                                style={{ color: "black" }}
+                                to={`/parente/${elem.user._id}`}
+                              >
+                                {elem.user.name}
+                              </Link>
+                              <span className="text-muted float-right">
+                                {elem.date.slice(0, 10)}{" "}
+                                {elem.date.slice(11, 19)}
+                              </span>
+                            </span>
+                          )}
                           {elem.observation}{" "}
                         </div>
                       </div>

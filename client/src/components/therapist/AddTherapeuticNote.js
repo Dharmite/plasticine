@@ -8,6 +8,8 @@ import $ from "jquery";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+import {Progress} from 'reactstrap';
+
 
 class AddTherapeuticNote extends Component {
   componentWillUnmount() {
@@ -312,6 +314,10 @@ class AddTherapeuticNote extends Component {
                       </label>
                     </div>
 
+
+                    <Progress style={{width:"100%"}} max="100" color="success" value={this.props.loaded} >{Math.round(this.props.loaded,2) }%</Progress>
+
+
                     <input
                       type="submit"
                       value="Adicionar nota"
@@ -336,7 +342,9 @@ const mapStateToProps = state => ({
   patient: state.patient.patient,
   patientTherapists: state.patient.patientTherapists,
   patientParents: state.patient.patientParents,
-  auth: state.auth
+  auth: state.auth,
+  loaded: state.patient.loaded,
+
 });
 
 export default connect(

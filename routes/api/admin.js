@@ -236,11 +236,13 @@ router.post(
 
     const newPatient = new Patient({
       name: req.body.name,
-      age: req.body.age,
+      birthday: req.body.birthday,
       clinicalStatus: req.body.clinicalStatus,
       schoolName: req.body.schoolName,
-      schoolSchedule: req.body.schoolSchedule
+      schoolSchedule: req.body.schoolSchedule,
+      age: Math.floor((Date.now() - new Date(req.body.birthday)) / 1000 / 60 / 60 / 24 / 365)
     });
+
 
     newPatient
       .save()

@@ -12,8 +12,7 @@ import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 import doctor_pic from "../../img/doctor.png";
-import user_pic from '../../img/user.png'
-
+import user_pic from "../../img/user.png";
 
 class ResourceDetails extends Component {
   state = {
@@ -27,6 +26,10 @@ class ResourceDetails extends Component {
     }
   }
   componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getResource(id);
+  }
+  componentDidUpdate() {
     const { id } = this.props.match.params;
     this.props.getResource(id);
   }
@@ -414,11 +417,11 @@ class ResourceDetails extends Component {
               {feedback
                 ? feedback.map(elem => (
                     <div
-                      className="card-footer card-comments mt-5 mb-5"
-                      style={{ backgroundColor: "#f4f6f9" }}
+                      className="card card-body card-comments mt-5 mb-5"
+                      style={{ backgroundColor: "white" }}
                     >
                       <div className="card-comment">
-                      {elem.user.specialty ? (
+                        {elem.user.userType == "therapist" ? (
                           <img
                             className="img-circle img-sm"
                             src={doctor_pic}
@@ -431,16 +434,35 @@ class ResourceDetails extends Component {
                             alt="User Image"
                           />
                         )}
+
                         <div className="comment-text">
-                          {elem.user.name ? (
+                          {elem.user.userType == "therapist" ? (
                             <span className="username">
-                              <Link style={{color:"black"}} to = {`/terapeuta/${elem.user._id}`}>{elem.user.name}</Link>
+                              <Link
+                                style={{ color: "black" }}
+                                to={`/terapeuta/${elem.user._id}`}
+                              >
+                                {elem.user.name}
+                              </Link>
                               <span className="text-muted float-right">
-                              {elem.date.slice(0, 10)}{" "}
-                              {elem.date.slice(11,19)}
+                                {elem.date.slice(0, 10)}{" "}
+                                {elem.date.slice(11, 19)}
                               </span>
                             </span>
-                          ) : null}
+                          ) : (
+                            <span className="username">
+                              <Link
+                                style={{ color: "black" }}
+                                to={`/parente/${elem.user._id}`}
+                              >
+                                {elem.user.name}
+                              </Link>
+                              <span className="text-muted float-right">
+                                {elem.date.slice(0, 10)}{" "}
+                                {elem.date.slice(11, 19)}
+                              </span>
+                            </span>
+                          )}
                           {elem.observation}{" "}
                         </div>
                       </div>

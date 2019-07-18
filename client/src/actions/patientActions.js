@@ -23,7 +23,8 @@ import {
   CLEAR_ERRORS,
   PATIENT_THERAPISTS_LOADING,
   ADD_COMMENT,
-  GET_COMMENTS
+  GET_COMMENTS,
+  LOADED
 } from "./types";
 
 import axios from "axios";
@@ -80,7 +81,19 @@ export const addTherapeuticNote = (
   };
 
   axios
-    .post(`/api/therapeuticNote/new/${patient_id}`, newTherapeuticNote, config)
+    .post(
+      `/api/therapeuticNote/new/${patient_id}`,
+      newTherapeuticNote,
+      config,
+      {
+        onUploadProgress: ProgressEvent => {
+          dispatch({
+            type: LOADED,
+            payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
+          });
+        }
+      }
+    )
     .then(res => {
       dispatch({
         type: ADD_THERAPEUTIC_NOTE,
@@ -90,7 +103,7 @@ export const addTherapeuticNote = (
       history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -168,10 +181,12 @@ export const addComment = (note_id, newFeedback) => async dispatch => {
       `/api/therapeuticNote/${note_id}/feedback`,
       newFeedback
     );
-    console.log("entrei");
-    console.log(newFeedback, "newFeedback");
+    // dispatch({
+    //   type: ADD_COMMENT,
+    //   payload: res.data
+    // });
     dispatch({
-      type: ADD_COMMENT,
+      type: GET_THERAPEUTIC_NOTE,
       payload: res.data
     });
 

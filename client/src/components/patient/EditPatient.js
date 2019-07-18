@@ -20,7 +20,7 @@ class EditPatient extends Component {
 
   state = {
     name: "",
-    age: "",
+    birthday: "",
     clinicalStatus: "",
     schoolName: "",
     schoolSchedule: "",
@@ -30,14 +30,14 @@ class EditPatient extends Component {
   componentWillReceiveProps(nextProps, nextState) {
     const {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
     } = nextProps.patient;
     this.setState({
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
@@ -58,7 +58,7 @@ class EditPatient extends Component {
 
     const {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
@@ -70,7 +70,7 @@ class EditPatient extends Component {
     const newPatient = {
       id,
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule
@@ -82,7 +82,7 @@ class EditPatient extends Component {
     // Clear State
     this.setState({
       name: "",
-      age: "",
+      birthday: "",
       clinicalStatus: "",
       schoolName: "",
       schoolSchedule: "",
@@ -95,7 +95,7 @@ class EditPatient extends Component {
   render() {
     const {
       name,
-      age,
+      birthday,
       clinicalStatus,
       schoolName,
       schoolSchedule,
@@ -114,9 +114,9 @@ class EditPatient extends Component {
                 className="btn mt-3"
                 style={{
                   border: "1px solid black",
-                  backgroundColor:"white"
+                  backgroundColor: "white"
                 }}
-            data-toggle="modal"
+                data-toggle="modal"
                 data-target="#backModal"
               >
                 Voltar
@@ -179,13 +179,11 @@ class EditPatient extends Component {
                       error={errors.name}
                     />
                     <TextInputGroup
-                      label="Idade"
-                      name="age"
-                      type="number"
-                      placeholder="Introduza a idade"
-                      value={age}
+                      label="Data de nascimento"
+                      name="birthday"
+                      type="date"
+                      value={birthday.slice(0, 10)}
                       onChange={this.onChange}
-                      error={errors.age}
                     />
                     <TextAreaFieldGroup
                       label="Estado clinico"
