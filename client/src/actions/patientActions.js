@@ -248,6 +248,7 @@ export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
       history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
+      console.log(err.response)
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -430,7 +431,7 @@ export const addPatient = (newPatient, history) => async dispatch => {
     });
     dispatch(clearErrors());
 
-    history.push("/admin-dashboard");
+    history.push(`/paciente/ver/${res.data._id}`);
   } catch (error) {
     dispatch({
       type: GET_ERRORS,

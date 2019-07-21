@@ -8,9 +8,10 @@ module.exports = function validateRegisterInput(data) {
     data.email = !isEmpty(data.email) ? data.email : "";
     data.password = !isEmpty(data.password) ? data.password : "";
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+    data.productKey = !isEmpty(data.productKey) ? data.productKey : "";
   
     if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
-      errors.name = "Nome deve conter entre e e 30 caracteres";
+      errors.name = "Nome deve conter entre 2 e e 30 caracteres";
     }
   
     if (Validator.isEmpty(data.name)) {
@@ -39,6 +40,10 @@ module.exports = function validateRegisterInput(data) {
   
     if (!Validator.equals(data.password, data.password2)) {
       errors.password2 = "Password não corresponde";
+    }
+
+    if (Validator.isEmpty(data.productKey)) {
+      errors.productKey = "Este campo tem que ser preenchido";
     }
 
     return { errors, isValid: isEmpty(errors) };

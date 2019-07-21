@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Check if there is a way to update age dynamically
-
-
 const PatientSchema = new Schema({
   name: {
     type: String,
@@ -14,13 +11,13 @@ const PatientSchema = new Schema({
     type: String,
     required: true
   },
-  age: {
-    type: Number
-  },
 
   clinicalStatus: {
-    type: String,
-    required: true
+    type: String
+  },
+
+  observation: {
+    type: String
   },
 
   schoolName: {
@@ -32,9 +29,15 @@ const PatientSchema = new Schema({
     type: String,
     required: true
   },
-
+  // Meter user aqui --> terapeuta
   medicine: [
     {
+      user_id: {
+        type: String
+      },
+      user_name: {
+        type: String
+      },
       name: {
         type: String,
         required: true
@@ -93,6 +96,5 @@ const PatientSchema = new Schema({
     default: Date.now
   }
 });
-
 
 module.exports = Patient = mongoose.model("patient", PatientSchema);

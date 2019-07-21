@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classnames from "classnames";
 import TextInputGroup from "../common/TextInputGroup";
 import SelectListGroup from "../common/SelectListGroup";
 import { connect } from "react-redux";
@@ -23,6 +24,8 @@ class AddTherapist extends Component {
     email: "",
     password: "",
     specialty: "",
+    password2: "",
+    other: "",
     errors: {}
   };
 
@@ -34,13 +37,15 @@ class AddTherapist extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, specialty } = this.state;
+    const { name, email, password, specialty, password2, other } = this.state;
 
     const newTherapist = {
       name,
       email,
       password,
-      specialty
+      password2,
+      specialty,
+      other
     };
 
     this.props.addTherapist(newTherapist, this.props.history);
@@ -64,16 +69,26 @@ class AddTherapist extends Component {
   };
 
   render() {
-    const { name, email, password, specialty, errors } = this.state;
+    const {
+      name,
+      email,
+      password,
+      password2,
+      specialty,
+      other,
+      errors
+    } = this.state;
 
     // Select options for status
     const options = [
       { label: "* Escolha uma especialidade", value: 0 },
-      { label: "Psicologia", value: "Psicologia" },
-      { label: "Terapia da Fala", value: "Terapia da Fala" },
-      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Pediatra", value: "Pediatra" },
       { label: "Fisioterapia", value: "Fisioterapia" },
-      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" }
+      { label: "Psicologia", value: "Psicologia" },
+      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Terapia da Fala", value: "Terapia da Fala" },
+      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" },
+      { label: "Outra", value: "Outra" }
     ];
 
     return (
@@ -139,7 +154,7 @@ class AddTherapist extends Component {
               </div>
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar terapeuta</div>
+                <div className="card-header">Adicionar especialista</div>
                 <small class="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -173,18 +188,68 @@ class AddTherapist extends Component {
                       error={errors.password}
                     />
 
+                    <div className="form-group">
+                      <label htmlFor="password2">Confirmar password</label>
+                      <input
+                        type="password"
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.password2
+                        })}
+                        placeholder="Confirme a sua password"
+                        name="password2"
+                        value={this.state.password2}
+                        onChange={this.onChange}
+                      />
+                      {errors.password2 ? (
+                        <div className="invalid-feedback">
+                          {errors.password2}
+                        </div>
+                      ) : null}
+                    </div>
+
                     <SelectListGroup
                       name="specialty"
                       value={specialty}
                       error={errors.specialty}
-                      label="Especialidade clínica"
+                      label="Especialidade médica"
                       onChange={this.handleSelectionChanged}
                       options={options}
                     />
 
+                    {this.state.specialty == "Outra" ? (
+                      // <TextInputGroup
+                      //   label="Especialidade"
+                      //   name="other"
+                      //   type="text"
+                      //   placeholder="Insira a especialidade médica"
+                      //   value={other}
+                      //   onChange={this.onChange}
+                      //   error={errors.other}
+                      // />
+                      <div className="form-group">
+                        <label htmlFor="other">Especialidade</label>
+                        <input
+                          type="text"
+                          name="other"
+                          className={classnames(
+                            "form-control form-control-lg",
+                            {
+                              "is-invalid": (errors.other && this.state.specialty =="Outra")
+                            }
+                          )}
+                          placeholder="Insira a especialidade médica"
+                          value={this.state.other}
+                          onChange={this.onChange}
+                        />
+                        {this.state.specialty == "Outra" && errors.other && (
+                          <div className="invalid-feedback">{errors.other}</div>
+                        )}
+                      </div>
+                    ) : null}
+
                     <input
                       type="submit"
-                      value="Adicionar terapeuta"
+                      value="Adicionar especialista"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

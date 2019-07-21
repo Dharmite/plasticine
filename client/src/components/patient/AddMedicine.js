@@ -54,15 +54,15 @@ class AddMedicine extends Component {
     this.props.addMedicine(newMedicine, id, this.props.history);
 
     // Clear State
-    this.setState({
-      name: "",
-      observation: "",
-      dosage: "",
-      time: "",
-      startingDate: "",
-      finishedDate: "",
-      errors: {}
-    });
+    // this.setState({
+    //   name: "",
+    //   observation: "",
+    //   dosage: "",
+    //   time: "",
+    //   startingDate: "",
+    //   finishedDate: "",
+    //   errors: {}
+    // });
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });

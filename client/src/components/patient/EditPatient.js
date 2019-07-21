@@ -23,6 +23,7 @@ class EditPatient extends Component {
     birthday: "",
     clinicalStatus: "",
     schoolName: "",
+    observation:"",
     schoolSchedule: "",
     errors: {}
   };
@@ -33,6 +34,7 @@ class EditPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule
     } = nextProps.patient;
     this.setState({
@@ -40,6 +42,7 @@ class EditPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule
     });
 
@@ -61,6 +64,7 @@ class EditPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule
     } = this.state;
 
@@ -73,6 +77,7 @@ class EditPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule
     };
 
@@ -86,6 +91,7 @@ class EditPatient extends Component {
       clinicalStatus: "",
       schoolName: "",
       schoolSchedule: "",
+      observation: "",
       errors: {}
     });
   };
@@ -99,6 +105,7 @@ class EditPatient extends Component {
       clinicalStatus,
       schoolName,
       schoolSchedule,
+      observation,
       errors
     } = this.state;
 
@@ -164,7 +171,7 @@ class EditPatient extends Component {
                 </div>
               </div>{" "}
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar parente</div>
+                <div className="card-header">Editar utente</div>
                 <small className="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -193,6 +200,14 @@ class EditPatient extends Component {
                       onChange={this.onChange}
                       error={errors.clinicalStatus}
                     />
+                    <TextAreaFieldGroup
+                      label="Observações"
+                      name="observation"
+                      placeholder="Introduza observações adicionais"
+                      value={observation}
+                      onChange={this.onChange}
+                      error={errors.observation}
+                    />
 
                     <TextInputGroup
                       label="Nome da escola"
@@ -203,7 +218,7 @@ class EditPatient extends Component {
                       error={errors.schoolName}
                     />
 
-                    <TextInputGroup
+                    <TextAreaFieldGroup
                       label="Horário escolar"
                       name="schoolSchedule"
                       placeholder="Horário"
@@ -214,7 +229,7 @@ class EditPatient extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar paciente"
+                      value="Guardar utente"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

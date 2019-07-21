@@ -12,6 +12,7 @@ class Register extends Component {
     email: "",
     password: "",
     password2: "",
+    productKey: "",
     errors: {}
   };
 
@@ -44,7 +45,8 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      productKey: this.state.productKey
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -63,19 +65,20 @@ class Register extends Component {
               <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Registo</h1>
                 <p className="lead text-center">
-                  Registe-se como administrador do seu instituto.
+                  Registe-se como administrador da sua organização
                 </p>
                 <small className="text-muted">
                   Todos os campos são obrigatórios
                 </small>
                 <form noValidate onSubmit={this.onSubmit}>
                   <div className="form-group">
+                  <label htmlFor="name">Nome</label>
                     <input
                       type="text"
                       className={classnames("form-control form-control-lg", {
                         "is-invalid": errors.name
                       })}
-                      placeholder="Insira o seu Nome"
+                      placeholder="Insira o seu nome"
                       name="name"
                       value={this.state.name}
                       onChange={this.onChange}
@@ -85,12 +88,13 @@ class Register extends Component {
                     ) : null}
                   </div>
                   <div className="form-group">
+                  <label htmlFor="email">Email</label>
                     <input
                       type="email"
                       className={classnames("form-control form-control-lg", {
                         "is-invalid": errors.email
                       })}
-                      placeholder="Insira o seu Email"
+                      placeholder="Insira o seu email"
                       name="email"
                       value={this.state.email}
                       onChange={this.onChange}
@@ -100,6 +104,7 @@ class Register extends Component {
                     ) : null}
                   </div>
                   <div className="form-group">
+                    <label htmlFor="password">Password</label>
                     <input
                       type="password"
                       className={classnames("form-control form-control-lg", {
@@ -115,6 +120,7 @@ class Register extends Component {
                     ) : null}
                   </div>
                   <div className="form-group">
+                    <label htmlFor="password2">Confirmar password</label>
                     <input
                       type="password"
                       className={classnames("form-control form-control-lg", {
@@ -129,9 +135,26 @@ class Register extends Component {
                       <div className="invalid-feedback">{errors.password2}</div>
                     ) : null}
                   </div>
+                  <div className="form-group">
+                  <label htmlFor="productKey">Chave de registo</label>
+                  <input
+                      type="password"
+                      className={classnames("form-control form-control-lg", {
+                        "is-invalid": errors.productKey
+                      })}
+                      placeholder="Insira a chave de registo"
+                      name="productKey"
+                      value={this.state.productKey}
+                      onChange={this.onChange}
+                    />
+                    {errors.productKey ? (
+                      <div className="invalid-feedback">{errors.productKey}</div>
+                    ) : null}
+                  </div>
+
                   <input
                     type="submit"
-                    className="btn btn-info btn-block mt-4"
+                    className="btn btn-info btn-block mt-4 mb-5"
                   />
                 </form>
               </div>

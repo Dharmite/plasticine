@@ -56,7 +56,7 @@ router.get("/:admin_id", (req, res) => {
 router.post(
   "/therapist",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isAdmin,
+  auth_middleware.isTherapistOrAdmin,
   (req, res) => {
     const { errors, isValid } = validateTherapistInput(req.body);
     if (!isValid) {
@@ -70,12 +70,34 @@ router.post(
             .status(400)
             .json({ email: "Já existe um utilizador com esse email" });
         } else {
-          const newTherapist = new Therapist({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            specialty: req.body.specialty
-          });
+          let newTherapist;
+          if (req.body.specialty == "Outra") {
+            newTherapist = new Therapist({
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+              specialty: req.body.other
+            });
+
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newTherapist.password, salt, (err, hash) => {
+                if (err) throw err;
+                newTherapist.password = hash;
+                newTherapist
+                  .save()
+                  .then(therapist => res.json(therapist))
+                  .catch(err => console.log(err));
+              });
+            });
+            return;
+          } else {
+            newTherapist = new Therapist({
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+              specialty: req.body.specialty
+            });
+          }
 
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newTherapist.password, salt, (err, hash) => {
@@ -141,7 +163,7 @@ router.post(
 router.post(
   "/parent",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isAdmin,
+  auth_middleware.isTherapistOrAdmin,
   (req, res) => {
     const { errors, isValid } = validateParentInput(req.body);
     if (!isValid) {
@@ -155,10 +177,22 @@ router.post(
             .status(400)
             .json({ email: "Já existe um utilizador com esse email" });
         } else {
+          console.log(req.body.work_status);
           const newParent = new Parent({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            birthday: req.body.birthday,
+            relationship: req.body.relationship,
+            work_status: req.body.work_status
+            // age: Math.floor(
+            //   (Date.now() - new Date(req.body.birthday)) /
+            //     1000 /
+            //     60 /
+            //     60 /
+            //     24 /
+            //     365
+            // )
           });
 
           bcrypt.genSalt(10, (err, salt) => {
@@ -224,7 +258,7 @@ router.post(
 router.post(
   "/patient",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isAdmin,
+  auth_middleware.isTherapistOrAdmin,
   (req, res) => {
     const { errors, isValid } = validatePatientInput(req.body);
 
@@ -239,14 +273,95 @@ router.post(
       birthday: req.body.birthday,
       clinicalStatus: req.body.clinicalStatus,
       schoolName: req.body.schoolName,
-      schoolSchedule: req.body.schoolSchedule,
-      age: Math.floor((Date.now() - new Date(req.body.birthday)) / 1000 / 60 / 60 / 24 / 365)
+      observation: req.body.observation,
+      schoolSchedule: req.body.schoolSchedule
+      // age: Math.floor(
+      //   (Date.now() - new Date(req.body.birthday)) / 1000 / 60 / 60 / 24 / 365
+      // )
     });
-
 
     newPatient
       .save()
-      .then(patient => res.json(patient))
+      .then(patient => {
+        if (req.user.userType == "admin") {
+          res.json(patient);
+        } else {
+          Therapist.findById({ _id: req.user._id })
+            .then(therapist => {
+              let user_association = false;
+
+              if (therapist) {
+                patient.therapist.forEach(elem => {
+                  if (elem == req.user._id) {
+                    user_association = true;
+
+                    return res
+                      .status(400)
+                      .json({ err: "User já está associado ao utente" });
+                  }
+                });
+                therapist.patient.forEach(elem => {
+                  if (elem == patient._id) {
+                    user_association = true;
+
+                    return res
+                      .status(400)
+                      .json({ err: "User já está associado ao especialista" });
+                  }
+                });
+
+                if (user_association == false) {
+                  therapist.patient.push(patient._id);
+                  therapist
+                    .save()
+                    .then(therapist => {
+                      let isPreviousTherapist = false;
+                      let removeIndex;
+
+                      for (
+                        let index = 0;
+                        index < patient.previousTherapists.length;
+                        index++
+                      ) {
+                        if (patient.previousTherapists[index] == req.user._id) {
+                          removeIndex = patient.previousTherapists[index];
+                          isPreviousTherapist = true;
+                        }
+                      }
+
+                      if (isPreviousTherapist) {
+                        patient.previousTherapists.splice(removeIndex, 1);
+
+                        patient.previousTherapists = patient.previousTherapists;
+                      }
+
+                      patient.therapist.push(therapist._id);
+                      patient
+                        .save()
+                        .then(patient => res.json(patient))
+                        .catch(err => {
+                          res.json(err);
+                        });
+                    })
+                    .catch(err => {
+                      res.json(err);
+                    });
+                } else {
+                  return res
+                    .status(400)
+                    .json({ err: "Utilizador já está associado" });
+                }
+              } else {
+                return res
+                  .status(404)
+                  .json({ err: "Nenhum perfil encontrado" });
+              }
+            })
+            .catch(err => {
+              res.json(err);
+            });
+        }
+      })
       .catch(err => console.log(err));
   }
 );

@@ -19,7 +19,7 @@ class DashboardParent extends Component {
           <Patient key={patient.id} patient={patient} />
         ))
       ) : (
-        <h6 className="mt-4">Nenhum paciente disponível</h6>
+        <h6 className="mt-4">Nenhum utente disponível</h6>
       );
     }
 
@@ -38,7 +38,7 @@ class DashboardParent extends Component {
                   </p>
                 </div>
               </div>
-
+{/* 
               <div className="row">
                 <div className="col-12 col-sm-6 col-md-3">
                   <div className="info-box mb-3">
@@ -55,7 +55,7 @@ class DashboardParent extends Component {
                 </div>
                 <div className="clearfix hidden-md-up" />
               </div>
-              <hr />
+              <hr /> */}
 
               {patient ? patientContent : null}
 

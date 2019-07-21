@@ -103,7 +103,7 @@ router.post(
       clinicalStatus: req.body.clinicalStatus,
       schoolName: req.body.schoolName,
       schoolSchedule: req.body.schoolSchedule,
-      age: Math.floor((Date.now() - new Date(req.body.birthday)) / 1000 / 60 / 60 / 24 / 365)
+      observation: req.body.observation
     };
 
     Patient.findByIdAndUpdate({ _id: req.params.patient_id }, newPatient)
@@ -136,7 +136,10 @@ router.post(
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
         } else {
+          console.log(req.user._id);
           const newMedicine = {
+            user_id: req.user._id,
+            user_name: req.user.name,
             name: req.body.name,
             observation: req.body.observation,
             dosage: req.body.dosage,
@@ -239,6 +242,7 @@ router.get(
   "/:patient_id/medicine/all",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    console.log("cenas");
     Patient.findById({ _id: req.params.patient_id })
       .then(patient => {
         if (!patient) {
@@ -261,6 +265,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Patient.findById({ _id: req.params.patient_id })
+
       .then(patient => {
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
@@ -299,7 +304,7 @@ router.post(
                 if (elem == req.params.parent_id) {
                   return res
                     .status(400)
-                    .json({ err: "User já está associado ao paciente" });
+                    .json({ err: "User já está associado ao utente" });
                 }
               });
               parent.patient.push(patient);
@@ -418,7 +423,7 @@ router.post(
 
                     return res
                       .status(400)
-                      .json({ err: "User já está associado ao paciente" });
+                      .json({ err: "User já está associado ao utente" });
                   }
                 });
                 therapist.patient.forEach(elem => {

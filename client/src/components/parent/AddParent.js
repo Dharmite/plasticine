@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classnames from "classnames";
 import TextInputGroup from "../common/TextInputGroup";
 import { connect } from "react-redux";
 import { addParent } from "../../actions/parentActions";
@@ -7,6 +8,10 @@ import { Link, withRouter } from "react-router-dom";
 import $ from "jquery";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+
+let data = new Date();
+let max_date = `${data.getFullYear()}-${data.getMonth() < 9 ? "0" + data.getMonth():data.getMonth()}-${data.getDate() < 9 ? "0" + data.getDate():data.getDate()}`;
+
 
 class AddParent extends Component {
   componentWillUnmount() {
@@ -20,7 +25,11 @@ class AddParent extends Component {
   state = {
     name: "",
     email: "",
+    birthday: "",
+    relationship: "",
     password: "",
+    password2: "",
+    work_status: "",
     errors: {}
   };
 
@@ -33,17 +42,31 @@ class AddParent extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const {
+      name,
+      email,
+      password,
+      password2,
+      birthday,
+      relationship,
+      work_status
+    } = this.state;
 
     // Check For Errors --> Validation
 
     const newParent = {
       name,
       email,
-      password
+      password,
+      password2,
+      birthday,
+      relationship,
+      work_status
     };
 
-    this.props.addParent(newParent, this.props.history);
+    const logged_userType = this.props.auth.user.userType;
+
+    this.props.addParent(newParent, this.props.history, logged_userType);
 
     // Clear State
     // this.setState({
@@ -55,9 +78,30 @@ class AddParent extends Component {
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
+  handleSelectionChanged = e => {
+    let work = [];
+    let inputElements = document.getElementsByClassName("form-check-input");
+    for (var i = 0; inputElements[i]; ++i) {
+      if (inputElements[i].checked) {
+        work.push(inputElements[i].value);
+      }
+    }
+    this.setState({
+      work_status: work
+    });
+  };
 
   render() {
-    const { name, email, password, errors } = this.state;
+    const {
+      name,
+      email,
+      password,
+      password2,
+      birthday,
+      relationship,
+      work_status,
+      errors
+    } = this.state;
 
     return (
       <div>
@@ -72,9 +116,9 @@ class AddParent extends Component {
                 className="btn mt-3"
                 style={{
                   border: "1px solid black",
-                  backgroundColor:"white"
+                  backgroundColor: "white"
                 }}
-            data-toggle="modal"
+                data-toggle="modal"
                 data-target="#backModal"
               >
                 Voltar
@@ -123,7 +167,7 @@ class AddParent extends Component {
               </div>
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar parente</div>
+                <div className="card-header">Adicionar familiar</div>
                 <small className="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -132,7 +176,7 @@ class AddParent extends Component {
                     <TextInputGroup
                       label="Nome"
                       name="name"
-                      placeholder="Introduza o nome"
+                      placeholder="Introduza um nome"
                       value={name}
                       onChange={this.onChange}
                       error={errors.name}
@@ -141,24 +185,105 @@ class AddParent extends Component {
                       label="Email"
                       name="email"
                       type="email"
-                      placeholder="Introduza o Email"
+                      placeholder="Introduza um Email"
                       value={email}
                       onChange={this.onChange}
                       error={errors.email}
                     />
                     <TextInputGroup
-                      label="password"
+                      label="Password"
                       name="password"
                       type="password"
-                      placeholder="Enter password"
+                      placeholder="Introduza uma password"
                       value={password}
                       onChange={this.onChange}
                       error={errors.password}
                     />
 
+                    <div className="form-group">
+                      <label htmlFor="password2">Confirmar password</label>
+                      <input
+                        type="password"
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.password2
+                        })}
+                        placeholder="Confirme a sua password"
+                        name="password2"
+                        value={this.state.password2}
+                        onChange={this.onChange}
+                      />
+                      {errors.password2 ? (
+                        <div className="invalid-feedback">
+                          {errors.password2}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    {/* <TextInputGroup
+                      label="Data de nascimento"
+                      name="birthday"
+                      type="date"
+                      value={birthday}
+                      onChange={this.onChange}
+                      error={errors.birthday}
+                    /> */}
+
+                    <div className="form-group">
+                      <label htmlFor="birthday">Data de nascimento</label>
+                      <input
+                        type="date"
+                        name="birthday"
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.birthday
+                        })}
+                        value={this.state.birthday}
+                        onChange={this.onChange}
+                        max={max_date}
+                      />
+                      {errors.birthday && (
+                        <div className="invalid-feedback">
+                          {errors.birthday}
+                        </div>
+                      )}
+                    </div>
+
+                    <TextInputGroup
+                      label="Grau de parentesco"
+                      name="relationship"
+                      placeholder="Introduza o grau de parentesco"
+                      value={relationship}
+                      onChange={this.onChange}
+                      error={errors.relationship}
+                    />
+                    <div class="form-check mb-1">
+                      <div>
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="work_status"
+                          id="defaultCheck1"
+                          value="empregado"
+                          onChange={this.handleSelectionChanged}
+                          error={errors.work_status}
+                        />
+                        Empregado/a
+                      </div>
+                      <div>
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="work_status"
+                          id="defaultCheck1"
+                          value="desempregado"
+                          onChange={this.handleSelectionChanged}
+                          error={errors.work_status}
+                        />
+                        Desempregado/a
+                      </div>
+                    </div>
                     <input
                       type="submit"
-                      value="Adicionar parente"
+                      value="Adicionar familiar"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

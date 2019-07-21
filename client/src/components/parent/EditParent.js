@@ -21,15 +21,28 @@ class EditParent extends Component {
     name: "",
     email: "",
     account_status: "",
+    birthday: "",
+    relationship: "",
+    work_status: "",
     errors: {}
   };
 
   componentWillReceiveProps(nextProps, nextState) {
-    const { name, email, account_status } = nextProps.parent;
+    const {
+      name,
+      email,
+      account_status,
+      birthday,
+      relationship,
+      work_status
+    } = nextProps.parent;
     this.setState({
       name,
       email,
-      account_status
+      account_status,
+      birthday,
+      relationship,
+      work_status
     });
 
     if (nextProps.errors) {
@@ -48,10 +61,23 @@ class EditParent extends Component {
     });
   };
 
+  handleSelectionChanged = e => {
+    let work = [];
+    let inputElements = document.getElementsByClassName("form-check-input");
+    for (var i = 0; inputElements[i]; ++i) {
+      if (inputElements[i].checked) {
+        work.push(inputElements[i].value);
+      }
+    }
+    this.setState({
+      work_status: work
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, account_status } = this.state;
+    const { name, email, account_status, birthday, relationship, work_status } = this.state;
 
     // Check For Errors --> Validation
     const { id } = this.props.match.params;
@@ -60,7 +86,10 @@ class EditParent extends Component {
       id,
       name,
       email,
-      account_status
+      account_status,
+      birthday,
+      relationship,
+      work_status
     };
 
     this.props.updateParent(newParent, this.props.history);
@@ -71,6 +100,9 @@ class EditParent extends Component {
       email: "",
       password: "",
       account_status: "",
+      birthday: "",
+      relationship: "",
+      work_status:"",
       errors: {}
     });
   };
@@ -78,7 +110,15 @@ class EditParent extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, account_status, errors } = this.state;
+    const {
+      name,
+      email,
+      account_status,
+      errors,
+      birthday,
+      relationship,
+      work_status
+    } = this.state;
 
     return (
       <div>
@@ -142,7 +182,7 @@ class EditParent extends Component {
                 </div>
               </div>{" "}
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar parente</div>
+                <div className="card-header">Editar familiar</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -162,6 +202,51 @@ class EditParent extends Component {
                       onChange={this.onChange}
                       error={errors.email}
                     />
+
+                    <TextInputGroup
+                      label="Data de nascimento"
+                      name="birthday"
+                      type="date"
+                      value={birthday}
+                      onChange={this.onChange}
+                      error={errors.birthday}
+                    />
+
+                    <TextInputGroup
+                      label="Grau de parentesco"
+                      name="relationship"
+                      placeholder="Introduza o grau de parentesco"
+                      value={relationship}
+                      onChange={this.onChange}
+                      error={errors.relationship}
+                    />
+
+                    <div class="form-check mb-1">
+                      <div>
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="work_status"
+                          id="defaultCheck1"
+                          value="empregado"
+                          onChange={this.handleSelectionChanged}
+                          error={errors.work_status}
+                        />
+                        Empregado
+                      </div>
+                      <div>
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="work_status"
+                          id="defaultCheck1"
+                          value="desempregado"
+                          onChange={this.handleSelectionChanged}
+                          error={errors.work_status}
+                        />
+                        Desempregado
+                      </div>
+                    </div>
 
                     {account_status ? (
                       account_status == "active" ? (

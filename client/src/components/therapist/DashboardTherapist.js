@@ -28,7 +28,7 @@ class DashboardTherapist extends Component {
         patient.length > 0 ? (
           patient.map(patient => <Patient key={patient.id} patient={patient} />)
         ) : (
-          <h6 className="mt-4">Nenhum paciente disponível</h6>
+          <h6 className="mt-4">Nenhum utente disponível</h6>
         );
     }
 
@@ -71,7 +71,7 @@ class DashboardTherapist extends Component {
             </div>
           ))
         ) : (
-          <h6 className="mt-4">Nenhum paciente disponível</h6>
+          <h6 className="mt-4">Nenhum utente disponível</h6>
         );
     }
 
@@ -85,7 +85,7 @@ class DashboardTherapist extends Component {
 
               <div className="row">
                 <div className="col-md-12">
-                  <h1 className="display-4">Perfil de terapeuta</h1>
+                  <h1 className="display-4">Perfil de especialista</h1>
                   <p className="lead text-muted">
                     Bem vindo {this.props.user.name}
                   </p>
@@ -115,7 +115,7 @@ class DashboardTherapist extends Component {
                       <i class="fas fa-child" />{" "}
                     </span>
                     <div className="info-box-content">
-                      <span className="info-box-text">Pacientes atuais</span>
+                      <span className="info-box-text">Utentes atuais</span>
                       <span className="info-box-number">
                         {patient ? patient.length : null}
                       </span>
@@ -145,7 +145,7 @@ class DashboardTherapist extends Component {
                       <i class="fas fa-child" />{" "}
                     </span>
                     <div className="info-box-content">
-                      <span className="info-box-text">Antigos pacientes</span>
+                      <span className="info-box-text">Antigos utentes</span>
                       <span className="info-box-number">
                         {previousPatients ? previousPatients.length : null}
                       </span>

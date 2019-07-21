@@ -27,7 +27,11 @@ export const getParents = () => async dispatch => {
   });
 };
 
-export const addParent = (newParent, history) => async dispatch => {
+export const addParent = (
+  newParent,
+  history,
+  logged_userType
+) => async dispatch => {
   try {
     const res = await await axios.post("/api/admin/parent", newParent);
 
@@ -38,7 +42,13 @@ export const addParent = (newParent, history) => async dispatch => {
 
     dispatch(clearErrors());
 
-    history.push("/admin-dashboard");
+    if (logged_userType == "admin") {
+      history.push("/admin-dashboard");
+    }
+
+    if (logged_userType == "therapist") {
+      history.push("/terapeuta-dashboard");
+    }
   } catch (error) {
     dispatch({
       type: GET_ERRORS,

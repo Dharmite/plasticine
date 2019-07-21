@@ -14,7 +14,20 @@ const ParentSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "therapeuticnote"
     }
-  ]
+  ],
+
+  birthday: {
+    type: String,
+    required: true
+  },
+
+  relationship: {
+    type: String,
+    required: true
+  },
+  work_status:{
+    type: String
+  }
 });
 
 module.exports = Parent = Base.discriminator("parent", ParentSchema);

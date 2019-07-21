@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classnames from "classnames";
 import TextInputGroup from "../common/TextInputGroup";
 import { connect } from "react-redux";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
@@ -8,6 +9,10 @@ import { Link, withRouter } from "react-router-dom";
 import $ from "jquery";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
+
+let data = new Date();
+let max_date = `${data.getFullYear()}-${data.getMonth() < 9 ? "0" + data.getMonth():data.getMonth()}-${data.getDate() < 9 ? "0" + data.getDate():data.getDate()}`;
+
 
 class AddPatient extends Component {
   componentWillUnmount() {
@@ -23,6 +28,7 @@ class AddPatient extends Component {
     birthday: "",
     clinicalStatus: "",
     schoolName: "",
+    observation: "",
     schoolSchedule: "",
     errors: {}
   };
@@ -41,6 +47,7 @@ class AddPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule
     } = this.state;
 
@@ -48,6 +55,7 @@ class AddPatient extends Component {
       name,
       birthday,
       clinicalStatus,
+      observation,
       schoolName,
       schoolSchedule
     };
@@ -73,6 +81,7 @@ class AddPatient extends Component {
       birthday,
       clinicalStatus,
       schoolName,
+      observation,
       schoolSchedule,
       errors
     } = this.state;
@@ -90,9 +99,9 @@ class AddPatient extends Component {
                 className="btn mt-3"
                 style={{
                   border: "1px solid black",
-                  backgroundColor:"white"
+                  backgroundColor: "white"
                 }}
-            data-toggle="modal"
+                data-toggle="modal"
                 data-target="#backModal"
               >
                 Voltar
@@ -141,7 +150,7 @@ class AddPatient extends Component {
               </div>
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar paciente</div>
+                <div className="card-header">Adicionar utente</div>
                 <small className="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -155,22 +164,41 @@ class AddPatient extends Component {
                       onChange={this.onChange}
                       error={errors.name}
                     />
-                    <TextInputGroup
-                      label="Data de nascimento"
-                      name="birthday"
-                      type="date"
-                      placeholder="Introduza a idade"
-                      value={birthday}
-                      onChange={this.onChange}
-                      error={errors.birthday}
-                    />
+                    <div className="form-group">
+                      <label htmlFor="birthday">Data de nascimento</label>
+                      <input
+                        type="date"
+                        name="birthday"
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.birthday
+                        })}
+                        value={this.state.birthday}
+                        onChange={this.onChange}
+                        max={max_date}
+                      />
+                      {errors.birthday && (
+                        <div className="invalid-feedback">
+                          {errors.birthday}
+                        </div>
+                      )}
+                    </div>
+
                     <TextAreaFieldGroup
-                      label="Estado clinico"
+                      label="Estado clínico"
                       name="clinicalStatus"
-                      placeholder="Introduza estado clinico"
+                      placeholder="Introduza estado clínico"
                       value={clinicalStatus}
                       onChange={this.onChange}
-                      error={errors.clinicalStatus}
+                      // error={errors.clinicalStatus}
+                    />
+
+                    <TextAreaFieldGroup
+                      label="Observações"
+                      name="observation"
+                      placeholder="Introduza observações adicionais"
+                      value={observation}
+                      onChange={this.onChange}
+                      error={errors.observation}
                     />
 
                     <TextInputGroup
@@ -182,7 +210,7 @@ class AddPatient extends Component {
                       error={errors.schoolName}
                     />
 
-                    <TextInputGroup
+                    <TextAreaFieldGroup
                       label="Horário escolar"
                       name="schoolSchedule"
                       placeholder="Horário"
@@ -193,7 +221,7 @@ class AddPatient extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar paciente"
+                      value="Adicionar utente"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

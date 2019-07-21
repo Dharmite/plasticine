@@ -142,7 +142,7 @@ class Therapist extends Component {
 
               {show_patients ? (
                 patient.length == 0 ? (
-                  <h4 className="text-center">Sem pacientes</h4>
+                  <h4 className="text-center">Sem utentes</h4>
                 ) : null
               ) : null}
 

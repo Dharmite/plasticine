@@ -70,6 +70,7 @@ class Login extends Component {
                 </small>
                 <form noValidate onSubmit={this.onSubmit}>
                   <div className="form-group">
+                    <label htmlFor="email">Email</label>
                     <input
                       type="email"
                       className={classnames("form-control form-control-lg", {
@@ -85,6 +86,7 @@ class Login extends Component {
                     ) : null}
                   </div>
                   <div className="form-group">
+                    <label htmlFor="password">Password</label>
                     <input
                       type="password"
                       className={classnames("form-control form-control-lg", {

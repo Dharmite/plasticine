@@ -22,17 +22,25 @@ class EditTherapist extends Component {
     name: "",
     email: "",
     specialty: "",
+    other: "",
     account_status: "",
     errors: {}
   };
 
   componentWillReceiveProps(nextProps, nextState) {
-    const { name, email, specialty, account_status } = nextProps.therapist;
+    const {
+      name,
+      email,
+      specialty,
+      account_status,
+      other
+    } = nextProps.therapist;
 
     this.setState({
       name,
       email,
       specialty,
+      other,
       account_status
     });
 
@@ -61,7 +69,7 @@ class EditTherapist extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, specialty, account_status } = this.state;
+    const { name, email, specialty, account_status, other } = this.state;
     const { id } = this.props.match.params;
 
     const newTherapist = {
@@ -69,7 +77,8 @@ class EditTherapist extends Component {
       name,
       email,
       specialty,
-      account_status
+      account_status,
+      other
     };
 
     // Check For Errors
@@ -91,6 +100,7 @@ class EditTherapist extends Component {
       email: "",
       specialty: "",
       account_status: "",
+      other: "",
       errors: {}
     });
   };
@@ -98,18 +108,27 @@ class EditTherapist extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, specialty, errors, account_status } = this.state;
+    const {
+      name,
+      email,
+      specialty,
+      errors,
+      account_status,
+      other
+    } = this.state;
 
     console.log(account_status, "therapist");
 
     // Select options for status
     const options = [
       { label: "* Escolha uma especialidade", value: 0 },
-      { label: "Psicologia", value: "Psicologia" },
-      { label: "Terapia da Fala", value: "Terapia da Fala" },
-      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Pediatra", value: "Pediatra" },
       { label: "Fisioterapia", value: "Fisioterapia" },
-      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" }
+      { label: "Psicologia", value: "Psicologia" },
+      { label: "Psicomotricidade", value: "Psicomotricidade" },
+      { label: "Terapia da Fala", value: "Terapia da Fala" },
+      { label: "Terapia Ocupacional", value: "Terapia Ocupacional" },
+      { label: "Outra", value: "Outra" }
     ];
 
     return (
@@ -175,7 +194,7 @@ class EditTherapist extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar terapeuta</div>
+                <div className="card-header">Editar especialista</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -198,10 +217,23 @@ class EditTherapist extends Component {
                       name="specialty"
                       value={specialty}
                       error={errors.specialty}
-                      label="Especialidade clínica"
+                      label="Especialidade médica"
                       onChange={this.handleSelectionChanged}
                       options={options}
                     />
+
+                    {this.state.specialty == "Outra" ? (
+                      <TextInputGroup
+                        label="Especialidade"
+                        name="other"
+                        type="text"
+                        placeholder="Insira a especialidade médica"
+                        value={other}
+                        onChange={this.onChange}
+                        error={errors.specialty}
+                      />
+                    ) : null}
+
                     {account_status ? (
                       account_status == "active" ? (
                         <p>
@@ -220,7 +252,6 @@ class EditTherapist extends Component {
                               name="account_status"
                               value="desactive"
                               onChange={this.radioChange}
-                              
                             />{" "}
                             Desativa
                           </span>
@@ -242,7 +273,6 @@ class EditTherapist extends Component {
                               name="account_status"
                               value="active"
                               onChange={this.radioChange}
-
                             />{" "}
                             Ativa
                           </span>
@@ -273,6 +303,7 @@ EditTherapist.propTypes = {
 
 const mapStateToProps = state => ({
   therapist: state.therapist.therapist,
+  auth: state.auth,
   errors: state.errors
 });
 

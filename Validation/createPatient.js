@@ -6,9 +6,9 @@ module.exports = function validatePatientInput(data) {
 
   data.name = !isEmpty(data.name) ? data.name : "";
   data.birthday = !isEmpty(data.birthday) ? data.birthday : "";
-  data.clinicalStatus = !isEmpty(data.clinicalStatus)
-    ? data.clinicalStatus
-    : "";
+  // data.clinicalStatus = !isEmpty(data.clinicalStatus)
+  //   ? data.clinicalStatus
+  //   : "";
   data.schoolName = !isEmpty(data.schoolName) ? data.schoolName : "";
   data.schoolSchedule = !isEmpty(data.schoolSchedule)
     ? data.schoolSchedule
@@ -32,9 +32,9 @@ module.exports = function validatePatientInput(data) {
   if (!Validator.isLength(data.clinicalStatus, { min: 2 })) {
     errors.clinicalStatus = "Este campo deve conter pelo menos 2 caracteres";
   }
-  if (Validator.isEmpty(data.clinicalStatus)) {
-    errors.clinicalStatus = "Este campo tem que ser preenchido";
-  }
+  // if (Validator.isEmpty(data.clinicalStatus)) {
+  //   errors.clinicalStatus = "Este campo tem que ser preenchido";
+  // }
   if (!Validator.isLength(data.schoolName, { min: 2 })) {
     errors.schoolName = "Este campo deve conter pelo menos 2 caracteres";
   }

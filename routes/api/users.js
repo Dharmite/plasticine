@@ -47,16 +47,23 @@ router.post("/register", (req, res) => {
         email: req.body.email,
         password: req.body.password
       });
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newAdmin.password, salt, (err, hash) => {
-          if (err) throw err;
-          newAdmin.password = hash;
-          newAdmin
-            .save()
-            .then(admin => res.json(admin))
-            .catch(err => console.log(err));
+
+      if (req.body.productKey !== "H6BhEn0UQ6") {
+        return res
+          .status(400)
+          .json({ productKey: "Insira uma chave de registo correta" });
+      } else {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newAdmin.password, salt, (err, hash) => {
+            if (err) throw err;
+            newAdmin.password = hash;
+            newAdmin
+              .save()
+              .then(admin => res.json(admin))
+              .catch(err => console.log(err));
+          });
         });
-      });
+      }
     }
   });
 });
@@ -211,7 +218,7 @@ router.get(
         if (!therapist) {
           res
             .status(404)
-            .json({ error: "Não há nenhum terapeuta com esse id" });
+            .json({ error: "Não há nenhum especialista com esse id" });
         } else {
           res.json(therapist);
         }
@@ -233,7 +240,7 @@ router.get(
         if (!therapist) {
           res
             .status(404)
-            .json({ error: "Não há nenhum terapeuta com esse nome" });
+            .json({ error: "Não há nenhum especialista com esse nome" });
         } else {
           res.json(therapist);
         }
@@ -306,7 +313,7 @@ router.get(
       .populate("notes")
       .then(therapists => {
         if (!therapists) {
-          res.status(404).json({ error: "Não há terapeutas" });
+          res.status(404).json({ error: "Não há especialistas" });
         } else {
           res.json(therapists);
         }
@@ -352,7 +359,8 @@ router.post(
     const newParent = {
       name: req.body.name,
       email: req.body.email,
-      account_status: req.body.account_status
+      account_status: req.body.account_status,
+      work_status: req.body.work_status,
     };
 
     Parent.findByIdAndUpdate(req.params.parent_id, newParent).then(parent => {
@@ -377,20 +385,29 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors);
     }
-    console.log(req.body.account_status);
-    const newTherapist = {
-      name: req.body.name,
-      email: req.body.email,
-      specialty: req.body.specialty,
-      account_status: req.body.account_status
-    };
+    let newTherapist;
+    if (req.body.specialty == "Outra") {
+      newTherapist = {
+        name: req.body.name,
+        email: req.body.email,
+        specialty: req.body.other,
+        account_status: req.body.account_status
+      };
+    } else {
+      newTherapist = {
+        name: req.body.name,
+        email: req.body.email,
+        specialty: req.body.specialty,
+        account_status: req.body.account_status
+      };
+    }
 
     Therapist.findByIdAndUpdate(req.params.therapist_id, newTherapist).then(
       therapist => {
         if (!therapist) {
           res
             .status(400)
-            .json({ error: "Não há nenhum terapeuta com esse id" });
+            .json({ error: "Não há nenhum especialista com esse id" });
         } else {
           res.json(therapist);
         }

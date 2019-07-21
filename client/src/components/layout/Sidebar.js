@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import Logo from "../../img/logo.png";
 import { connect } from "react-redux";
 
-class Sidebar extends Component {
+import doctor_pic from "../../img/doctor.png";
+import user_pic from "../../img/user.png";
 
+class Sidebar extends Component {
   render() {
     return (
       <div>
@@ -24,13 +26,36 @@ class Sidebar extends Component {
           <div className="sidebar">
             {/* Sidebar user panel (optional) */}
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-              <div className="image">
-                <img
-                  src="dist/img/user2-160x160.jpg"
-                  className="img-circle elevation-2"
-                  alt="User Image"
-                />
-              </div>
+              {this.props.user.userType == "therapist" ? (
+                <div className="image">
+                  <img
+                    src={doctor_pic}
+                    className="img-circle elevation-2 bg-white"
+                    alt="User Image"
+                  />
+                </div>
+              ) : null}
+
+              {this.props.user.userType == "admin" ? (
+                <div className="image">
+                  <img
+                    src={user_pic}
+                    className="img-circle elevation-2 bg-white"
+                    alt="User Image"
+                  />
+                </div>
+              ) : null}
+
+              {this.props.user.userType == "parent" ? (
+                <div className="image">
+                  <img
+                    src={user_pic}
+                    className="img-circle elevation-2 bg-white"
+                    alt="User Image"
+                  />
+                </div>
+              ) : null}
+
               <div className="info">
                 {this.props.user.userType == "therapist" ? (
                   <Link to="/terapeuta-dashboard" className="d-block">
@@ -63,19 +88,19 @@ class Sidebar extends Component {
                   <li className="nav-item">
                     <Link to="/terapeuta/adicionar" className="nav-link">
                       <i className="nav-icon fa fa-users" />
-                      <p>Criar terapeuta</p>
+                      <p>Criar Especialista</p>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/paciente/adicionar" className="nav-link">
                       <i class="nav-icon fas fa-child" />
-                      <p>Criar paciente</p>
+                      <p>Criar Utente</p>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/parente/adicionar" className="nav-link">
                       <i className="nav-icon fas fa-user-friends" />
-                      <p>Criar parente</p>
+                      <p>Criar Familiar</p>
                     </Link>
                   </li>
                 </ul>
@@ -101,6 +126,19 @@ class Sidebar extends Component {
                     <Link to="/recurso/adicionar" className="nav-link">
                       <i className="nav-icon fa fa-edit" />
                       <p>Adicionar Recurso</p>
+                    </Link>
+                  </li>
+                  <li className="nav-header">Utilizadores</li>
+                  <li className="nav-item">
+                    <Link to="/paciente/adicionar" className="nav-link">
+                      <i class="nav-icon fas fa-child" />
+                      <p>Criar Utente</p>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/parente/adicionar" className="nav-link">
+                      <i className="nav-icon fas fa-user-friends" />
+                      <p>Criar Familiar</p>
                     </Link>
                   </li>
                 </ul>

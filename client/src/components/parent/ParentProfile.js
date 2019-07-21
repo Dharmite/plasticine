@@ -176,7 +176,7 @@ class ParentProfile extends Component {
                                   </li>
                                 ))
                               ) : (
-                                <p> Sem parentes associados </p>
+                                <p> Sem familiares associados </p>
                               )
                             ) : null}
                           </ul>

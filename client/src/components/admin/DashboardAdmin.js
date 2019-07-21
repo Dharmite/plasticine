@@ -18,8 +18,8 @@ import Spinner from "../common/Spinner";
 
 class DashboardAdmin extends Component {
   state = {
-    therapist: true,
-    patient: false,
+    therapist: false,
+    patient: true,
     parent: false
   };
 
@@ -29,7 +29,7 @@ class DashboardAdmin extends Component {
     this.props.getPatients();
     document.getElementsByClassName(
       "info-box"
-    )[0].style.backgroundColor = "#E8E8E8";
+    )[1].style.backgroundColor = "#E8E8E8";
 
   }
 
@@ -65,7 +65,7 @@ class DashboardAdmin extends Component {
             <Patient key={patient.id} patient={patient} />
           ))
         ) : (
-          <h6 className="mt-4">Nenhum paciente disponível</h6>
+          <h6 className="mt-4">Nenhum utente disponível</h6>
         );
     }
 
@@ -78,7 +78,7 @@ class DashboardAdmin extends Component {
             <Therapist key={therapist.id} therapist={therapist} />
           ))
         ) : (
-          <h6 className="mt-4">Nenhum terapeuta disponível</h6>
+          <h6 className="mt-4">Nenhum especialista disponível</h6>
         );
     }
 
@@ -126,7 +126,7 @@ class DashboardAdmin extends Component {
                           <i className="fa fa-users" />
                         </span>
                         <div className="info-box-content ">
-                          <span className="info-box-text">Terapeutas</span>
+                          <span className="info-box-text">Especialistas</span>
                           <span className="info-box-number">
                             {therapists ? therapists.length : null}
                           </span>
@@ -161,7 +161,7 @@ class DashboardAdmin extends Component {
                           <i class="fas fa-child" />{" "}
                         </span>
                         <div className="info-box-content">
-                          <span className="info-box-text">Pacientes</span>
+                          <span className="info-box-text">Utentes</span>
                           <span className="info-box-number">
                             {patients ? patients.length : null}
                           </span>
@@ -197,7 +197,7 @@ class DashboardAdmin extends Component {
                           <i class="fas fa-user-friends" />{" "}
                         </span>
                         <div className="info-box-content">
-                          <span className="info-box-text">Parentes</span>
+                          <span className="info-box-text">Familiares</span>
                           <span className="info-box-number">
                             {parents ? parents.length : null}
                           </span>

@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import user_pic from '../../img/user.png'
-
+import user_pic from "../../img/user.png";
 
 class Parent extends Component {
   render() {
-    const { _id, name, email, patient, account_status } = this.props.parent;
+    const { _id, name, email, patient, account_status, birthday } = this.props.parent;
 
     const show_patients = patient.slice(0, 1);
 
@@ -25,7 +24,7 @@ class Parent extends Component {
                   account_status == "active" ? (
                     <div className="widget-user-header widget-user-header-custom bg-info">
                       <div className="widget-user-image">
-                      <img
+                        <img
                           className="img-circle"
                           src={user_pic}
                           alt="User Avatar"
@@ -37,6 +36,17 @@ class Parent extends Component {
                       </h3>
                       <p className="widget-user-desc">
                         <i className="fas fa-envelope-square"> </i> {email}
+                      </p>
+                      <p className="widget-user-desc">
+                        Idade:{" "}
+                        {Math.floor(
+                          (Date.now() - new Date(birthday)) /
+                            1000 /
+                            60 /
+                            60 /
+                            24 /
+                            365
+                        )}
                       </p>
                     </div>
                   ) : (
@@ -50,7 +60,7 @@ class Parent extends Component {
                       </div>
                       <h3 className="widget-user-username">
                         {" "}
-                        <Link  to={`/parente/${_id}`}>{name}</Link>
+                        <Link to={`/parente/${_id}`}>{name}</Link>
                       </h3>
                       <p className="widget-user-desc">
                         <i className="fas fa-envelope-square"> </i> {email}
@@ -115,7 +125,7 @@ class Parent extends Component {
 
               {show_patients ? (
                 patient.length == 0 ? (
-                  <h4 className="text-center">Sem pacientes</h4>
+                  <h4 className="text-center">Sem utentes</h4>
                 ) : null
               ) : null}
 

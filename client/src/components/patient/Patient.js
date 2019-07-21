@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import kid from '../../img/kid.png'
-
+import kid from "../../img/kid.png";
 
 class Patient extends Component {
   render() {
-    const { _id, name, age, therapist } = this.props.patient;
+    const { _id, name, therapist, birthday } = this.props.patient;
 
     let show_therapists = therapist.filter(
       user => user.account_status == "active"
@@ -35,7 +34,17 @@ class Patient extends Component {
                     {" "}
                     <Link to={`/paciente/ver/${_id}`}>{name}</Link>
                   </h3>
-                  <h6 className="widget-user-desc">Idade: {age}</h6>
+                  <h6 className="widget-user-desc">
+                    Idade:{" "}
+                    {Math.floor(
+                      (Date.now() - new Date(birthday)) /
+                        1000 /
+                        60 /
+                        60 /
+                        24 /
+                        365
+                    )}
+                  </h6>
                 </div>
                 <div className="card-footer card-footer-custom bg-white">
                   <div className="row">
@@ -78,7 +87,10 @@ class Patient extends Component {
             </div>
             <div className="col-md-5 col-sm-12 border-left info-box-group pr-3 pl-3 pt-3">
               {show_therapists.map(user => (
-                <div className="info-box mb-3 info-box-custom" style={{backgroundColor:"#FFE4B5"}}>
+                <div
+                  className="info-box mb-3 info-box-custom"
+                  style={{ backgroundColor: "#FFE4B5" }}
+                >
                   <span className="info-box-icon">
                     <i className="fa fa-users" />
                   </span>
@@ -92,7 +104,7 @@ class Patient extends Component {
 
               {show_therapists ? (
                 therapist.length == 0 ? (
-                  <h4 className="text-center">Sem terapeutas</h4>
+                  <h4 className="text-center">Sem especialistas</h4>
                 ) : null
               ) : null}
 
