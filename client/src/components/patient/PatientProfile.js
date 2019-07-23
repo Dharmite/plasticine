@@ -185,9 +185,8 @@ class PatientProfile extends Component {
               showParents: false,
               showTherapists: false
             });
-            document.getElementById(
-              "associateParent"
-            ).style.backgroundColor = "white";
+            document.getElementById("associateParent").style.backgroundColor =
+              "white";
             this.setState({ errors: { err: "" } });
           }
         });
@@ -545,7 +544,7 @@ class PatientProfile extends Component {
                             </div>
                           </div>
 
-                          {isAdmin || isTherapist ? (
+                          {isAdmin ? (
                             <div
                               className="btn-group mb-4"
                               role="group"
@@ -665,13 +664,109 @@ class PatientProfile extends Component {
                             </div>
                           ) : null}
 
-                          {isTherapist || isParent ? (
+                          {isTherapist ? (
                             <div
                               className="btn-group mb-4"
                               role="group"
                               id="associateUser"
                             >
-                              {" "}
+                              <a
+                                className="btn"
+                                id="associateTherapist"
+                                style={{
+                                  border: "1px solid black",
+                                  backgroundColor: "white"
+                                }}
+                                onClick={() => {
+                                  this.setState(
+                                    {
+                                      showTherapists: !this.state
+                                        .showTherapists,
+                                      showParents: false
+                                    },
+                                    () => {
+                                      if (this.state.showTherapists == true) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "#E8E8E8";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "white";
+                                      }
+                                      if (this.state.showParents == true) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "white";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "#E8E8E8";
+                                      }
+                                      if (
+                                        this.state.showParents == false &&
+                                        this.state.showTherapists == false
+                                      ) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "white";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "white";
+                                      }
+                                    }
+                                  );
+                                }}
+                              >
+                                <i className="fas fa-user-circle text-info mr-1" />{" "}
+                                Associar Especialista
+                              </a>
+                              <a
+                                className="btn"
+                                id="associateParent"
+                                style={{
+                                  border: "1px solid black",
+                                  backgroundColor: "white"
+                                }}
+                                onClick={() => {
+                                  this.setState(
+                                    {
+                                      showParents: !this.state.showParents,
+                                      showTherapists: false
+                                    },
+                                    () => {
+                                      if (this.state.showTherapists == true) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "#E8E8E8";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "white";
+                                      }
+                                      if (this.state.showParents == true) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "white";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "#E8E8E8";
+                                      }
+                                      if (
+                                        this.state.showParents == false &&
+                                        this.state.showTherapists == false
+                                      ) {
+                                        document.getElementById(
+                                          "associateTherapist"
+                                        ).style.backgroundColor = "white";
+                                        document.getElementById(
+                                          "associateParent"
+                                        ).style.backgroundColor = "white";
+                                      }
+                                    }
+                                  );
+                                }}
+                              >
+                                <i className="fas fa-user-circle text-info mr-1" />{" "}
+                                Associar Parente
+                              </a>{" "}
                               <Link
                                 className="btn"
                                 style={{
@@ -695,6 +790,27 @@ class PatientProfile extends Component {
                               >
                                 <i className="fas fa-pills text-info mr-1" />{" "}
                                 Adicionar medicamento
+                              </Link>
+                            </div>
+                          ) : null}
+
+                          {isParent ? (
+                            <div
+                              className="btn-group mb-4"
+                              role="group"
+                              id="associateUser"
+                            >
+                              <Link
+                                className="btn"
+                                style={{
+                                  border: "1px solid black",
+                                  backgroundColor: "white",
+                                  color: "black"
+                                }}
+                                to={`/paciente/${_id}/registo/adicionar`}
+                              >
+                                <i className="far fa-clipboard text-info mr-1" />{" "}
+                                Criar nota
                               </Link>
                             </div>
                           ) : null}
@@ -821,7 +937,7 @@ class PatientProfile extends Component {
                                         aria-controls="mynotes"
                                         aria-selected="true"
                                       >
-                                        Minhas notas
+                                        Notas
                                       </a>
                                     </li>
                                     <li className="nav-item">
@@ -834,7 +950,7 @@ class PatientProfile extends Component {
                                         aria-controls="availableTo"
                                         aria-selected="false"
                                       >
-                                        Partilhado comigo
+                                        Notas partilhadas
                                       </a>
                                     </li>
                                     <li className="nav-item">
@@ -1202,10 +1318,20 @@ class PatientProfile extends Component {
                                               ? elem.dates.map(date => (
                                                   <div>
                                                     <p>
-                                                      <b>Inicio:</b> {date.addedDate}
+                                                      <b>Inicio:</b>{" "}
+                                                      {date.addedDate}
                                                     </p>
                                                     <p>
-                                                      <b>Fim:</b> {date.removedDate !== null ? date.removedDate: <span>Ainda em acompanhamento</span>}
+                                                      <b>Fim:</b>{" "}
+                                                      {date.removedDate !==
+                                                      null ? (
+                                                        date.removedDate
+                                                      ) : (
+                                                        <span>
+                                                          Ainda em
+                                                          acompanhamento
+                                                        </span>
+                                                      )}
                                                     </p>
                                                   </div>
                                                 ))

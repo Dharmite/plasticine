@@ -136,7 +136,6 @@ router.post(
         if (!patient) {
           return res.status(400).json({ err: "Nenhum perfil encontrado" });
         } else {
-          console.log(req.user._id);
           const newMedicine = {
             user_id: req.user._id,
             user_name: req.user.name,
@@ -475,7 +474,6 @@ router.post(
                             addedDate: Date.now(),
                             removedDate: null
                           });
-                          console.log(patient.history[index].dates);
                         }
                       });
 
@@ -492,7 +490,6 @@ router.post(
                             }
                           ]
                         });
-                        console.log(patient.history, "patient.history");
                       }
 
                       patient
@@ -572,7 +569,6 @@ router.delete(
 
                 if (!isPreviousTherapist) {
                   patient.previousTherapists.push(req.params.therapist_id);
-                  console.log(patient.history);
                   patient.history.filter(
                     elem => elem.user_id == req.params.therapist_id
                   )[0].dates[
@@ -604,7 +600,18 @@ router.delete(
                       .indexOf(req.params.patient_id);
                     // Splice out of array
                     let old_patient = therapist.patient.splice(removeIndex, 1);
-                    therapist.previousPatients.push(old_patient);
+                    let is_oldPatient = false;
+
+                    therapist.previousPatients.forEach(elem => {
+                      if (old_patient[0].equals(elem)) {
+                        is_oldPatient = true;
+                      }
+                    });
+
+                    if (!is_oldPatient) {
+                      therapist.previousPatients.push(old_patient);
+                    }
+
                     therapist
                       .save()
                       .then(therapist => res.json(patient))
@@ -676,6 +683,10 @@ router.delete(
                 // if (!isPreviousTherapist) {
                 //   patient.previousTherapists.push(req.params.therapist_id);
                 // }
+
+                patient.history = patient.history.filter(
+                  elem => elem.user_id !== req.params.therapist_id
+                );
 
                 // Save
                 patient
