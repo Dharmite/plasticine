@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 import { getTherapists } from "../../actions/therapistActions";
 import { getParents } from "../../actions/parentActions";
@@ -109,9 +108,9 @@ class DashboardAdmin extends Component {
                         document.getElementsByClassName(
                           "info-box"
                         )[1].style.backgroundColor = "white";
-                        document.getElementsByClassName(
-                          "info-box"
-                        )[2].style.backgroundColor = "white";
+                        // document.getElementsByClassName(
+                        //   "info-box"
+                        // )[2].style.backgroundColor = "white";
 
                         this.setState({
                           therapist: true,
@@ -142,9 +141,9 @@ class DashboardAdmin extends Component {
                         document.getElementsByClassName(
                           "info-box"
                         )[1].style.backgroundColor = "#E8E8E8";
-                        document.getElementsByClassName(
-                          "info-box"
-                        )[2].style.backgroundColor = "white";
+                        // document.getElementsByClassName(
+                        //   "info-box"
+                        // )[2].style.backgroundColor = "white";
 
                         this.setState({
                           therapist: false,
@@ -169,7 +168,8 @@ class DashboardAdmin extends Component {
                       </div>
                     </div>
                     <div className="clearfix hidden-md-up" />
-                    <div
+                    {/* Comentar a partir daqui */}
+                    {/* <div
                       className="col-12 col-sm-6 col-md-3"
                       onClick={() => {
                         document.getElementsByClassName(
@@ -203,7 +203,7 @@ class DashboardAdmin extends Component {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="row">

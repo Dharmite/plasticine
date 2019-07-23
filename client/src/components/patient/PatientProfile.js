@@ -16,7 +16,8 @@ import {
   addTherapistPatient,
   addParentPatient,
   removeTherapistPatient,
-  removeParentPatient
+  removeParentPatient,
+  deleteTherapistPatient
 } from "../../actions/patientActions";
 
 import { getTherapists } from "../../actions/therapistActions";
@@ -38,6 +39,7 @@ class PatientProfile extends Component {
     patientParents: "",
     errors: {},
     user_id: "",
+    isChecked: true,
     selectedMedicine_id: ""
   };
 
@@ -58,14 +60,29 @@ class PatientProfile extends Component {
   };
 
   removeTherapist = therapist_id => {
-    const { id } = this.props.match.params;
-    this.props.removeTherapistPatient(id, therapist_id);
+    if (this.state.isChecked) {
+      const { id } = this.props.match.params;
+      let logged_user = this.props.auth.user.id;
+      this.props.removeTherapistPatient(
+        logged_user,
+        id,
+        therapist_id,
+        this.props.history
+      );
+    } else {
+      const { id } = this.props.match.params;
+      this.props.deleteTherapistPatient(id, therapist_id);
+    }
   };
 
   removeParent = parent_id => {
     const { id } = this.props.match.params;
 
     this.props.removeParentPatient(id, parent_id);
+  };
+
+  handleChange = e => {
+    this.setState({ isChecked: !this.state.isChecked });
   };
 
   handleTherapistSelectionChanged = e => {
@@ -163,6 +180,14 @@ class PatientProfile extends Component {
               this.state.selectedParent,
               this.props.patient._id
             );
+            this.setState({
+              errors: { err: "" },
+              showParents: false,
+              showTherapists: false
+            });
+            document.getElementById(
+              "associateParent"
+            ).style.backgroundColor = "white";
             this.setState({ errors: { err: "" } });
           }
         });
@@ -177,18 +202,17 @@ class PatientProfile extends Component {
     const {
       _id,
       name,
-      age,
+      birthday,
       schoolName,
       clinicalStatus,
       parent,
       medicine,
+      history,
       observation,
       therapeuticNote
     } = this.props.patient;
 
     let { therapists } = this.props;
-
-    console.log("medicine", medicine);
 
     therapists = therapists.filter(user => user.account_status == "active");
 
@@ -206,8 +230,6 @@ class PatientProfile extends Component {
     patientTherapists = patientTherapists.filter(
       user => user.account_status == "active"
     );
-
-    // console.log(medicine.sort(finishedDate), "medicine")
 
     let shared_notes = [];
     let shared = false;
@@ -336,7 +358,20 @@ class PatientProfile extends Component {
                           </button>
                         </div>
                         <div className="modal-body">
-                          Deseja mesmo remover este utilizador?
+                          <span className="mr-2">
+                            Guardar este utilizador no historial da criança
+                          </span>
+
+                          <input
+                            value={this.state.isChecked}
+                            defaultChecked={this.state.isChecked}
+                            onChange={this.handleChange}
+                            id="isChecked"
+                            type="checkbox"
+                            class="flat-red"
+                            name="isChecked"
+                          />
+                          <p>Deseja mesmo remover este utilizador?</p>
                         </div>
                         <div className="modal-footer">
                           <button
@@ -355,7 +390,7 @@ class PatientProfile extends Component {
                               this.state.user_id
                             )}
                           >
-                            Confirmar
+                            Desassociar
                           </button>
                         </div>
                       </div>
@@ -458,19 +493,33 @@ class PatientProfile extends Component {
                         <div className="col-md-12">
                           <div className="card card-body bg-success text-white mb-3">
                             <div className="row">
-                              <div className="col-lg-3 col-md-3">
+                              <div className="col-lg-2 col-md-2">
                                 <img
                                   className="img-circle elevation-1"
-                                  style={{ height: "128px", width: "128px" }}
+                                  style={{ height: "auto", width: "100%" }}
                                   src={kid}
                                   alt="User Avatar"
                                 />
                               </div>
                               <div className="col-lg-4 col-md-4">
                                 {name ? <h3>{name}</h3> : null}
-                                {age ? <p>Idade: {age}</p> : null}
+                                {birthday ? (
+                                  <p>
+                                    <b>Idade:</b>{" "}
+                                    {Math.floor(
+                                      (Date.now() - new Date(birthday)) /
+                                        1000 /
+                                        60 /
+                                        60 /
+                                        24 /
+                                        365
+                                    )}
+                                  </p>
+                                ) : null}
                                 {schoolName ? (
-                                  <p>Escola: {schoolName}</p>
+                                  <p>
+                                    <b>Escola:</b> {schoolName}
+                                  </p>
                                 ) : null}
                               </div>
                             </div>
@@ -479,7 +528,7 @@ class PatientProfile extends Component {
                           <div className="row">
                             <div className="col-md-12">
                               <div className="card card-body bg-light mb-3">
-                                <h3 className="text-center text-info">
+                                <h3 className="text-info">
                                   Estado Clínico {name}
                                 </h3>
                                 <p className="lead">{clinicalStatus}</p>
@@ -490,15 +539,13 @@ class PatientProfile extends Component {
                           <div className="row">
                             <div className="col-md-12">
                               <div className="card card-body bg-light mb-3">
-                                <h3 className="text-center text-info">
-                                  Observações
-                                </h3>
+                                <h3 className="text-info">Observações</h3>
                                 <p className="lead">{observation}</p>
                               </div>
                             </div>
                           </div>
 
-                          {isAdmin ? (
+                          {isAdmin || isTherapist ? (
                             <div
                               className="btn-group mb-4"
                               role="group"
@@ -1008,7 +1055,7 @@ class PatientProfile extends Component {
                                             </Link>
                                             <span class="badge float-right">
                                               {" "}
-                                              {isAdmin ? (
+                                              {isAdmin || isTherapist ? (
                                                 <i
                                                   onClick={this.onRemoveUserClick.bind(
                                                     this,
@@ -1037,7 +1084,7 @@ class PatientProfile extends Component {
                                         </li>
                                       ))
                                     ) : (
-                                      <p> Sem familiares associados </p>
+                                      <p> Sem especialistas associados </p>
                                     )}
                                   </ul>
                                 </div>
@@ -1071,7 +1118,7 @@ class PatientProfile extends Component {
                                               </Link>
                                               <span class="badge float-right">
                                                 {" "}
-                                                {isAdmin ? (
+                                                {isAdmin || isTherapist ? (
                                                   <i
                                                     onClick={this.onRemoveUserClick.bind(
                                                       this,
@@ -1103,6 +1150,75 @@ class PatientProfile extends Component {
                                   </ul>
                                 </div>
                               </div>
+
+                              {history ? (
+                                <div class="card">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      Histórico de acompanhamento
+                                    </h3>
+                                  </div>
+
+                                  {/* /.card-header */}
+
+                                  <div className="card-body p-0">
+                                    <ul className="products-list product-list-in-card pl-2 pr-2">
+                                      {history.length > 0 ? (
+                                        history.map(elem => (
+                                          <li className="item">
+                                            <div className="product-img">
+                                              <img
+                                                src={user}
+                                                alt="Product Image"
+                                                className="img-circle"
+                                              />
+                                            </div>
+                                            <div className="product-info">
+                                              <a className="product-title">
+                                                <Link
+                                                  className="product-description"
+                                                  to={`/terapeuta/${
+                                                    elem.user_id
+                                                  }`}
+                                                >
+                                                  {elem.user_name}
+                                                </Link>
+                                              </a>
+
+                                              <span className="product-description">
+                                                <b>Email: </b>
+                                                {elem.user_email}
+                                              </span>
+
+                                              <span className="product-description">
+                                                <b>Especialidade: </b>
+                                                {elem.user_specialty}
+                                              </span>
+                                            </div>
+                                            <hr />
+                                            <h5>Datas</h5>
+
+                                            {elem.dates
+                                              ? elem.dates.map(date => (
+                                                  <div>
+                                                    <p>
+                                                      <b>Inicio:</b> {date.addedDate}
+                                                    </p>
+                                                    <p>
+                                                      <b>Fim:</b> {date.removedDate !== null ? date.removedDate: <span>Ainda em acompanhamento</span>}
+                                                    </p>
+                                                  </div>
+                                                ))
+                                              : null}
+                                          </li>
+                                        ))
+                                      ) : (
+                                        <p> Sem histórico a apresentar </p>
+                                      )}
+                                    </ul>
+                                  </div>
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </div>
@@ -1217,6 +1333,7 @@ export default connect(
     removeParentPatient,
     getPatientMedicine,
     deleteMedicine,
-    getPatientMedicine
+    getPatientMedicine,
+    deleteTherapistPatient
   }
 )(withRouter(PatientProfile));

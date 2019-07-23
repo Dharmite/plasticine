@@ -8,6 +8,7 @@ import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 import doctor_pic from '../../img/doctor.png'
 import user_pic from '../../img/user.png'
+import kid_pic from '../../img/kid.png'
 
 
 class TherapistProfile extends Component {
@@ -158,7 +159,7 @@ class TherapistProfile extends Component {
                                     <div className="product-img">
                                       <img
                                         className="img-circle elevation-2"
-                                        src={user_pic}
+                                        src={kid_pic}
                                         alt="User Avatar"
                                       />
                                     </div>

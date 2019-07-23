@@ -242,7 +242,6 @@ router.get(
   "/:patient_id/medicine/all",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log("cenas");
     Patient.findById({ _id: req.params.patient_id })
       .then(patient => {
         if (!patient) {
@@ -465,6 +464,37 @@ router.post(
                       }
 
                       patient.therapist.push(therapist._id);
+
+                      let in_history = false;
+                      patient.history.forEach((history_element, index) => {
+                        if (
+                          history_element.user_id == req.params.therapist_id
+                        ) {
+                          in_history = true;
+                          patient.history[index].dates.push({
+                            addedDate: Date.now(),
+                            removedDate: null
+                          });
+                          console.log(patient.history[index].dates);
+                        }
+                      });
+
+                      if (in_history == false) {
+                        patient.history.push({
+                          user_id: req.params.therapist_id,
+                          user_name: therapist.name,
+                          user_email: therapist.email,
+                          user_specialty: therapist.specialty,
+                          dates: [
+                            {
+                              addedDate: Date.now(),
+                              removedDate: null
+                            }
+                          ]
+                        });
+                        console.log(patient.history, "patient.history");
+                      }
+
                       patient
                         .save()
                         .then(patient => res.json(patient))
@@ -542,7 +572,110 @@ router.delete(
 
                 if (!isPreviousTherapist) {
                   patient.previousTherapists.push(req.params.therapist_id);
+                  console.log(patient.history);
+                  patient.history.filter(
+                    elem => elem.user_id == req.params.therapist_id
+                  )[0].dates[
+                    patient.history.filter(
+                      elem => elem.user_id == req.params.therapist_id
+                    )[0].dates.length - 1
+                  ].removedDate = Date.now();
+                  // patient.history
+                  //   .filter(elem => elem.user_id == req.params.therapist_id)[0].dates["removedDate"] = Date.now();
+
+                  // patient.history = patient.history.reverse();
+
+                  // patient.history.forEach(elem => {
+
+                  //   if(elem.user_id == req.params.therapist_id){
+                  //     elem.removedDate = Date.now();
+                  //   }
+                  // });
+
+                  // patient.history = patient.history.filter(elem => elem.user_id == req.params.therapist_id)[0].removedDate = Date.now();
                 }
+
+                // Save
+                patient
+                  .save()
+                  .then(patient => {
+                    let removeIndex = therapist.patient
+                      .map(patient => patient.id)
+                      .indexOf(req.params.patient_id);
+                    // Splice out of array
+                    let old_patient = therapist.patient.splice(removeIndex, 1);
+                    therapist.previousPatients.push(old_patient);
+                    therapist
+                      .save()
+                      .then(therapist => res.json(patient))
+                      .catch(err => res.json(err));
+                  })
+                  .catch(err => {
+                    res.json(err);
+                  });
+              } else {
+                return res
+                  .status(400)
+                  .json({ err: "Nenhum utilizador por remover" });
+              }
+            })
+            .catch(err => {
+              res.json(err);
+            });
+        }
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  }
+);
+
+// @route   DELETE api/patient-profile/:patient_id/therapist/:therapist_id
+// @desc    Remove therapist from patient
+// @access  Private
+router.delete(
+  "/:patient_id/therapist/:therapist_id/remove",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Patient.findById({ _id: req.params.patient_id })
+      .then(patient => {
+        if (!patient) {
+          return res.status(404).json({ err: "Nenhum perfil encontrado" });
+        } else {
+          Therapist.findById({ _id: req.params.therapist_id })
+            .then(therapist => {
+              if (!therapist) {
+                return res
+                  .status(404)
+                  .json({ err: "Nenhum perfil encontrado" });
+              }
+              let association = false;
+              patient.therapist.forEach(elem => {
+                if (elem == req.params.therapist_id) {
+                  association = true;
+                }
+              });
+              if (association) {
+                let lista = [];
+                patient.therapist.forEach(element => {
+                  if (!element.equals(req.params.therapist_id)) {
+                    lista.push(element);
+                  }
+                });
+
+                patient.therapist = lista;
+
+                // let isPreviousTherapist = false;
+
+                // patient.previousTherapists.forEach(therapist => {
+                //   if (therapist.equals(req.params.therapist_id)) {
+                //     isPreviousTherapist = true;
+                //   }
+                // });
+
+                // if (!isPreviousTherapist) {
+                //   patient.previousTherapists.push(req.params.therapist_id);
+                // }
 
                 // Save
                 patient

@@ -336,6 +336,43 @@ router.post(
                       }
 
                       patient.therapist.push(therapist._id);
+
+                      // daqui
+
+                      let in_history = false;
+                      patient.history.forEach((history_element, index) => {
+                        if (
+                          history_element.user_id == req.user._id
+                        ) {
+                          console.log("entrei aqui 111");
+                          in_history = true;
+                          patient.history[index].dates.push({
+                            addedDate: Date.now(),
+                            removedDate: null
+                          });
+                          console.log(patient.history[index].dates);
+                        }
+                      });
+
+                      if (in_history == false) {
+                        console.log("entrei aqui 2222");
+                        patient.history.push({
+                          user_id: req.user._id,
+                          user_name: therapist.name,
+                          user_email: therapist.email,
+                          user_specialty: therapist.specialty,
+                          dates: [
+                            {
+                              addedDate: Date.now(),
+                              removedDate: null
+                            }
+                          ]
+                        });
+                        console.log(patient.history, "patient.history");
+                      }
+
+                      // aquii
+
                       patient
                         .save()
                         .then(patient => res.json(patient))

@@ -332,10 +332,34 @@ export const addTherapistPatient = (therapist_name, patient_id) => dispatch => {
     .catch(err => console.log(err.response.data));
 };
 
-export const removeTherapistPatient = (id, therapist_id) => dispatch => {
-  console.log("entrei!!");
+export const removeTherapistPatient = (logged_user, id, therapist_id, history) => dispatch => {
+
+  
   axios
     .delete(`/api/patient-profile/${id}/therapist/${therapist_id}`)
+    .then(res => {
+      dispatch({
+        type: REMOVE_THERAPIST_PATIENT,
+        payload: therapist_id
+      });
+
+
+      if(logged_user == therapist_id){
+        history.push(`/terapeuta-dashboard`);
+      }else{
+        dispatch({
+          type: GET_PATIENT,
+          payload: res.data
+        });
+      }
+
+    })
+    .catch(err => console.log(err));
+};
+
+export const deleteTherapistPatient = (id, therapist_id) => dispatch => {
+  axios
+    .delete(`/api/patient-profile/${id}/therapist/${therapist_id}/remove`)
     .then(res => {
       dispatch({
         type: REMOVE_THERAPIST_PATIENT,

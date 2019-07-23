@@ -70,6 +70,34 @@ const PatientSchema = new Schema({
     }
   ],
 
+  history: [
+    {
+      user_id: {
+        type: String
+      },
+      user_name: {
+        type: String
+      },
+      user_email: {
+        type: String
+      },
+      user_specialty: {
+        type: String
+      },
+
+      dates: [
+        {
+          addedDate: {
+            type: Date
+          },
+          removedDate: {
+            type: Date
+          }
+        }
+      ]
+    }
+  ],
+
   previousTherapists: [
     {
       type: Schema.Types.ObjectId,
