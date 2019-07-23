@@ -19,17 +19,25 @@ class DashboardAdmin extends Component {
   state = {
     therapist: false,
     patient: true,
-    parent: false
+    parent: false,
+    patient_search: "",
+    therapist_search: ""
   };
 
   componentDidMount() {
     this.props.getTherapists();
     this.props.getParents();
     this.props.getPatients();
-    document.getElementsByClassName(
-      "info-box"
-    )[1].style.backgroundColor = "#E8E8E8";
+    document.getElementsByClassName("info-box")[1].style.backgroundColor =
+      "#E8E8E8";
+  }
 
+  updateSearch(event) {
+    this.setState({ patient_search: event.target.value.substr(0, 20) });
+  }
+
+  updateSearchTherapist(event) {
+    this.setState({ therapist_search: event.target.value.substr(0, 20) });
   }
 
   render() {
@@ -54,13 +62,28 @@ class DashboardAdmin extends Component {
           <h6 className="mt-4">Nenhum parente disponível</h6>
         );
     }
+    let filtered_patients;
+    let filtered_therapists;
+
+
+    if (patients) {
+      filtered_patients = patients.filter(patient => {
+        return patient.name.toLowerCase().indexOf(this.state.patient_search) !== -1;
+      });
+    }
+
+    if (therapists) {
+      filtered_therapists = therapists.filter(therapist => {
+        return therapist.name.toLowerCase().indexOf(this.state.therapist_search) !== -1;
+      });
+    }
 
     if (loading_patients == true) {
       patientContent = <Spinner />;
     } else {
       patientContent =
         patients.length > 0 ? (
-          patients.map(patient => (
+          filtered_patients.map(patient => (
             <Patient key={patient.id} patient={patient} />
           ))
         ) : (
@@ -73,7 +96,7 @@ class DashboardAdmin extends Component {
     } else {
       therapistContent =
         therapists.length > 0 ? (
-          therapists.map(therapist => (
+          filtered_therapists.map(therapist => (
             <Therapist key={therapist.id} therapist={therapist} />
           ))
         ) : (
@@ -121,7 +144,10 @@ class DashboardAdmin extends Component {
                       style={{ cursor: "pointer" }}
                     >
                       <div className="info-box mb-3 terapeutas">
-                        <span className="info-box-icon elevation-1 " style={{backgroundColor:"#FFE4B5"}}>
+                        <span
+                          className="info-box-icon elevation-1 "
+                          style={{ backgroundColor: "#FFE4B5" }}
+                        >
                           <i className="fa fa-users" />
                         </span>
                         <div className="info-box-content ">
@@ -212,8 +238,43 @@ class DashboardAdmin extends Component {
                     </div>
                   </div>
 
+                  {this.state.therapist ? (
+                    <div className="row">
+                      <div className="col-5">
+                    <div
+                      class="form-group"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Pesquise pelo nome do especialista"
+                        value={this.state.therapist_search}
+                        onChange={this.updateSearchTherapist.bind(this)}
+                        class="form-control"
+                      />{" "}
+                    </div>
+                    </div>
+                    </div>
+                  ) : null}
+
                   {this.state.therapist ? therapistContent : null}
 
+                  {this.state.patient ? (
+                    <div className="row">
+                      <div className="col-5">
+                    <div
+                      class="form-group"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Pesquise pelo nome do utente"
+                        value={this.state.patient_search}
+                        onChange={this.updateSearch.bind(this)}
+                        class="form-control"
+                      />{" "}
+                    </div>
+                    </div>
+                    </div>
+                  ) : null}
                   {this.state.patient ? patientContent : null}
 
                   {this.state.parent ? parentContent : null}
