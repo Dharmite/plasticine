@@ -227,7 +227,6 @@ router.get(
     Resource.find({ category: req.params.category_name })
       .populate("user")
       .then(resources => {
-        console.log(resources);
         if (resources.length === 0) {
           errors.noresource = "Não há nenhum recurso para mostrar";
           return res.status(404).json(errors);
@@ -294,5 +293,33 @@ router.get("/:filename/download", function(req, res, next) {
     req.params.filename
   );
 });
+
+
+
+
+
+// @route DELETE api/resource/:resource_id/:filename
+// @desc DELETE file with given filename
+// @access Private
+
+router.delete(
+  "/:resource_id/:filename",
+  passport.authenticate("jwt", { session: false }),
+  auth_middleware.isTherapistOrAdmin,
+  (req, res) => {
+    Resource.findById(req.params.resource_id).then(resource => {
+      if (!resource) {
+        res.status(400).json({ error: "Não há nenhum recurso com esse id" });
+      } else {
+
+        resource.files = resource.files.filter(element => element.originalname !== req.params.filename);
+        resource.save().then(resource => res.json(resource));
+        
+      }
+    });
+  }
+);
+
+
 
 module.exports = router;

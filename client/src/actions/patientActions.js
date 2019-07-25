@@ -120,6 +120,14 @@ export const removeTherapeuticNote = note_id => async dispatch => {
   }
 };
 
+export const removeTherapeuticNoteFile = (note_id, filename) => async dispatch => {
+  const res = await axios.delete(`/api/therapeuticNote/notes/${note_id}/${filename}`);
+  dispatch({
+    type: GET_THERAPEUTIC_NOTE,
+    payload: res.data
+  });
+};
+
 export const updateTherapeuticNote = (
   patient_id,
   note_id,

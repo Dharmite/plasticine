@@ -48,7 +48,7 @@ export const addResource = (newResource, history) => async dispatch => {
     onUploadProgress: ProgressEvent => {
       console.log(ProgressEvent.loaded);
       dispatch({
-        type:LOADED,
+        type: LOADED,
         payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
       });
     }
@@ -96,7 +96,7 @@ export const addResource = (newResource, history) => async dispatch => {
     payload: res.data
   });
   dispatch({
-    type:LOADED,
+    type: LOADED,
     payload: 0
   });
   history.push("/recursos");
@@ -122,6 +122,14 @@ export const updateResource = (
       payload: error.response.data
     });
   }
+};
+
+export const removeResourceFile = (resource_id, filename) => async dispatch => {
+  const res = await axios.delete(`/api/resource/${resource_id}/${filename}`);
+  dispatch({
+    type: GET_RESOURCE,
+    payload: res.data
+  });
 };
 
 export const removeResource = resource_id => async dispatch => {

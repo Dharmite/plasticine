@@ -503,4 +503,27 @@ router.get("/:filename/download", function(req, res, next) {
   );
 });
 
+// @route DELETE api/therapeuticNote/notes/:note_id/:filename
+// @desc DELETE file with given filename
+// @access Private
+
+router.delete(
+  "/notes/:note_id/:filename",
+  passport.authenticate("jwt", { session: false }),
+  auth_middleware.isTherapistOrAdmin,
+  (req, res) => {
+    TherapeuticNote.findById(req.params.note_id).then(note => {
+      if (!note) {
+        res.status(400).json({ error: "Não há nenhum recurso com esse id" });
+      } else {
+
+        note.files = note.files.filter(element => element.originalname !== req.params.filename);
+        note.save().then(note => res.json(note));
+        
+      }
+    });
+  }
+);
+
+
 module.exports = router;

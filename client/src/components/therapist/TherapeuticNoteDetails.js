@@ -6,7 +6,8 @@ import { Link, withRouter } from "react-router-dom";
 import {
   getTherapeuticNote,
   addComment,
-  getComments
+  getComments,
+  removeTherapeuticNoteFile
 } from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import doctor_pic from "../../img/doctor.png";
@@ -17,8 +18,18 @@ import Navbar from "../layout/Navbar";
 class TherapeuticNoteDetails extends Component {
   state = {
     observation: "",
+    fileName: "",
     errors: {}
   };
+
+  getFile = filename => {
+    this.setState({ fileName: filename });
+  };
+  onClickRemoveNoteFile = filename => {
+    const { note_id } = this.props.match.params;
+    this.props.removeTherapeuticNoteFile(note_id, filename);
+  };
+
   componentWillReceiveProps(newProps) {
     if (newProps.errors) {
       this.setState({ errors: newProps.errors });
@@ -108,7 +119,7 @@ class TherapeuticNoteDetails extends Component {
           file.fileType == "image/jpeg" ||
           file.fileType == "image/png" ||
           file.fileType == "image/gif" ? (
-            <div className="card col-md-4 mt-4">
+            <div className="card col-md-5 mt-4 mr-5">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                 class="card-img-top"
@@ -119,24 +130,24 @@ class TherapeuticNoteDetails extends Component {
               />
               <div className="card-footer bg-white">
                 <div className="row">
-                  <div className="col-sm-6 border-right">
-                    <div className="description-block bg-white">
+                  <div className="col-md-3 col-sm-4 border-right">
+                    <div className="bg-white text-center">
                       <button
                         type="button"
-                        className="btn btn-light mt-3"
+                        className="btn mt-3"
                         style={{ border: "1px solid black" }}
                         data-toggle="modal"
                         data-target="#zoomImageModal"
                         onClick={this.getFileName.bind(this, file.filename)}
                       >
-                        Ver imagem
+                        Ver
                       </button>
                     </div>
                   </div>
-                  <div className="col-sm-6">
-                    <div className="description-block bg-white">
+                  <div className="col-md-5 col-sm-4 border-right">
+                    <div className="bg-white text-center">
                       <button
-                        className="btn btn-light mt-3"
+                        className="btn mt-3"
                         style={{ border: "1px solid black" }}
                         onClick={this.downloadFile.bind(
                           this,
@@ -145,6 +156,19 @@ class TherapeuticNoteDetails extends Component {
                         )}
                       >
                         Download
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-md-3 col-sm-4">
+                    <div className="bg-white text-center">
+                      <button
+                        data-toggle="modal"
+                        data-target="#deleteFileModal"
+                        className="btn mt-3"
+                        style={{ border: "1px solid black" }}
+                        onClick={this.getFile.bind(this, file.originalname)}
+                      >
+                        Apagar
                       </button>
                     </div>
                   </div>
@@ -185,7 +209,7 @@ class TherapeuticNoteDetails extends Component {
               <p>
                 {file.originalname}{" "}
                 <button
-                  className="btn btn-light"
+                  className="btn btn-light mr-3"
                   style={{ border: "1px solid black" }}
                   onClick={this.downloadFile.bind(
                     this,
@@ -195,6 +219,16 @@ class TherapeuticNoteDetails extends Component {
                 >
                   Download
                 </button>
+                <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
+                </button>
+
               </p>
             </div>
           ) : null
@@ -218,7 +252,7 @@ class TherapeuticNoteDetails extends Component {
               <p>
                 {file.originalname}{" "}
                 <button
-                  className="btn btn-light"
+                  className="btn btn-light mr-3"
                   style={{ border: "1px solid black" }}
                   onClick={this.downloadFile.bind(
                     this,
@@ -228,6 +262,16 @@ class TherapeuticNoteDetails extends Component {
                 >
                   Download
                 </button>
+                <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
+                </button>
+
               </p>
             </div>
           ) : null
@@ -263,7 +307,7 @@ class TherapeuticNoteDetails extends Component {
                 </video>
               </p>
               <button
-                className="btn btn-light"
+                className="btn btn-light mr-3"
                 style={{ border: "1px solid black" }}
                 onClick={this.downloadFile.bind(
                   this,
@@ -273,6 +317,16 @@ class TherapeuticNoteDetails extends Component {
               >
                 Download
               </button>
+              <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
+                </button>
+
             </div>
           ) : null
         )
@@ -298,6 +352,49 @@ class TherapeuticNoteDetails extends Component {
                   </Link>
                 </div>
               ) : null}
+
+              <div
+                class="modal fade"
+                id="deleteFileModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                    </div>
+
+                    <div class="modal-body">
+                      Deseja mesmo remover este ficheiro?
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        data-dismiss="modal"
+                        onClick={this.onClickRemoveNoteFile.bind(
+                          this,
+                          this.state.fileName
+                        )}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div
                 class="modal fade"
@@ -574,5 +671,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTherapeuticNote, addComment, getComments }
+  { getTherapeuticNote, addComment, getComments, removeTherapeuticNoteFile }
 )(withRouter(TherapeuticNoteDetails));

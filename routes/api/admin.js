@@ -177,7 +177,6 @@ router.post(
             .status(400)
             .json({ email: "Já existe um utilizador com esse email" });
         } else {
-          console.log(req.body.work_status);
           const newParent = new Parent({
             name: req.body.name,
             email: req.body.email,
@@ -344,18 +343,15 @@ router.post(
                         if (
                           history_element.user_id == req.user._id
                         ) {
-                          console.log("entrei aqui 111");
                           in_history = true;
                           patient.history[index].dates.push({
                             addedDate: Date.now(),
                             removedDate: null
                           });
-                          console.log(patient.history[index].dates);
                         }
                       });
 
                       if (in_history == false) {
-                        console.log("entrei aqui 2222");
                         patient.history.push({
                           user_id: req.user._id,
                           user_name: therapist.name,
@@ -368,7 +364,6 @@ router.post(
                             }
                           ]
                         });
-                        console.log(patient.history, "patient.history");
                       }
 
                       // aquii

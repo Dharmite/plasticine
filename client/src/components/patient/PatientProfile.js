@@ -357,6 +357,9 @@ class PatientProfile extends Component {
                           </button>
                         </div>
                         <div className="modal-body">
+          
+                          <p className="mb-3">Deseja mesmo remover este utilizador?</p>
+
                           <span className="mr-2">
                             Guardar este utilizador no historial da criança
                           </span>
@@ -370,7 +373,7 @@ class PatientProfile extends Component {
                             class="flat-red"
                             name="isChecked"
                           />
-                          <p>Deseja mesmo remover este utilizador?</p>
+
                         </div>
                         <div className="modal-footer">
                           <button

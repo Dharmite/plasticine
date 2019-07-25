@@ -436,10 +436,7 @@ router.post(
 
                 if (user_association == false) {
                   therapist.patient.push(patient._id);
-                  console.log(patient._id, "patient._id");
-                  therapist.previousPatients.forEach(element => {
-                    console.log(element, "element");
-                  });
+      
                   therapist.previousPatients = therapist.previousPatients.filter(elem => !(elem.equals(patient._id)));
                   therapist
                     .save()
@@ -595,7 +592,6 @@ router.delete(
                     let old_patient = therapist.patient.splice(removeIndex, 1);
                     let is_oldPatient = false;
 
-                    console.log(patient.therapist, "therapist");
                     therapist.previousPatients.forEach(elem => {
                       if (old_patient[0].equals(elem)) {
                         is_oldPatient = true;

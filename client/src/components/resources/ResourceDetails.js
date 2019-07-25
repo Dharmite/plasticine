@@ -6,7 +6,8 @@ import { Link, withRouter } from "react-router-dom";
 import {
   getResource,
   addComment,
-  getComments
+  getComments,
+  removeResourceFile
 } from "../../actions/resourceActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
@@ -18,8 +19,15 @@ class ResourceDetails extends Component {
   state = {
     observation: "",
     imageName: "",
+    fileName: "",
     errors: {}
   };
+
+  onClickRemoveResourceFile = filename => {
+    const { id } = this.props.match.params;
+    this.props.removeResourceFile(id, filename);
+  };
+
   componentWillReceiveProps(newProps) {
     if (newProps.errors) {
       this.setState({ errors: newProps.errors });
@@ -55,6 +63,10 @@ class ResourceDetails extends Component {
 
   getFileName = filename => {
     this.setState({ imageName: filename });
+  };
+
+  getFile = filename => {
+    this.setState({ fileName: filename });
   };
 
   downloadFile = (filename, originalname) => {
@@ -104,7 +116,7 @@ class ResourceDetails extends Component {
           file.fileType == "image/jpeg" ||
           file.fileType == "image/png" ||
           file.fileType == "image/gif" ? (
-            <div className="card col-md-4 mt-4">
+            <div className="card col-md-5 mt-4 mr-5">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
                 class="card-img-top"
@@ -115,24 +127,24 @@ class ResourceDetails extends Component {
               />
               <div className="card-footer bg-white">
                 <div className="row">
-                  <div className="col-sm-6 border-right">
-                    <div className="description-block bg-white">
+                  <div className="col-md-3 col-sm-4 border-right">
+                    <div className="bg-white text-center">
                       <button
                         type="button"
-                        className="btn btn-light mt-3"
+                        className="btn mt-3"
                         style={{ border: "1px solid black" }}
                         data-toggle="modal"
                         data-target="#zoomImageModal"
                         onClick={this.getFileName.bind(this, file.filename)}
                       >
-                        Ver imagem
+                        Ver
                       </button>
                     </div>
                   </div>
-                  <div className="col-sm-6">
-                    <div className="description-block bg-white">
+                  <div className="col-md-5 col-sm-4 border-right">
+                    <div className="bg-white text-center">
                       <button
-                        className="btn btn-light mt-3"
+                        className="btn mt-3"
                         style={{ border: "1px solid black" }}
                         onClick={this.downloadFile.bind(
                           this,
@@ -141,6 +153,19 @@ class ResourceDetails extends Component {
                         )}
                       >
                         Download
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-md-3 col-sm-4">
+                    <div className="bg-white text-center">
+                      <button
+                        data-toggle="modal"
+                        data-target="#deleteFileModal"
+                        className="btn mt-3"
+                        style={{ border: "1px solid black" }}
+                        onClick={this.getFile.bind(this, file.originalname)}
+                      >
+                        Apagar
                       </button>
                     </div>
                   </div>
@@ -172,7 +197,9 @@ class ResourceDetails extends Component {
               <p>
                 <audio controls>
                   <source
-                    src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
+                    src={
+                      process.env.PUBLIC_URL + `/uploads/${file.originalname}`
+                    }
                     type="audio/mpeg"
                   />
                   Your browser does not support the audio element.
@@ -182,7 +209,7 @@ class ResourceDetails extends Component {
                 {" "}
                 {file.originalname}{" "}
                 <button
-                  className="btn btn-light"
+                  className="btn btn-light mr-3"
                   style={{ border: "1px solid black" }}
                   onClick={this.downloadFile.bind(
                     this,
@@ -191,6 +218,15 @@ class ResourceDetails extends Component {
                   )}
                 >
                   Download
+                </button>
+                <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
                 </button>
               </p>
             </div>
@@ -215,7 +251,7 @@ class ResourceDetails extends Component {
               <p>
                 {file.originalname}{" "}
                 <button
-                  className="btn btn-light"
+                  className="btn btn-light mr-3"
                   style={{ border: "1px solid black" }}
                   onClick={this.downloadFile.bind(
                     this,
@@ -225,6 +261,16 @@ class ResourceDetails extends Component {
                 >
                   Download
                 </button>
+                <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
+                </button>
+
               </p>
             </div>
           ) : null
@@ -260,7 +306,7 @@ class ResourceDetails extends Component {
                 </video>
               </p>
               <button
-                className="btn btn-light"
+                className="btn btn-light mr-3"
                 style={{ border: "1px solid black" }}
                 onClick={this.downloadFile.bind(
                   this,
@@ -270,6 +316,16 @@ class ResourceDetails extends Component {
               >
                 Download
               </button>
+              <button
+                  data-toggle="modal"
+                  data-target="#deleteFileModal"
+                  className="btn"
+                  style={{ border: "1px solid black" }}
+                  onClick={this.getFile.bind(this, file.originalname)}
+                >
+                  Apagar
+                </button>
+
             </div>
           ) : null
         )
@@ -282,6 +338,49 @@ class ResourceDetails extends Component {
           <section class="content">
             <div class="container-fluid">
               <Sidebar />
+
+              <div
+                class="modal fade"
+                id="deleteFileModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                    </div>
+
+                    <div class="modal-body">
+                      Deseja mesmo remover este ficheiro?
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        data-dismiss="modal"
+                        onClick={this.onClickRemoveResourceFile.bind(
+                          this,
+                          this.state.fileName
+                        )}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div
                 class="modal fade"
@@ -511,5 +610,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getResource, addComment, getComments }
+  { getResource, addComment, getComments, removeResourceFile }
 )(withRouter(ResourceDetails));
