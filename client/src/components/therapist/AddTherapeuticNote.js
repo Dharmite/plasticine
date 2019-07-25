@@ -320,7 +320,7 @@ class AddTherapeuticNote extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar nota"
+                      value="Adicionar registo"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

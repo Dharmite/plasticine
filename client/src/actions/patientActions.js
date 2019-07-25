@@ -69,22 +69,15 @@ export const getTherapeuticNote = id => dispatch => {
     });
 };
 
-export const addTherapeuticNote = (
-  patient_id,
-  newTherapeuticNote,
-  history
-) => dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  };
+export const addTherapeuticNote = (patient_id,newTherapeuticNote,history) => async dispatch => {
 
-  axios
-    .post(
-      `/api/therapeuticNote/new/${patient_id}`,
-      newTherapeuticNote,
-      config,
+
+  const res = await axios.post(`/api/therapeuticNote/new/${patient_id}`,newTherapeuticNote,
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // },
       {
         onUploadProgress: ProgressEvent => {
           dispatch({
@@ -93,23 +86,24 @@ export const addTherapeuticNote = (
           });
         }
       }
-    )
-    .then(res => {
+    );
+
+    try {
       dispatch({
         type: ADD_THERAPEUTIC_NOTE,
         payload: res.data
       });
       dispatch(clearErrors());
       history.push(`/paciente/ver/${patient_id}`);
-    })
-    .catch(err => {
-      console.log(err.response);
+
+    } catch (error) {
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: error.response.data
       });
-    });
-};
+
+    }
+    };
 
 export const removeTherapeuticNote = note_id => async dispatch => {
   try {
