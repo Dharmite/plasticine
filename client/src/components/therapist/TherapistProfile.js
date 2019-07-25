@@ -18,7 +18,7 @@ class TherapistProfile extends Component {
   }
 
   render() {
-    const { name, email, specialty, resources, patient, account_status } = this.props.therapist;
+    const { _id, name, email, specialty, resources, patient, account_status } = this.props.therapist;
 
     let userType;
 
@@ -73,6 +73,18 @@ class TherapistProfile extends Component {
                               </p>
                             ) : null}
                             {specialty ? <p>{specialty}</p> : null}
+                            {this.props.user.userType == "admin" ? (
+                            <Link
+                              to={`/terapeuta/editar/${_id}`}
+                              className="btn bg-white"
+                              style={{
+                                border: "1px solid",
+                              }}
+                            >
+                              Editar
+                            </Link>
+                          ) : null}
+
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">

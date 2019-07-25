@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
 import kid from "../../img/kid.png";
 import user from "../../img/user.png";
+import doctor_pic from "../../img/doctor.png";
+
 
 import {
   getPatient,
@@ -27,7 +29,6 @@ import { getParents } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import doctor_pic from "../../img/doctor.png";
 
 class PatientProfile extends Component {
   state = {
@@ -44,7 +45,6 @@ class PatientProfile extends Component {
   };
 
   onRemoveUserClick = id => {
-    console.log("entrei!!");
 
     this.setState({ user_id: id });
   };
@@ -154,7 +154,7 @@ class PatientProfile extends Component {
     e.preventDefault();
 
     if (
-      this.state.selectedParent == "Escolha um parente" ||
+      this.state.selectedParent == "Escolha um familiar" ||
       this.state.selectedParent == ""
     ) {
       this.setState({ errors: { err: "Escolha um utilizador valido" } });
@@ -520,6 +520,19 @@ class PatientProfile extends Component {
                                     <b>Escola:</b> {schoolName}
                                   </p>
                                 ) : null}
+                                {isAdmin || isTherapist ? (
+                                  <button
+                                    className="btn bg-white"
+                                    style={{
+                                      border: "1px solid black"
+                        
+                                    }}
+                                  >
+                                    <Link to={`/paciente/editar/${_id}`}>
+                                      <span style={{color:"black"}}>Editar</span>
+                                    </Link>
+                                  </button>
+                                ) : null}
                               </div>
                             </div>
                           </div>
@@ -646,7 +659,7 @@ class PatientProfile extends Component {
                                 }}
                               >
                                 <i className="fas fa-user-circle text-info mr-1" />{" "}
-                                Associar Parente
+                                Associar Familiar
                               </a>
 
                               {/* <Link
@@ -777,7 +790,7 @@ class PatientProfile extends Component {
                                 to={`/paciente/${_id}/registo/adicionar`}
                               >
                                 <i className="far fa-clipboard text-info mr-1" />{" "}
-                                Criar nota
+                                Criar registo
                               </Link>
                               <Link
                                 to={`/paciente/${_id}/medicamento/adicionar`}
@@ -810,7 +823,7 @@ class PatientProfile extends Component {
                                 to={`/paciente/${_id}/registo/adicionar`}
                               >
                                 <i className="far fa-clipboard text-info mr-1" />{" "}
-                                Criar nota
+                                Criar registo
                               </Link>
                             </div>
                           ) : null}
@@ -884,7 +897,7 @@ class PatientProfile extends Component {
                                   onChange={this.handleParentSelectionChanged}
                                 >
                                   <option id="option">
-                                    Escolha um parente
+                                    Escolha um familiar
                                   </option>
                                   {parents
                                     ? parents.map(elem => (
@@ -895,7 +908,7 @@ class PatientProfile extends Component {
                               </div>
 
                               {this.state.selectedParent !==
-                                "Escolha um parente" &&
+                                "Escolha um familiar" &&
                               this.state.selectedParent !== "" ? (
                                 <button
                                   type="submit"
@@ -903,7 +916,7 @@ class PatientProfile extends Component {
                                   style={{ marginRight: "5px;" }}
                                 >
                                   {" "}
-                                  Associar parente
+                                  Associar familiar
                                 </button>
                               ) : null}
                             </form>
@@ -937,7 +950,7 @@ class PatientProfile extends Component {
                                         aria-controls="mynotes"
                                         aria-selected="true"
                                       >
-                                        Notas
+                                        Registos
                                       </a>
                                     </li>
                                     <li className="nav-item">
@@ -950,7 +963,7 @@ class PatientProfile extends Component {
                                         aria-controls="availableTo"
                                         aria-selected="false"
                                       >
-                                        Notas partilhadas
+                                        Registos partilhados
                                       </a>
                                     </li>
                                     <li className="nav-item">
@@ -991,7 +1004,7 @@ class PatientProfile extends Component {
                                           )
                                         ) : (
                                           <p className="mt-4">
-                                            Sem notas disponíveis
+                                            Sem registos disponíveis
                                           </p>
                                         )
                                       ) : null}
@@ -1018,7 +1031,7 @@ class PatientProfile extends Component {
                                           )
                                         ) : (
                                           <p className="mt-4">
-                                            Sem notas disponíveis
+                                            Sem registos disponíveis
                                           </p>
                                         )
                                       ) : null}
@@ -1044,18 +1057,18 @@ class PatientProfile extends Component {
                                                     }`}
                                                     style={{ color: "black" }}
                                                   >
-                                                    <h4>
+                                                    <h5>
                                                       Criado por:{" "}
                                                       {elem
                                                         ? elem.user_name
                                                         : null}
-                                                    </h4>
+                                                    </h5>
                                                   </Link>
                                                   <p>
                                                     {" "}
                                                     {elem.startingDate ? (
-                                                      <span>
-                                                        Inicio da toma:{" "}
+                                                      <span className="mr-3">
+                                                        <b>Inicio da toma:</b>{" "}
                                                         {elem.startingDate.slice(
                                                           0,
                                                           10
@@ -1064,7 +1077,7 @@ class PatientProfile extends Component {
                                                     ) : null}
                                                     {elem.finishedDate ? (
                                                       <span>
-                                                        Fim da toma:{" "}
+                                                        <b>Fim da toma:</b>{" "}
                                                         {elem.finishedDate.slice(
                                                           0,
                                                           10
@@ -1077,9 +1090,7 @@ class PatientProfile extends Component {
                                                         elem.finishedDate
                                                       )
                                                     ) ? (
-                                                      <span
-                                                        style={{ color: "red" }}
-                                                      >
+                                                      <span>
                                                         (Medicação Suspensa)
                                                       </span>
                                                     ) : null}

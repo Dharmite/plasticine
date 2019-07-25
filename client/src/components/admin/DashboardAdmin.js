@@ -68,7 +68,7 @@ class DashboardAdmin extends Component {
 
     if (patients) {
       filtered_patients = patients.filter(patient => {
-        return patient.name.toLowerCase().indexOf(this.state.patient_search) !== -1;
+        return patient.name.toLowerCase().indexOf(this.state.patient_search.toLocaleLowerCase()) !== -1;
       });
     }
 

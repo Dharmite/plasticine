@@ -3,7 +3,7 @@
 }
 
 .info-box-custom {
-  min-height: 76px !important;
+  min-height: 40px !important;
 }
 
 .info-box-custom:nth-child(odd) {
@@ -12,7 +12,7 @@
 }
 .info-box-custom:nth-child(even) {
   margin-top: 0px !important;
-  margin-bottom: 0px !important;
+  margin-bottom: 12px !important;
 }
 
 .ver-todos {
@@ -28,5 +28,5 @@
 }
 
 .widget-user-header.widget-user-header-custom {
-  height: 164px;
+  height: 230px;
 }

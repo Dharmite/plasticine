@@ -436,6 +436,11 @@ router.post(
 
                 if (user_association == false) {
                   therapist.patient.push(patient._id);
+                  console.log(patient._id, "patient._id");
+                  therapist.previousPatients.forEach(element => {
+                    console.log(element, "element");
+                  });
+                  therapist.previousPatients = therapist.previousPatients.filter(elem => !(elem.equals(patient._id)));
                   therapist
                     .save()
                     .then(therapist => {
@@ -576,19 +581,7 @@ router.delete(
                       elem => elem.user_id == req.params.therapist_id
                     )[0].dates.length - 1
                   ].removedDate = Date.now();
-                  // patient.history
-                  //   .filter(elem => elem.user_id == req.params.therapist_id)[0].dates["removedDate"] = Date.now();
 
-                  // patient.history = patient.history.reverse();
-
-                  // patient.history.forEach(elem => {
-
-                  //   if(elem.user_id == req.params.therapist_id){
-                  //     elem.removedDate = Date.now();
-                  //   }
-                  // });
-
-                  // patient.history = patient.history.filter(elem => elem.user_id == req.params.therapist_id)[0].removedDate = Date.now();
                 }
 
                 // Save
@@ -602,6 +595,7 @@ router.delete(
                     let old_patient = therapist.patient.splice(removeIndex, 1);
                     let is_oldPatient = false;
 
+                    console.log(patient.therapist, "therapist");
                     therapist.previousPatients.forEach(elem => {
                       if (old_patient[0].equals(elem)) {
                         is_oldPatient = true;

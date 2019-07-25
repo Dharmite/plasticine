@@ -7,6 +7,9 @@ import Navbar from "../layout/Navbar";
 import { getTherapist } from "../../actions/therapistActions";
 import Patient from "../patient/Patient";
 
+import kid from "../../img/kid.png";
+
+
 class DashboardTherapist extends Component {
   state = {
     patients: true,
@@ -45,11 +48,11 @@ class DashboardTherapist extends Component {
                 >
                   <div className="col-md-12 col-sm-12 pr-2 pl-2 pt-2 pb-2">
                     <div className="card-widget widget-user-2">
-                      <div className="widget-user-header widget-user-header-custom bg-success">
+                      <div className="widget-user-header widget-user-header-custom bg-success" style={{height:"auto"}}>
                         <div className="widget-user-image">
                           <img
-                            className="img-circle elevation-2"
-                            src="../dist/img/user7-128x128.jpg"
+                            className="img-circle elevation-2 bg-white"
+                            src={kid}
                             alt="User Avatar"
                           />
                         </div>

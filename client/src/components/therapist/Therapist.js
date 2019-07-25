@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import kid from "../../img/kid.png";
+import user from "../../img/user.png";
+import doctor_pic from "../../img/doctor.png";
 
 import "./Therapist.css";
-
-import doctor_pic from '../../img/doctor.png'
 
 class Therapist extends Component {
   render() {
@@ -18,7 +19,13 @@ class Therapist extends Component {
       account_status
     } = this.props.therapist;
 
-    const show_patients = patient.slice(0, 2);
+    let show_patients = patient;
+    if (show_patients.length > 4) {
+      show_patients = show_patients.slice(0, 3);
+    }
+    if (show_patients.length == 4) {
+      show_patients = show_patients.slice(0, 4);
+    }
 
     return (
       <div className="row  mb-5">
@@ -27,50 +34,54 @@ class Therapist extends Component {
             className="row card"
             style={{ display: "flex", flexDirection: "row" }}
           >
-            <div className="col-md-7 col-sm-12 pr-3 pl-3 pt-3">
-              <div className="card-widget widget-user-2">
-                {account_status ? (
-                  account_status == "active" ? (
-                    <div className="widget-user-header widget-user-header-custom" style={{backgroundColor:"#FFE4B5"}}>
-                      <div className="widget-user-image">
-                        <img
-                          className="img-circle elevation-1"
-                          src={doctor_pic}
-                          alt="User Avatar"
-                        />
-                        {/* <i className="fa fa-users img-circle elevation-2" style={{fontSize:"28px"}}/> */}
+            <div className="col-md-7 col-sm-12 pr-3 pl-3 pt-3 pb-3">
+              <Link to={`/terapeuta/${_id}`}>
+                <div className="card-widget widget-user-2">
+                  {account_status ? (
+                    account_status == "active" ? (
+                      <div
+                        className="widget-user-header widget-user-header-custom"
+                        style={{ backgroundColor: "#FFE4B5", color:"black" }}
+                      >
+                        <div className="widget-user-image">
+                          <img
+                            className="img-circle elevation-1"
+                            src={doctor_pic}
+                            alt="User Avatar"
+                          />
+                          {/* <i className="fa fa-users img-circle elevation-2" style={{fontSize:"28px"}}/> */}
+                        </div>
+                        <h3 className="widget-user-username">
+                          {" "}
+                          <Link to={`/terapeuta/${_id}`} style={{color:"black"}}>{name}</Link>
+                        </h3>
+                        <h6 className="widget-user-desc">{specialty}</h6>
+                        <p className="widget-user-desc">
+                          <i className="fas fa-envelope-square"> </i> {email}
+                        </p>
                       </div>
-                      <h3 className="widget-user-username">
-                        {" "}
-                        <Link to={`/terapeuta/${_id}`}>{name}</Link>
-                      </h3>
-                      <h6 className="widget-user-desc">{specialty}</h6>
-                      <p className="widget-user-desc">
-                        <i className="fas fa-envelope-square"> </i> {email}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="widget-user-header widget-user-header-custom bg-secondary">
-                      <div className="widget-user-image">
-                      <img
-                          className="img-circle elevation-1"
-                          src={doctor_pic}
-                          alt="User Avatar"
-                        />
+                    ) : (
+                      <div className="widget-user-header widget-user-header-custom bg-secondary">
+                        <div className="widget-user-image">
+                          <img
+                            className="img-circle elevation-1"
+                            src={doctor_pic}
+                            alt="User Avatar"
+                          />
+                        </div>
+                        <h3 className="widget-user-username">
+                          {" "}
+                          <Link to={`/terapeuta/${_id}`}>{name}</Link>
+                        </h3>
+                        <h6 className="widget-user-desc">{specialty}</h6>
+                        <p className="widget-user-desc">
+                          <i className="fas fa-envelope-square"> </i> {email}
+                        </p>
+                        <p className="widget-user-desc">Conta desativada</p>
                       </div>
-                      <h3 className="widget-user-username">
-                        {" "}
-                        <Link to={`/terapeuta/${_id}`}>{name}</Link>
-                      </h3>
-                      <h6 className="widget-user-desc">{specialty}</h6>
-                      <p className="widget-user-desc">
-                        <i className="fas fa-envelope-square"> </i> {email}
-                      </p>
-                      <p className="widget-user-desc">Conta desativada</p>
-                    </div>
-                  )
-                ) : null}
-                {/* <div className="widget-user-header widget-user-header-custom bg-warning">
+                    )
+                  ) : null}
+                  {/* <div className="widget-user-header widget-user-header-custom bg-warning">
                   <div className="widget-user-image">
                     <img
                       className="img-circle elevation-2"
@@ -87,55 +98,35 @@ class Therapist extends Component {
                     <i className="fas fa-envelope-square"> </i> {email}
                   </p>
                 </div> */}
-                <div className="card-footer card-footer-custom bg-white">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="description-block bg-white">
-                        <Link
-                          to={`/terapeuta/${_id}`}
-                          href="profile.html"
-                          className="btn btn bg-white"
-                          style={{
-                            border: "1px solid",
-                            width: "100%",
-                            height: "100%"
-                          }}
-                        >
-                          Ver
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="description-block bg-white">
-                        {this.props.isAdmin ? (
-                          <Link
-                            to={`/terapeuta/editar/${_id}`}
-                            className="btn bg-white"
-                            style={{
-                              border: "1px solid",
-                              width: "100%",
-                              height: "100%"
-                            }}
-                          >
-                            Editar
-                          </Link>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="col-md-5 col-sm-12 border-left info-box-group pr-3 pl-3 pt-3">
               {show_patients.map(user => (
-                <div className="info-box mb-3 bg-success info-box-custom">
+                <div className="info-box mb-3 bg-success info-box-custom p-0">
                   <span className="info-box-icon">
-                    <i className="fas fa-child" />
+                    <img
+                      className="img-circle elevation-1"
+                      src={kid}
+                      alt="User Avatar"
+                      style={{ width: "60%" }}
+                    />{" "}
                   </span>
-                  <div style={{ display: "flex" }}>
-                    <div style={{ alignSelf: "center" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span>
                       <Link to={`/paciente/ver/${user._id}`}>{user.name}</Link>
-                    </div>
+                    </span>
+                    <span>
+                      Idade:{" "}
+                      {Math.floor(
+                        (Date.now() - new Date(user.birthday)) /
+                          1000 /
+                          60 /
+                          60 /
+                          24 /
+                          365
+                      )}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -147,14 +138,15 @@ class Therapist extends Component {
               ) : null}
 
               {show_patients ? (
-                patient.length > 2 ? (
+                patient.length > 4 ? (
                   <Link
                     to={`/terapeuta/${_id}`}
                     className="btn mb-3 ver-todos"
                     style={{
                       border: "1px solid black",
                       backgroundColor: "white",
-                      width: "100%"
+                      width: "100%",
+                      marginTop: "12px"
                     }}
                   >
                     Ver Todos
