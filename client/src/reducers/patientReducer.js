@@ -23,7 +23,12 @@ import {
   PATIENT_THERAPISTS_LOADING,
   ADD_COMMENT,
   GET_COMMENTS,
-  LOADED
+  LOADED,
+  GET_CLINICAL_HISTORY,
+  ADD_CLINICAL_HISTORY,
+  GET_CLINICAL_HISTORIES,
+  REMOVE_CLINICAL_HISTORY,
+  UPDATE_CLINICAL_HISTORY
 } from "../actions/types";
 
 const initialState = {
@@ -35,6 +40,8 @@ const initialState = {
   medicine: {},
   notes: [],
   note: {},
+  clinicalNotes: [],
+  clinicalNote: {},
   loading_patients: false,
   loading_patientTherapists: false,
   comments: [],
@@ -91,6 +98,38 @@ export default function(state = initialState, action) {
         ...state,
         notes: [...state.notes, action.payload]
       };
+
+      case GET_CLINICAL_HISTORIES:
+        return {
+          ...state,
+          clinicalNotes: action.payload
+        };
+  
+      case GET_CLINICAL_HISTORY:
+        return {
+          ...state,
+          clinicalNote: action.payload
+        };
+  
+      case REMOVE_CLINICAL_HISTORY:
+        return {
+          ...state,
+          clinicalNotes: state.clinicalNotes.filter(note => note._id !== action.payload)
+        };
+  
+      case UPDATE_CLINICAL_HISTORY:
+        return {
+          ...state,
+          clinicalNotes: state.clinicalNotes.map(note =>
+            note._id !== action.payload.id ? (note = action.payload) : note
+          )
+        };
+  
+      case ADD_CLINICAL_HISTORY:
+        return {
+          ...state,
+          clinicalNotes: [...state.clinicalNotes, action.payload]
+        };
 
     case ADD_COMMENT:
       return {

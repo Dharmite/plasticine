@@ -119,6 +119,13 @@ const PatientSchema = new Schema({
     }
   ],
 
+  clinicalHistory: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "clinicalhistory"
+    }
+  ],
+
   date: {
     type: Date,
     default: Date.now

@@ -40,7 +40,9 @@ import EditMedicine from "./components/patient/EditMedicine";
 import PatientProfile from "./components/patient/PatientProfile";
 
 import AddTherapeuticNote from "./components/therapist/AddTherapeuticNote";
+import AddClinicalHistory from "./components/therapist/AddClinicalHistory";
 import TherapeuticNoteDetails from "./components/therapist/TherapeuticNoteDetails";
+import ClinicalHistoryDetails from "./components/therapist/ClinicalHistoryDetails";
 
 import AddNote from "./components/parent/AddNote";
 import AddResource from "./components/therapist/AddResource";
@@ -55,7 +57,8 @@ import ResourceEmocional from "./components/resources/ResourceEmocional";
 import ResourceAVD from "./components/resources/ResourceAVD";
 import Password from "./components/pages/Password";
 
-import EditTherapeuticNote from './components/therapist/EditTherapeuticNote'
+import EditTherapeuticNote from "./components/therapist/EditTherapeuticNote";
+import EditClinicalHistory from "./components/therapist/EditClinicalHistory";
 
 import "./App.css";
 
@@ -156,6 +159,11 @@ class App extends Component {
               />
               <PrivateRoute
                 exact
+                path="/paciente/:id/avaliação/adicionar"
+                component={AddClinicalHistory}
+              />
+              <PrivateRoute
+                exact
                 path="/paciente/:id/observação/adicionar"
                 component={AddNote}
               />
@@ -176,8 +184,18 @@ class App extends Component {
               />
               <PrivateRoute
                 exact
+                path="/paciente/:patient_id/avaliação/:note_id"
+                component={ClinicalHistoryDetails}
+              />
+              <PrivateRoute
+                exact
                 path="/paciente/:patient_id/registo/:note_id/editar"
                 component={EditTherapeuticNote}
+              />
+              <PrivateRoute
+                exact
+                path="/paciente/:patient_id/avaliação/:note_id/editar"
+                component={EditClinicalHistory}
               />
               <PrivateRoute
                 exact

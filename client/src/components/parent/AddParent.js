@@ -10,7 +10,7 @@ import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
 let data = new Date();
-let max_date = `${data.getFullYear()}-${data.getMonth() < 9 ? "0" + data.getMonth():data.getMonth()}-${data.getDate() < 9 ? "0" + data.getDate():data.getDate()}`;
+let max_date = `${data.getFullYear()}-${data.getMonth() < 9 ? "0" + (data.getMonth() + 1):(data.getMonth() + 1)}-${data.getDate() < 9 ? "0" + data.getDate():data.getDate()}`;
 
 
 class AddParent extends Component {

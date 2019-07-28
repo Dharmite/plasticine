@@ -27,6 +27,13 @@ const TherapistSchema = new Schema({
       ref: "therapeuticnote"
     }
   ],
+
+  clinicalHistory: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "clinicalhistory"
+    }
+  ],
   resources: [
     {
       type: Schema.Types.ObjectId,

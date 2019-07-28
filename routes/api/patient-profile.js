@@ -47,6 +47,12 @@ router.get("/patient/:patient_id", (req, res) => {
         path: "user",
         model: "base"
       }
+    }).populate({
+      path: "clinicalHistory",
+      populate: {
+        path: "user",
+        model: "base"
+      }
     })
     .then(patient => {
       if (!patient) {

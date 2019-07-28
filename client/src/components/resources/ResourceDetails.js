@@ -126,50 +126,86 @@ class ResourceDetails extends Component {
                 style={{ cursor: "pointer" }}
               />
               <div className="card-footer bg-white">
-                <div className="row">
-                  <div className="col-md-3 col-sm-4 border-right">
-                    <div className="bg-white text-center">
-                      <button
-                        type="button"
-                        className="btn mt-3"
-                        style={{ border: "1px solid black" }}
-                        data-toggle="modal"
-                        data-target="#zoomImageModal"
-                        onClick={this.getFileName.bind(this, file.filename)}
-                      >
-                        Ver
-                      </button>
+                {user ? (
+                  user._id == this.props.user.id ? (
+                    <div className="row">
+                      <div className="col-md-3 col-sm-4 border-right">
+                        <div className="bg-white text-center">
+                          <button
+                            type="button"
+                            className="btn mt-3"
+                            style={{ border: "1px solid black" }}
+                            data-toggle="modal"
+                            data-target="#zoomImageModal"
+                            onClick={this.getFileName.bind(this, file.filename)}
+                          >
+                            Ver
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-md-5 col-sm-4 border-right">
+                        <div className="bg-white text-center">
+                          <button
+                            className="btn mt-3"
+                            style={{ border: "1px solid black" }}
+                            onClick={this.downloadFile.bind(
+                              this,
+                              file.filename,
+                              file.originalname
+                            )}
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-md-3 col-sm-4">
+                        <div className="bg-white text-center">
+                          <button
+                            data-toggle="modal"
+                            data-target="#deleteFileModal"
+                            className="btn mt-3"
+                            style={{ border: "1px solid black" }}
+                            onClick={this.getFile.bind(this, file.originalname)}
+                          >
+                            Apagar
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md-5 col-sm-4 border-right">
-                    <div className="bg-white text-center">
-                      <button
-                        className="btn mt-3"
-                        style={{ border: "1px solid black" }}
-                        onClick={this.downloadFile.bind(
-                          this,
-                          file.filename,
-                          file.originalname
-                        )}
-                      >
-                        Download
-                      </button>
+                  ) : (
+                    <div className="row">
+                      <div className="col-md-6 col-sm-6 border-right">
+                        <div className="bg-white text-center">
+                          <button
+                            type="button"
+                            className="btn mt-3"
+                            style={{ border: "1px solid black" }}
+                            data-toggle="modal"
+                            data-target="#zoomImageModal"
+                            onClick={this.getFileName.bind(this, file.filename)}
+                          >
+                            Ver
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-sm-6">
+                        <div className="bg-white text-center">
+                          <button
+                            className="btn mt-3"
+                            style={{ border: "1px solid black" }}
+                            onClick={this.downloadFile.bind(
+                              this,
+                              file.filename,
+                              file.originalname
+                            )}
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md-3 col-sm-4">
-                    <div className="bg-white text-center">
-                      <button
-                        data-toggle="modal"
-                        data-target="#deleteFileModal"
-                        className="btn mt-3"
-                        style={{ border: "1px solid black" }}
-                        onClick={this.getFile.bind(this, file.originalname)}
-                      >
-                        Apagar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  )
+                ) : null}
               </div>
             </div>
           ) : null
@@ -219,15 +255,19 @@ class ResourceDetails extends Component {
                 >
                   Download
                 </button>
-                <button
-                  data-toggle="modal"
-                  data-target="#deleteFileModal"
-                  className="btn"
-                  style={{ border: "1px solid black" }}
-                  onClick={this.getFile.bind(this, file.originalname)}
-                >
-                  Apagar
-                </button>
+                {user ? (
+                  user._id == this.props.user.id ? (
+                    <button
+                      data-toggle="modal"
+                      data-target="#deleteFileModal"
+                      className="btn"
+                      style={{ border: "1px solid black" }}
+                      onClick={this.getFile.bind(this, file.originalname)}
+                    >
+                      Apagar
+                    </button>
+                  ) : null
+                ) : null}
               </p>
             </div>
           ) : null
@@ -261,16 +301,19 @@ class ResourceDetails extends Component {
                 >
                   Download
                 </button>
-                <button
-                  data-toggle="modal"
-                  data-target="#deleteFileModal"
-                  className="btn"
-                  style={{ border: "1px solid black" }}
-                  onClick={this.getFile.bind(this, file.originalname)}
-                >
-                  Apagar
-                </button>
-
+                {user ? (
+                  user._id == this.props.user.id ? (
+                    <button
+                      data-toggle="modal"
+                      data-target="#deleteFileModal"
+                      className="btn"
+                      style={{ border: "1px solid black" }}
+                      onClick={this.getFile.bind(this, file.originalname)}
+                    >
+                      Apagar
+                    </button>
+                  ) : null
+                ) : null}
               </p>
             </div>
           ) : null
@@ -316,16 +359,19 @@ class ResourceDetails extends Component {
               >
                 Download
               </button>
-              <button
-                  data-toggle="modal"
-                  data-target="#deleteFileModal"
-                  className="btn"
-                  style={{ border: "1px solid black" }}
-                  onClick={this.getFile.bind(this, file.originalname)}
-                >
-                  Apagar
-                </button>
-
+              {user ? (
+                  user._id == this.props.user.id ? (
+                    <button
+                      data-toggle="modal"
+                      data-target="#deleteFileModal"
+                      className="btn"
+                      style={{ border: "1px solid black" }}
+                      onClick={this.getFile.bind(this, file.originalname)}
+                    >
+                      Apagar
+                    </button>
+                  ) : null
+                ) : null}
             </div>
           ) : null
         )

@@ -16,6 +16,7 @@ import {
   GET_MEDICINE,
   UPDATE_MEDICINE,
   ADD_THERAPEUTIC_NOTE,
+  ADD_CLINICAL_HISTORY,
   GET_THERAPEUTIC_NOTE,
   REMOVE_THERAPEUTIC_NOTE,
   UPDATE_THERAPEUTIC_NOTE,
@@ -24,7 +25,10 @@ import {
   PATIENT_THERAPISTS_LOADING,
   ADD_COMMENT,
   GET_COMMENTS,
-  LOADED
+  LOADED,
+  UPDATE_CLINICAL_HISTORY,
+  GET_CLINICAL_HISTORY,
+  REMOVE_CLINICAL_HISTORY
 } from "./types";
 
 import axios from "axios";
@@ -58,6 +62,23 @@ export const getTherapeuticNote = id => dispatch => {
     .then(res => {
       dispatch({
         type: GET_THERAPEUTIC_NOTE,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const getClinicalHistory = id => dispatch => {
+  axios
+    .get(`/api/clinicalHistory/notes/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_CLINICAL_HISTORY,
         payload: res.data
       });
     })
@@ -105,6 +126,42 @@ export const addTherapeuticNote = (patient_id,newTherapeuticNote,history) => asy
     }
     };
 
+    export const addClinicalHistory = (patient_id,newClinicalHistory,history) => async dispatch => {
+
+
+      const res = await axios.post(`/api/clinicalHistory/new/${patient_id}`,newClinicalHistory,
+          // {
+          //   headers: {
+          //     "Content-Type": "multipart/form-data"
+          //   }
+          // },
+          {
+            onUploadProgress: ProgressEvent => {
+              dispatch({
+                type: LOADED,
+                payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
+              });
+            }
+          }
+        );
+    
+        try {
+          dispatch({
+            type: ADD_CLINICAL_HISTORY,
+            payload: res.data
+          });
+          dispatch(clearErrors());
+          history.push(`/paciente/ver/${patient_id}`);
+    
+        } catch (error) {
+          dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+          });
+    
+        }
+        };
+
 export const removeTherapeuticNote = note_id => async dispatch => {
   try {
     const res = await axios.delete(`/api/therapeuticNote/notes/${note_id}`);
@@ -120,10 +177,33 @@ export const removeTherapeuticNote = note_id => async dispatch => {
   }
 };
 
+export const removeClinicalHistory = note_id => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/clinicalHistory/notes/${note_id}`);
+    dispatch({
+      type: REMOVE_CLINICAL_HISTORY,
+      payload: res.data._id
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
 export const removeTherapeuticNoteFile = (note_id, filename) => async dispatch => {
   const res = await axios.delete(`/api/therapeuticNote/notes/${note_id}/${filename}`);
   dispatch({
     type: GET_THERAPEUTIC_NOTE,
+    payload: res.data
+  });
+};
+
+export const removeClinicalHistoryFile = (note_id, filename) => async dispatch => {
+  const res = await axios.delete(`/api/clinicalHistory/notes/${note_id}/${filename}`);
+  dispatch({
+    type: GET_CLINICAL_HISTORY,
     payload: res.data
   });
 };
@@ -159,10 +239,59 @@ export const updateTherapeuticNote = (
     });
 };
 
+export const updateClinicalHistory = (
+  patient_id,
+  note_id,
+  newClinicalHistory,
+  history
+) => dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+
+  axios
+    .post(`/api/clinicalHistory/notes/${note_id}`, newClinicalHistory, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_CLINICAL_HISTORY,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+      history.push(`/paciente/ver/${patient_id}`);
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export const getComments = note_id => async dispatch => {
   try {
     const res = await axios.get(`/api/therapeuticNote/${note_id}/feedback`);
     console.log(res.data, "comments");
+    dispatch({
+      type: GET_COMMENTS,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+
+export const getCommentsClinicalHistory = note_id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/clinicalHistory/${note_id}/feedback`);
     dispatch({
       type: GET_COMMENTS,
       payload: res.data
@@ -189,6 +318,30 @@ export const addComment = (note_id, newFeedback) => async dispatch => {
     // });
     dispatch({
       type: GET_THERAPEUTIC_NOTE,
+      payload: res.data
+    });
+
+    dispatch(clearErrors());
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+export const addCommentClinicalHistory = (note_id, newFeedback) => async dispatch => {
+  try {
+    const res = await axios.post(
+      `/api/clinicalHistory/${note_id}/feedback`,
+      newFeedback
+    );
+    // dispatch({
+    //   type: ADD_COMMENT,
+    //   payload: res.data
+    // });
+    dispatch({
+      type: GET_CLINICAL_HISTORY,
       payload: res.data
     });
 

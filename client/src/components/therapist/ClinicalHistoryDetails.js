@@ -4,10 +4,10 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import {
-  getTherapeuticNote,
-  addComment,
-  getComments,
-  removeTherapeuticNoteFile
+  getClinicalHistory,
+  addCommentClinicalHistory,
+  getCommentsClinicalHistory,
+  removeClinicalHistoryFile
 } from "../../actions/patientActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import doctor_pic from "../../img/doctor.png";
@@ -15,7 +15,7 @@ import user_pic from "../../img/user.png";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
-class TherapeuticNoteDetails extends Component {
+class ClinicalHistoryDetails extends Component {
   state = {
     observation: "",
     fileName: "",
@@ -27,7 +27,7 @@ class TherapeuticNoteDetails extends Component {
   };
   onClickRemoveNoteFile = filename => {
     const { note_id } = this.props.match.params;
-    this.props.removeTherapeuticNoteFile(note_id, filename);
+    this.props.removeClinicalHistoryFile(note_id, filename);
   };
 
   componentWillReceiveProps(newProps) {
@@ -37,8 +37,8 @@ class TherapeuticNoteDetails extends Component {
   }
   componentDidMount() {
     const { note_id } = this.props.match.params;
-    this.props.getTherapeuticNote(note_id);
-    this.props.getComments(note_id);
+    this.props.getClinicalHistory(note_id);
+    this.props.getCommentsClinicalHistory(note_id);
   }
 
   // componentDidUpdate() {
@@ -47,22 +47,19 @@ class TherapeuticNoteDetails extends Component {
   // }
   componentDidUpdate() {
     const { note_id } = this.props.match.params;
-    this.props.getTherapeuticNote(note_id);
+    this.props.getClinicalHistory(note_id);
   }
 
   onSubmit = e => {
     e.preventDefault();
 
     const { _id } = this.props.note;
-    console.log(_id, "note_id");
-
-    console.log(this.props.user.id, "id");
     const newFeedback = {
       user: this.props.user.id,
       observation: this.state.observation
     };
 
-    this.props.addComment(_id, newFeedback);
+    this.props.addCommentClinicalHistory(_id, newFeedback);
     this.setState({ observation: "" });
   };
 
@@ -76,7 +73,7 @@ class TherapeuticNoteDetails extends Component {
   downloadFile = (filename, originalname) => {
     // axios.get(`/api/therapeuticNote/${filename}/download`);
     axios({
-      url: `/api/therapeuticNote/${filename}/download`, //your url
+      url: `/api/clinicalHistory/${filename}/download`, //your url
       method: "GET",
       responseType: "blob" // important
     }).then(response => {
@@ -97,11 +94,15 @@ class TherapeuticNoteDetails extends Component {
       observation,
       activity,
       behavior,
+      valuationDate,
+      duration,
+      valuation,
       availableTo,
       files,
       feedback,
       date
     } = this.props.note;
+
     const { errors } = this.state;
     let hasImageFiles;
     if (files) {
@@ -129,7 +130,7 @@ class TherapeuticNoteDetails extends Component {
                 style={{ cursor: "pointer" }}
               />
               <div className="card-footer bg-white">
-              {user ? (
+                {user ? (
                   user._id == this.props.user.id ? (
                     <div className="row">
                       <div className="col-md-3 col-sm-4 border-right">
@@ -208,7 +209,7 @@ class TherapeuticNoteDetails extends Component {
                       </div>
                     </div>
                   )
-                ) : null} 
+                ) : null}
               </div>
             </div>
           ) : null
@@ -268,7 +269,6 @@ class TherapeuticNoteDetails extends Component {
                     </button>
                   ) : null
                 ) : null}
-
               </p>
             </div>
           ) : null
@@ -315,7 +315,6 @@ class TherapeuticNoteDetails extends Component {
                     </button>
                   ) : null
                 ) : null}
-
               </p>
             </div>
           ) : null
@@ -362,19 +361,18 @@ class TherapeuticNoteDetails extends Component {
                 Download
               </button>
               {user ? (
-                  user._id == this.props.user.id ? (
-                    <button
-                      data-toggle="modal"
-                      data-target="#deleteFileModal"
-                      className="btn"
-                      style={{ border: "1px solid black" }}
-                      onClick={this.getFile.bind(this, file.originalname)}
-                    >
-                      Apagar
-                    </button>
-                  ) : null
-                ) : null}
-
+                user._id == this.props.user.id ? (
+                  <button
+                    data-toggle="modal"
+                    data-target="#deleteFileModal"
+                    className="btn"
+                    style={{ border: "1px solid black" }}
+                    onClick={this.getFile.bind(this, file.originalname)}
+                  >
+                    Apagar
+                  </button>
+                ) : null
+              ) : null}
             </div>
           ) : null
         )
@@ -527,6 +525,31 @@ class TherapeuticNoteDetails extends Component {
                             <p class="lead">
                               {" "}
                               <b>Comportamento:</b> {behavior}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="row">
+                          {valuation ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Avaliação:</b> {valuation}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="row">
+                          {valuationDate ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Avaliação realizada no dia:</b>{" "}
+                              {valuationDate.slice(0, 10)}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="row">
+                          {duration ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Duração:</b> {duration}
                             </p>
                           ) : null}
                         </div>
@@ -708,16 +731,21 @@ class TherapeuticNoteDetails extends Component {
   }
 }
 
-TherapeuticNoteDetails.propTypes = {
+ClinicalHistoryDetails.propTypes = {
   therapist: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  note: state.patient.note
+  note: state.patient.clinicalNote
 });
 
 export default connect(
   mapStateToProps,
-  { getTherapeuticNote, addComment, getComments, removeTherapeuticNoteFile }
-)(withRouter(TherapeuticNoteDetails));
+  {
+    getClinicalHistory,
+    addCommentClinicalHistory,
+    getCommentsClinicalHistory,
+    removeClinicalHistoryFile
+  }
+)(withRouter(ClinicalHistoryDetails));

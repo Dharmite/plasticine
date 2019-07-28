@@ -8,7 +8,6 @@ import kid from "../../img/kid.png";
 import user from "../../img/user.png";
 import doctor_pic from "../../img/doctor.png";
 
-
 import {
   getPatient,
   getPatientMedicine,
@@ -27,6 +26,7 @@ import { getTherapists } from "../../actions/therapistActions";
 import { getParents } from "../../actions/parentActions";
 
 import TherapeuticNote from "../therapist/TherapeuticNote";
+import ClinicalHistory from "../therapist/ClinicalHistory";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
@@ -45,7 +45,6 @@ class PatientProfile extends Component {
   };
 
   onRemoveUserClick = id => {
-
     this.setState({ user_id: id });
   };
 
@@ -208,8 +207,11 @@ class PatientProfile extends Component {
       medicine,
       history,
       observation,
-      therapeuticNote
+      therapeuticNote,
+      clinicalHistory
     } = this.props.patient;
+
+    console.log(clinicalHistory, "clinicalHistory");
 
     let { therapists } = this.props;
 
@@ -241,6 +243,22 @@ class PatientProfile extends Component {
           ) {
             shared_notes.push(note);
             shared = true;
+          }
+        });
+      });
+    }
+
+    let shared_notes_clinical = [];
+    let shared_clinical = false;
+    if (clinicalHistory) {
+      clinicalHistory.forEach(note => {
+        note.availableTo.forEach(elem => {
+          if (
+            elem == this.props.auth.user.id &&
+            note.user._id !== this.props.auth.user.id
+          ) {
+            shared_notes_clinical.push(note);
+            shared_clinical = true;
           }
         });
       });
@@ -357,8 +375,9 @@ class PatientProfile extends Component {
                           </button>
                         </div>
                         <div className="modal-body">
-          
-                          <p className="mb-3">Deseja mesmo remover este utilizador?</p>
+                          <p className="mb-3">
+                            Deseja mesmo remover este utilizador?
+                          </p>
 
                           <span className="mr-2">
                             Guardar este utilizador no historial da criança
@@ -373,7 +392,6 @@ class PatientProfile extends Component {
                             class="flat-red"
                             name="isChecked"
                           />
-
                         </div>
                         <div className="modal-footer">
                           <button
@@ -528,11 +546,12 @@ class PatientProfile extends Component {
                                     className="btn bg-white"
                                     style={{
                                       border: "1px solid black"
-                        
                                     }}
                                   >
                                     <Link to={`/paciente/editar/${_id}`}>
-                                      <span style={{color:"black"}}>Editar</span>
+                                      <span style={{ color: "black" }}>
+                                        Editar
+                                      </span>
                                     </Link>
                                   </button>
                                 ) : null}
@@ -781,7 +800,7 @@ class PatientProfile extends Component {
                                 }}
                               >
                                 <i className="fas fa-user-circle text-info mr-1" />{" "}
-                                Associar Parente
+                                Associar Familiar
                               </a>{" "}
                               <Link
                                 className="btn"
@@ -793,7 +812,19 @@ class PatientProfile extends Component {
                                 to={`/paciente/${_id}/registo/adicionar`}
                               >
                                 <i className="far fa-clipboard text-info mr-1" />{" "}
-                                Criar registo
+                                Criar Registo
+                              </Link>
+                              <Link
+                                className="btn"
+                                style={{
+                                  border: "1px solid black",
+                                  backgroundColor: "white",
+                                  color: "black"
+                                }}
+                                to={`/paciente/${_id}/avaliação/adicionar`}
+                              >
+                                <i className="far fa-clipboard text-info mr-1" />{" "}
+                                Criar Historial Clínico
                               </Link>
                               <Link
                                 to={`/paciente/${_id}/medicamento/adicionar`}
@@ -805,7 +836,7 @@ class PatientProfile extends Component {
                                 }}
                               >
                                 <i className="fas fa-pills text-info mr-1" />{" "}
-                                Adicionar medicamento
+                                Adicionar Medicamento
                               </Link>
                             </div>
                           ) : null}
@@ -831,7 +862,7 @@ class PatientProfile extends Component {
                             </div>
                           ) : null}
 
-                          {showTherapists && isAdmin ? (
+                          {showTherapists ? (
                             <form
                               className="form-inline mb-3"
                               onSubmit={this.onSubmitTherapist}
@@ -892,7 +923,7 @@ class PatientProfile extends Component {
                                   for="exampleFormControlSelect1"
                                   style={{ marginRight: "5px;" }}
                                 >
-                                  Selecione o parente
+                                  Selecione o familiar
                                 </label>
                                 <select
                                   className="form-control ml-3"
@@ -936,7 +967,7 @@ class PatientProfile extends Component {
 
                           <div className="row">
                             <div className="col-lg-8 col-md-8 col-sm-12">
-                              {isTherapist || isParent || isAdmin ? (
+                              {isTherapist ? (
                                 <div className="mb-5">
                                   <ul
                                     className="nav nav-tabs"
@@ -969,6 +1000,33 @@ class PatientProfile extends Component {
                                         Registos partilhados
                                       </a>
                                     </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="myclinical-tab"
+                                        data-toggle="tab"
+                                        href="#myclinical"
+                                        role="tab"
+                                        aria-controls="myclinical"
+                                        aria-selected="true"
+                                      >
+                                        Historial
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="clinicalAvailableTo-tab"
+                                        data-toggle="tab"
+                                        href="#clinicalAvailableTo"
+                                        role="tab"
+                                        aria-controls="clinicalAvailableTo"
+                                        aria-selected="false"
+                                      >
+                                        Historial Partilhado
+                                      </a>
+                                    </li>
+
                                     <li className="nav-item">
                                       <a
                                         className="nav-link"
@@ -1042,6 +1100,661 @@ class PatientProfile extends Component {
 
                                     <div
                                       className="tab-pane fade"
+                                      id="myclinical"
+                                      role="tabpanel"
+                                      aria-labelledby="myclinical-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        clinicalHistory.length > 0 ? (
+                                          clinicalHistory.map(note =>
+                                            note.user._id ==
+                                            this.props.auth.user.id ? (
+                                              <ClinicalHistory
+                                                key={note.id}
+                                                ClinicalHistory={note}
+                                              />
+                                            ) : null
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div>
+
+                                    <div
+                                      className="tab-pane fade"
+                                      id="clinicalAvailableTo"
+                                      role="tabpanel"
+                                      aria-labelledby="clinicalAvailableTo-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        shared_clinical == true ? (
+                                          clinicalHistory.map(note =>
+                                            note.availableTo.map(elem =>
+                                              elem == this.props.auth.user.id &&
+                                              note.user._id !==
+                                                this.props.auth.user.id ? (
+                                                <ClinicalHistory
+                                                  key={note.id}
+                                                  ClinicalHistory={note}
+                                                />
+                                              ) : null
+                                            )
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div>
+
+                                    <div
+                                      className="tab-pane fade"
+                                      id="medicamentos"
+                                      role="tabpanel"
+                                      aria-labelledby="medicamentos-tab"
+                                    >
+                                      <div>
+                                        <div className="row">
+                                          {typeof medicine !== "undefined" &&
+                                          medicine.length > 0 ? (
+                                            medicine.map(elem => (
+                                              <div className="col-md-12">
+                                                <div className="card card-body mb-2">
+                                                  <h2>{elem.name} </h2>{" "}
+                                                  <Link
+                                                    to={`/terapeuta/${
+                                                      elem.user_id
+                                                    }`}
+                                                    style={{ color: "black" }}
+                                                  >
+                                                    <h5>
+                                                      Criado por:{" "}
+                                                      {elem
+                                                        ? elem.user_name
+                                                        : null}
+                                                    </h5>
+                                                  </Link>
+                                                  <p>
+                                                    {" "}
+                                                    {elem.startingDate ? (
+                                                      <span className="mr-3">
+                                                        <b>Inicio da toma:</b>{" "}
+                                                        {elem.startingDate.slice(
+                                                          0,
+                                                          10
+                                                        )}{" "}
+                                                      </span>
+                                                    ) : null}
+                                                    {elem.finishedDate ? (
+                                                      <span>
+                                                        <b>Fim da toma:</b>{" "}
+                                                        {elem.finishedDate.slice(
+                                                          0,
+                                                          10
+                                                        )}{" "}
+                                                      </span>
+                                                    ) : null}
+                                                    {new Date(Date.now()) >
+                                                    new Date(
+                                                      new Date(
+                                                        elem.finishedDate
+                                                      )
+                                                    ) ? (
+                                                      <span>
+                                                        (Medicação Suspensa)
+                                                      </span>
+                                                    ) : null}
+                                                  </p>
+                                                  <p>
+                                                    <b>Observações:</b>{" "}
+                                                    {elem.observation}
+                                                  </p>
+                                                  <p>
+                                                    <b>Dosagem:</b>{" "}
+                                                    {elem.dosage}
+                                                  </p>
+                                                  <p>
+                                                    <b>Horario:</b> {elem.time}
+                                                  </p>
+                                                  <div className="row">
+                                                    <div className="description-block mr-3">
+                                                      <button
+                                                        className="btn"
+                                                        data-toggle="modal"
+                                                        data-target="#removeMedicineModal"
+                                                        onClick={this.removeMedicineOnClick.bind(
+                                                          this,
+                                                          elem._id
+                                                        )}
+                                                        style={{
+                                                          border:
+                                                            "1px solid black"
+                                                        }}
+                                                      >
+                                                        Apagar
+                                                      </button>
+                                                    </div>
+                                                    <div className="description-block mr-3">
+                                                      <Link
+                                                        className="btn"
+                                                        style={{
+                                                          border:
+                                                            "1px solid black"
+                                                        }}
+                                                        to={`/paciente/${_id}/ver/medicamento/editar/${
+                                                          elem._id
+                                                        }`}
+                                                      >
+                                                        Editar
+                                                      </Link>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <p className="mt-4">
+                                              Sem medicamentos disponíveis
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
+
+                              {isParent ? (
+                                <div className="mb-5">
+                                  <ul
+                                    className="nav nav-tabs"
+                                    id="myTab"
+                                    role="tablist"
+                                  >
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        id="mynotes-tab"
+                                        data-toggle="tab"
+                                        href="#mynotes"
+                                        role="tab"
+                                        aria-controls="mynotes"
+                                        aria-selected="true"
+                                      >
+                                        Registos
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="availableTo-tab"
+                                        data-toggle="tab"
+                                        href="#availableTo"
+                                        role="tab"
+                                        aria-controls="availableTo"
+                                        aria-selected="false"
+                                      >
+                                        Registos partilhados
+                                      </a>
+                                    </li>
+                                    {/* <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="myclinical-tab"
+                                        data-toggle="tab"
+                                        href="#myclinical"
+                                        role="tab"
+                                        aria-controls="myclinical"
+                                        aria-selected="true"
+                                      >
+                                        Historial
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="clinicalAvailableTo-tab"
+                                        data-toggle="tab"
+                                        href="#clinicalAvailableTo"
+                                        role="tab"
+                                        aria-controls="clinicalAvailableTo"
+                                        aria-selected="false"
+                                      >
+                                        Historial Partilhado
+                                      </a>
+                                    </li> */}
+
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="medicamentos-tab"
+                                        data-toggle="tab"
+                                        href="#medicamentos"
+                                        role="tab"
+                                        aria-controls="medicamentos"
+                                        aria-selected="false"
+                                      >
+                                        Medicamentos
+                                      </a>
+                                    </li>
+                                  </ul>
+
+                                  <div
+                                    className="tab-content"
+                                    id="myTabContent"
+                                  >
+                                    <div
+                                      className="tab-pane fade show active"
+                                      id="mynotes"
+                                      role="tabpanel"
+                                      aria-labelledby="mynotes-tab"
+                                    >
+                                      {therapeuticNote ? (
+                                        therapeuticNote.length > 0 ? (
+                                          therapeuticNote.map(note =>
+                                            note.user._id ==
+                                            this.props.auth.user.id ? (
+                                              <TherapeuticNote
+                                                key={note.id}
+                                                TherapeuticNote={note}
+                                              />
+                                            ) : null
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div>
+                                    <div
+                                      className="tab-pane fade"
+                                      id="availableTo"
+                                      role="tabpanel"
+                                      aria-labelledby="availableTo-tab"
+                                    >
+                                      {therapeuticNote ? (
+                                        shared == true ? (
+                                          therapeuticNote.map(note =>
+                                            note.availableTo.map(elem =>
+                                              elem == this.props.auth.user.id &&
+                                              note.user._id !==
+                                                this.props.auth.user.id ? (
+                                                <TherapeuticNote
+                                                  key={note.id}
+                                                  TherapeuticNote={note}
+                                                />
+                                              ) : null
+                                            )
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div>
+
+                                    {/* <div
+                                      className="tab-pane fade"
+                                      id="myclinical"
+                                      role="tabpanel"
+                                      aria-labelledby="myclinical-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        clinicalHistory.length > 0 ? (
+                                          clinicalHistory.map(note =>
+                                            note.user._id ==
+                                            this.props.auth.user.id ? (
+                                              <ClinicalHistory
+                                                key={note.id}
+                                                ClinicalHistory={note}
+                                              />
+                                            ) : null
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div> */}
+
+                                    {/* <div
+                                      className="tab-pane fade"
+                                      id="clinicalAvailableTo"
+                                      role="tabpanel"
+                                      aria-labelledby="clinicalAvailableTo-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        shared_clinical == true ? (
+                                          clinicalHistory.map(note =>
+                                            note.availableTo.map(elem =>
+                                              elem == this.props.auth.user.id &&
+                                              note.user._id !==
+                                                this.props.auth.user.id ? (
+                                                <ClinicalHistory
+                                                  key={note.id}
+                                                  ClinicalHistory={note}
+                                                />
+                                              ) : null
+                                            )
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div> */}
+
+                                    <div
+                                      className="tab-pane fade"
+                                      id="medicamentos"
+                                      role="tabpanel"
+                                      aria-labelledby="medicamentos-tab"
+                                    >
+                                      <div>
+                                        <div className="row">
+                                          {typeof medicine !== "undefined" &&
+                                          medicine.length > 0 ? (
+                                            medicine.map(elem => (
+                                              <div className="col-md-12">
+                                                <div className="card card-body mb-2">
+                                                  <h2>{elem.name} </h2>{" "}
+                                                  <Link
+                                                    to={`/terapeuta/${
+                                                      elem.user_id
+                                                    }`}
+                                                    style={{ color: "black" }}
+                                                  >
+                                                    <h5>
+                                                      Criado por:{" "}
+                                                      {elem
+                                                        ? elem.user_name
+                                                        : null}
+                                                    </h5>
+                                                  </Link>
+                                                  <p>
+                                                    {" "}
+                                                    {elem.startingDate ? (
+                                                      <span className="mr-3">
+                                                        <b>Inicio da toma:</b>{" "}
+                                                        {elem.startingDate.slice(
+                                                          0,
+                                                          10
+                                                        )}{" "}
+                                                      </span>
+                                                    ) : null}
+                                                    {elem.finishedDate ? (
+                                                      <span>
+                                                        <b>Fim da toma:</b>{" "}
+                                                        {elem.finishedDate.slice(
+                                                          0,
+                                                          10
+                                                        )}{" "}
+                                                      </span>
+                                                    ) : null}
+                                                    {new Date(Date.now()) >
+                                                    new Date(
+                                                      new Date(
+                                                        elem.finishedDate
+                                                      )
+                                                    ) ? (
+                                                      <span>
+                                                        (Medicação Suspensa)
+                                                      </span>
+                                                    ) : null}
+                                                  </p>
+                                                  <p>
+                                                    <b>Observações:</b>{" "}
+                                                    {elem.observation}
+                                                  </p>
+                                                  <p>
+                                                    <b>Dosagem:</b>{" "}
+                                                    {elem.dosage}
+                                                  </p>
+                                                  <p>
+                                                    <b>Horario:</b> {elem.time}
+                                                  </p>
+                                                  <div className="row">
+                                                    <div className="description-block mr-3">
+                                                      <button
+                                                        className="btn"
+                                                        data-toggle="modal"
+                                                        data-target="#removeMedicineModal"
+                                                        onClick={this.removeMedicineOnClick.bind(
+                                                          this,
+                                                          elem._id
+                                                        )}
+                                                        style={{
+                                                          border:
+                                                            "1px solid black"
+                                                        }}
+                                                      >
+                                                        Apagar
+                                                      </button>
+                                                    </div>
+                                                    <div className="description-block mr-3">
+                                                      <Link
+                                                        className="btn"
+                                                        style={{
+                                                          border:
+                                                            "1px solid black"
+                                                        }}
+                                                        to={`/paciente/${_id}/ver/medicamento/editar/${
+                                                          elem._id
+                                                        }`}
+                                                      >
+                                                        Editar
+                                                      </Link>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <p className="mt-4">
+                                              Sem medicamentos disponíveis
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
+
+                              {isAdmin ? (
+                                <div className="mb-5">
+                                  <ul
+                                    className="nav nav-tabs"
+                                    id="myTab"
+                                    role="tablist"
+                                  >
+                                    {/* <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        id="mynotes-tab"
+                                        data-toggle="tab"
+                                        href="#mynotes"
+                                        role="tab"
+                                        aria-controls="mynotes"
+                                        aria-selected="true"
+                                      >
+                                        Registos
+                                      </a>
+                                    </li> */}
+                                    {/* <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="availableTo-tab"
+                                        data-toggle="tab"
+                                        href="#availableTo"
+                                        role="tab"
+                                        aria-controls="availableTo"
+                                        aria-selected="false"
+                                      >
+                                        Registos partilhados
+                                      </a>
+                                    </li> */}
+                                    {/* <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="myclinical-tab"
+                                        data-toggle="tab"
+                                        href="#myclinical"
+                                        role="tab"
+                                        aria-controls="myclinical"
+                                        aria-selected="true"
+                                      >
+                                        Historial
+                                      </a>
+                                    </li> */}
+                                    {/* <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        id="clinicalAvailableTo-tab"
+                                        data-toggle="tab"
+                                        href="#clinicalAvailableTo"
+                                        role="tab"
+                                        aria-controls="clinicalAvailableTo"
+                                        aria-selected="false"
+                                      >
+                                        Historial Partilhado
+                                      </a>
+                                    </li> */}
+
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        id="medicamentos-tab"
+                                        data-toggle="tab"
+                                        href="#medicamentos"
+                                        role="tab"
+                                        aria-controls="medicamentos"
+                                        aria-selected="false"
+                                      >
+                                        Medicamentos
+                                      </a>
+                                    </li>
+                                  </ul>
+
+                                  <div
+                                    className="tab-content"
+                                    id="myTabContent"
+                                  >
+                                    {/* <div
+                                      className="tab-pane fade show active"
+                                      id="mynotes"
+                                      role="tabpanel"
+                                      aria-labelledby="mynotes-tab"
+                                    >
+                                      {therapeuticNote ? (
+                                        therapeuticNote.length > 0 ? (
+                                          therapeuticNote.map(note =>
+                                            note.user._id ==
+                                            this.props.auth.user.id ? (
+                                              <TherapeuticNote
+                                                key={note.id}
+                                                TherapeuticNote={note}
+                                              />
+                                            ) : null
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div> */}
+                                    {/* <div
+                                      className="tab-pane fade"
+                                      id="availableTo"
+                                      role="tabpanel"
+                                      aria-labelledby="availableTo-tab"
+                                    >
+                                      {therapeuticNote ? (
+                                        shared == true ? (
+                                          therapeuticNote.map(note =>
+                                            note.availableTo.map(elem =>
+                                              elem == this.props.auth.user.id &&
+                                              note.user._id !==
+                                                this.props.auth.user.id ? (
+                                                <TherapeuticNote
+                                                  key={note.id}
+                                                  TherapeuticNote={note}
+                                                />
+                                              ) : null
+                                            )
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div> */}
+
+                                    {/* <div
+                                      className="tab-pane fade"
+                                      id="myclinical"
+                                      role="tabpanel"
+                                      aria-labelledby="myclinical-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        clinicalHistory.length > 0 ? (
+                                          clinicalHistory.map(note =>
+                                            note.user._id ==
+                                            this.props.auth.user.id ? (
+                                              <ClinicalHistory
+                                                key={note.id}
+                                                ClinicalHistory={note}
+                                              />
+                                            ) : null
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div>
+
+                                    <div
+                                      className="tab-pane fade"
+                                      id="clinicalAvailableTo"
+                                      role="tabpanel"
+                                      aria-labelledby="clinicalAvailableTo-tab"
+                                    >
+                                      {clinicalHistory ? (
+                                        shared_clinical == true ? (
+                                          clinicalHistory.map(note =>
+                                            note.availableTo.map(elem =>
+                                              elem == this.props.auth.user.id &&
+                                              note.user._id !==
+                                                this.props.auth.user.id ? (
+                                                <ClinicalHistory
+                                                  key={note.id}
+                                                  ClinicalHistory={note}
+                                                />
+                                              ) : null
+                                            )
+                                          )
+                                        ) : (
+                                          <p className="mt-4">
+                                            Sem registos disponíveis
+                                          </p>
+                                        )
+                                      ) : null}
+                                    </div> */}
+
+                                    <div
+                                      className="tab-pane fade show active"
                                       id="medicamentos"
                                       role="tabpanel"
                                       aria-labelledby="medicamentos-tab"
@@ -1285,7 +1998,7 @@ class PatientProfile extends Component {
                                 <div class="card">
                                   <div class="card-header">
                                     <h3 class="card-title">
-                                      Histórico de acompanhamento
+                                      Histórico de Acompanhamento
                                     </h3>
                                   </div>
 
@@ -1303,7 +2016,7 @@ class PatientProfile extends Component {
                                                 className="img-circle"
                                               />
                                             </div>
-                                            <div className="product-info">
+                                            <div className="product-info mb-4">
                                               <a className="product-title">
                                                 <Link
                                                   className="product-description"
@@ -1325,21 +2038,25 @@ class PatientProfile extends Component {
                                                 {elem.user_specialty}
                                               </span>
                                             </div>
-                                            <hr />
-                                            <h5>Datas</h5>
 
                                             {elem.dates
                                               ? elem.dates.map(date => (
                                                   <div>
                                                     <p>
                                                       <b>Inicio:</b>{" "}
-                                                      {date.addedDate}
+                                                      {date.addedDate.slice(
+                                                        0,
+                                                        10
+                                                      )}
                                                     </p>
                                                     <p>
                                                       <b>Fim:</b>{" "}
                                                       {date.removedDate !==
                                                       null ? (
-                                                        date.removedDate
+                                                        date.removedDate.slice(
+                                                          0,
+                                                          10
+                                                        )
                                                       ) : (
                                                         <span>
                                                           Ainda em
