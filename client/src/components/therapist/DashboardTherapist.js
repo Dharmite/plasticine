@@ -9,12 +9,23 @@ import Patient from "../patient/Patient";
 
 import kid from "../../img/kid.png";
 
-
 class DashboardTherapist extends Component {
   state = {
     patients: true,
+    patient_search: "",
+    previousPatients_search: "",
     previousPatients: false
   };
+
+  updateSearch(event) {
+    this.setState({ patient_search: event.target.value.substr(0, 20) });
+  }
+
+  updateSearchPrevious(event) {
+    this.setState({
+      previousPatients_search: event.target.value.substr(0, 20)
+    });
+  }
 
   componentDidMount() {
     this.props.getTherapist(this.props.user.id);
@@ -25,21 +36,48 @@ class DashboardTherapist extends Component {
   render() {
     const { patient, previousPatients } = this.props.therapist;
 
+    let filtered_patients;
+
+    if (patient) {
+      filtered_patients = patient.filter(patient => {
+        return (
+          patient.name
+            .toLowerCase()
+            .indexOf(this.state.patient_search.toLocaleLowerCase()) !== -1
+        );
+      });
+    }
+
     let patientContent;
     if (patient) {
       patientContent =
         patient.length > 0 ? (
-          patient.map(patient => <Patient key={patient.id} patient={patient} />)
+          filtered_patients.map(patient => (
+            <Patient key={patient.id} patient={patient} />
+          ))
         ) : (
           <h6 className="mt-4">Nenhum utente disponível</h6>
         );
+    }
+
+    let filtered_previousPatients;
+
+    if (previousPatients) {
+      filtered_previousPatients = previousPatients.filter(patient => {
+        return (
+          patient.name
+            .toLowerCase()
+            .indexOf(this.state.previousPatients_search.toLocaleLowerCase()) !==
+          -1
+        );
+      });
     }
 
     let previousPatientsContent;
     if (previousPatients) {
       previousPatientsContent =
         previousPatients.length > 0 ? (
-          previousPatients.map(patient => (
+          filtered_previousPatients.map(patient => (
             <div className="row  mb-5">
               <div className="col-md-10">
                 <div
@@ -48,7 +86,10 @@ class DashboardTherapist extends Component {
                 >
                   <div className="col-md-12 col-sm-12 pr-2 pl-2 pt-2 pb-2">
                     <div className="card-widget widget-user-2">
-                      <div className="widget-user-header widget-user-header-custom bg-success" style={{height:"auto"}}>
+                      <div
+                        className="widget-user-header widget-user-header-custom bg-success"
+                        style={{ height: "auto" }}
+                      >
                         <div className="widget-user-image">
                           <img
                             className="img-circle elevation-2 bg-white"
@@ -118,7 +159,7 @@ class DashboardTherapist extends Component {
                       <i class="fas fa-child" />{" "}
                     </span>
                     <div className="info-box-content">
-                      <span className="info-box-text">Utentes atuais</span>
+                      <span className="info-box-text">Utentes Atuais</span>
                       <span className="info-box-number">
                         {patient ? patient.length : null}
                       </span>
@@ -148,7 +189,7 @@ class DashboardTherapist extends Component {
                       <i class="fas fa-child" />{" "}
                     </span>
                     <div className="info-box-content">
-                      <span className="info-box-text">Antigos utentes</span>
+                      <span className="info-box-text">Antigos Utentes</span>
                       <span className="info-box-number">
                         {previousPatients ? previousPatients.length : null}
                       </span>
@@ -156,7 +197,47 @@ class DashboardTherapist extends Component {
                   </div>
                 </div>
               </div>
-              <hr />
+              <div className="row">
+                <div className="col-md-10">
+                  <hr />
+                </div>
+              </div>
+
+              {this.state.patients && patientContent ? (
+                patientContent.length ? (
+                  <div className="row">
+                    <div className="col-5">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          placeholder="Pesquise pelo nome do utente"
+                          value={this.state.patient_search}
+                          onChange={this.updateSearch.bind(this)}
+                          class="form-control"
+                        />{" "}
+                      </div>
+                    </div>
+                  </div>
+                ) : null
+              ) : null}
+
+              {this.state.previousPatients && previousPatientsContent ? (
+                previousPatientsContent.length > 0 ? (
+                  <div className="row">
+                    <div className="col-5">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          placeholder="Pesquise pelo nome do utente"
+                          value={this.state.previousPatients_search}
+                          onChange={this.updateSearchPrevious.bind(this)}
+                          class="form-control"
+                        />{" "}
+                      </div>
+                    </div>
+                  </div>
+                ) : null
+              ) : null}
 
               {this.state.patients ? patientContent : null}
               {this.state.previousPatients ? previousPatientsContent : null}

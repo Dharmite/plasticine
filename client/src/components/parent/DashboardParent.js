@@ -5,12 +5,22 @@ import { Link } from "react-router-dom";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 import Patient from "../patient/Patient";
+import { getParent } from "../../actions/parentActions";
+
 
 
 class DashboardParent extends Component {
-  render() {
-    const { name, patient } = this.props.user;
 
+  componentDidMount(){
+
+    this.props.getParent(this.props.user.id);
+
+  }
+
+  render() {
+    const { name, patient } = this.props.parent;
+
+    console.log(this.props.parent, "parent");
     let patientContent;
     if(patient){
       patientContent =
@@ -32,7 +42,7 @@ class DashboardParent extends Component {
               <Sidebar />
               <div className="row">
                 <div className="col-md-12">
-                  <h1 className="display-4">Perfil de parente</h1>
+                  <h1 className="display-4">Perfil de familiar</h1>
                   <p className="lead text-muted">
                     Bem vindo {this.props.user.name}
                   </p>
@@ -142,10 +152,11 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   therapists: state.therapist.therapists,
   parents: state.parent.parents,
-  patients: state.patient.patients
+  patients: state.patient.patients,
+  parent: state.parent.parent
 });
 
 export default connect(
   mapStateToProps,
-  null
+  {getParent}
 )(DashboardParent);

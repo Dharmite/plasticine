@@ -6,10 +6,8 @@ import { getParent } from "../../actions/parentActions";
 import TherapeuticNote from "../therapist/TherapeuticNote";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import user_pic from '../../img/user.png'
-import kid from '../../img/kid.png'
-
-
+import user_pic from "../../img/user.png";
+import kid from "../../img/kid.png";
 
 class ParentProfile extends Component {
   componentDidMount() {
@@ -18,7 +16,15 @@ class ParentProfile extends Component {
   }
 
   render() {
-    const { name, email, notes, patient, account_status } = this.props.parent;
+    const {
+      name,
+      email,
+      notes,
+      patient,
+      account_status,
+      work_status,
+      birthday
+    } = this.props.parent;
 
     let userType;
 
@@ -53,8 +59,6 @@ class ParentProfile extends Component {
                 </div>
               </div>
 
-
-
               <section class="content">
                 <div class="container-fluid">
                   {account_status ? (
@@ -65,17 +69,33 @@ class ParentProfile extends Component {
                             <img
                               className="img-circle elevation-1"
                               src={user_pic}
-                              style={{height:"128px",width:"128px"}}
+                              style={{ height: "128px", width: "128px" }}
                               alt="User Avatar"
                             />
                           </div>
                           <div className="col-lg-4 col-md-4 border-right pl-0">
                             {name ? <h3>{name}</h3> : null}
+
                             {email ? (
                               <p>
                                 <i className="fas fa-envelope-square" /> {email}
                               </p>
                             ) : null}
+                            {birthday ? (
+                              <p>
+                                <b>Idade:</b>{" "}
+                                {Math.floor(
+                                  (Date.now() - new Date(birthday)) /
+                                    1000 /
+                                    60 /
+                                    60 /
+                                    24 /
+                                    365
+                                )}
+                              </p>
+                            ) : null}
+
+                            {work_status ? <p>{work_status}</p> : null}
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">
@@ -84,9 +104,7 @@ class ParentProfile extends Component {
                             ) : null}
 
                             {patient ? (
-                              <h5>
-                                Crianças: {patient.length}{" "}
-                              </h5>
+                              <h5>Crianças: {patient.length} </h5>
                             ) : null}
                           </div>
                         </div>
@@ -95,10 +113,10 @@ class ParentProfile extends Component {
                       <div className="card card-body bg-secondary text-white mb-3">
                         <div className="row">
                           <div className="col-lg-4 col-md-4">
-                          <img
+                            <img
                               className="img-circle elevation-1"
                               src={user_pic}
-                              style={{height:"128px",width:"128px"}}
+                              style={{ height: "128px", width: "128px" }}
                               alt="User Avatar"
                             />
                           </div>
@@ -127,8 +145,10 @@ class ParentProfile extends Component {
                     )
                   ) : null}
 
-                  <div><h2>Notas</h2></div>
-                  <div class="row">                    
+                  <div>
+                    <h2>Notas</h2>
+                  </div>
+                  <div class="row">
                     <div class="col-md-8">
                       {notes ? (
                         notes.length > 0 ? (

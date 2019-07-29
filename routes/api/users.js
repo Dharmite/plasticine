@@ -139,9 +139,9 @@ router.post("/login", (req, res) => {
               id: user.id,
               name: user.name,
               email: user.email,
-              userType: user.userType,
-              patient: user.patient,
-              notes: user.notes
+              userType: user.userType
+              // patient: user.patient,
+              // notes: user.notes
             };
           }
           // Create JWT Payload
@@ -281,18 +281,19 @@ router.get(
   (req, res) => {
     Parent.findById(req.params.parent_id)
       .populate("notes")
-      // .populate({
-      //   path: "patient",
-      //   populate: {
-      //     path: "therapist",
-      //     model: "base"
-      //   }
-      // })
       .populate("patient")
+      .populate({
+        path: "patient",
+        populate: {
+          path: "therapist",
+          model: "base"
+        }
+      })
       .then(parent => {
         if (!parent) {
           res.status(404).json({ error: "Não há nenhum parente com esse id" });
         } else {
+          
           res.json(parent);
         }
       })

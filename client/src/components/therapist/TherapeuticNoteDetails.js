@@ -102,6 +102,9 @@ class TherapeuticNoteDetails extends Component {
       feedback,
       date
     } = this.props.note;
+
+    console.log(this.props.note.files, "note");
+
     const { errors } = this.state;
     let hasImageFiles;
     if (files) {

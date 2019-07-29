@@ -236,15 +236,17 @@ class PatientProfile extends Component {
     let shared = false;
     if (therapeuticNote) {
       therapeuticNote.forEach(note => {
-        note.availableTo.forEach(elem => {
-          if (
-            elem == this.props.auth.user.id &&
-            note.user._id !== this.props.auth.user.id
-          ) {
-            shared_notes.push(note);
-            shared = true;
-          }
-        });
+        if (note.availableTo) {
+          note.availableTo.forEach(elem => {
+            if (
+              elem == this.props.auth.user.id &&
+              note.user._id !== this.props.auth.user.id
+            ) {
+              shared_notes.push(note);
+              shared = true;
+            }
+          });
+        }
       });
     }
 
@@ -252,15 +254,17 @@ class PatientProfile extends Component {
     let shared_clinical = false;
     if (clinicalHistory) {
       clinicalHistory.forEach(note => {
-        note.availableTo.forEach(elem => {
-          if (
-            elem == this.props.auth.user.id &&
-            note.user._id !== this.props.auth.user.id
-          ) {
-            shared_notes_clinical.push(note);
-            shared_clinical = true;
-          }
-        });
+        if (note.availableTo) {
+          note.availableTo.forEach(elem => {
+            if (
+              elem == this.props.auth.user.id &&
+              note.user._id !== this.props.auth.user.id
+            ) {
+              shared_notes_clinical.push(note);
+              shared_clinical = true;
+            }
+          });
+        }
       });
     }
 
@@ -1055,12 +1059,14 @@ class PatientProfile extends Component {
                                       {therapeuticNote ? (
                                         therapeuticNote.length > 0 ? (
                                           therapeuticNote.map(note =>
-                                            note.user._id ==
-                                            this.props.auth.user.id ? (
-                                              <TherapeuticNote
-                                                key={note.id}
-                                                TherapeuticNote={note}
-                                              />
+                                            note.user ? (
+                                              note.user._id ==
+                                              this.props.auth.user.id ? (
+                                                <TherapeuticNote
+                                                  key={note.id}
+                                                  TherapeuticNote={note}
+                                                />
+                                              ) : null
                                             ) : null
                                           )
                                         ) : (
@@ -1107,12 +1113,14 @@ class PatientProfile extends Component {
                                       {clinicalHistory ? (
                                         clinicalHistory.length > 0 ? (
                                           clinicalHistory.map(note =>
-                                            note.user._id ==
-                                            this.props.auth.user.id ? (
-                                              <ClinicalHistory
-                                                key={note.id}
-                                                ClinicalHistory={note}
-                                              />
+                                            note.user ? (
+                                              note.user._id ==
+                                              this.props.auth.user.id ? (
+                                                <ClinicalHistory
+                                                  key={note.id}
+                                                  ClinicalHistory={note}
+                                                />
+                                              ) : null
                                             ) : null
                                           )
                                         ) : (
@@ -1984,6 +1992,11 @@ class PatientProfile extends Component {
                                               <b>Email: </b>
                                               {elem.email}
                                             </span>
+                                            <span className="product-description">
+                                              <b>Grau de parentesco: </b>
+                                              {elem.relationship}
+                                            </span>
+
                                           </div>
                                         </li>
                                       ))

@@ -90,77 +90,89 @@ export const getClinicalHistory = id => dispatch => {
     });
 };
 
-export const addTherapeuticNote = (patient_id,newTherapeuticNote,history) => async dispatch => {
-
-
-  const res = await axios.post(`/api/therapeuticNote/new/${patient_id}`,newTherapeuticNote,
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data"
-      //   }
-      // },
-      {
-        onUploadProgress: ProgressEvent => {
-          dispatch({
-            type: LOADED,
-            payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
-          });
-        }
+export const addTherapeuticNote = (
+  patient_id,
+  newTherapeuticNote,
+  history
+) => async dispatch => {
+  const res = await axios.post(
+    `/api/therapeuticNote/new/${patient_id}`,
+    newTherapeuticNote,
+    // {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   }
+    // },
+    {
+      onUploadProgress: ProgressEvent => {
+        dispatch({
+          type: LOADED,
+          payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
+        });
       }
-    );
-
-    try {
-      dispatch({
-        type: ADD_THERAPEUTIC_NOTE,
-        payload: res.data
-      });
-      dispatch(clearErrors());
-      history.push(`/paciente/ver/${patient_id}`);
-
-    } catch (error) {
-      dispatch({
-        type: GET_ERRORS,
-        payload: error.response.data
-      });
-
     }
-    };
+  );
 
-    export const addClinicalHistory = (patient_id,newClinicalHistory,history) => async dispatch => {
+  try {
+    dispatch({
+      type: ADD_THERAPEUTIC_NOTE,
+      payload: res.data
+    });
+    dispatch(clearErrors());
+    dispatch({
+      type: LOADED,
+      payload: 0
+    });
+    history.push(`/paciente/ver/${patient_id}`);
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
 
+export const addClinicalHistory = (
+  patient_id,
+  newClinicalHistory,
+  history
+) => async dispatch => {
+  const res = await axios.post(
+    `/api/clinicalHistory/new/${patient_id}`,
+    newClinicalHistory,
+    // {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   }
+    // },
+    {
+      onUploadProgress: ProgressEvent => {
+        dispatch({
+          type: LOADED,
+          payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
+        });
+      }
+    }
+  );
 
-      const res = await axios.post(`/api/clinicalHistory/new/${patient_id}`,newClinicalHistory,
-          // {
-          //   headers: {
-          //     "Content-Type": "multipart/form-data"
-          //   }
-          // },
-          {
-            onUploadProgress: ProgressEvent => {
-              dispatch({
-                type: LOADED,
-                payload: (ProgressEvent.loaded / ProgressEvent.total) * 100
-              });
-            }
-          }
-        );
-    
-        try {
-          dispatch({
-            type: ADD_CLINICAL_HISTORY,
-            payload: res.data
-          });
-          dispatch(clearErrors());
-          history.push(`/paciente/ver/${patient_id}`);
-    
-        } catch (error) {
-          dispatch({
-            type: GET_ERRORS,
-            payload: error.response.data
-          });
-    
-        }
-        };
+  try {
+    dispatch({
+      type: ADD_CLINICAL_HISTORY,
+      payload: res.data
+    });
+    dispatch({
+      type: LOADED,
+      payload: 0
+    });
+    dispatch(clearErrors());
+    history.push(`/paciente/ver/${patient_id}`);
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
 
 export const removeTherapeuticNote = note_id => async dispatch => {
   try {
@@ -192,16 +204,26 @@ export const removeClinicalHistory = note_id => async dispatch => {
   }
 };
 
-export const removeTherapeuticNoteFile = (note_id, filename) => async dispatch => {
-  const res = await axios.delete(`/api/therapeuticNote/notes/${note_id}/${filename}`);
+export const removeTherapeuticNoteFile = (
+  note_id,
+  filename
+) => async dispatch => {
+  const res = await axios.delete(
+    `/api/therapeuticNote/notes/${note_id}/${filename}`
+  );
   dispatch({
     type: GET_THERAPEUTIC_NOTE,
     payload: res.data
   });
 };
 
-export const removeClinicalHistoryFile = (note_id, filename) => async dispatch => {
-  const res = await axios.delete(`/api/clinicalHistory/notes/${note_id}/${filename}`);
+export const removeClinicalHistoryFile = (
+  note_id,
+  filename
+) => async dispatch => {
+  const res = await axios.delete(
+    `/api/clinicalHistory/notes/${note_id}/${filename}`
+  );
   dispatch({
     type: GET_CLINICAL_HISTORY,
     payload: res.data
@@ -288,7 +310,6 @@ export const getComments = note_id => async dispatch => {
   }
 };
 
-
 export const getCommentsClinicalHistory = note_id => async dispatch => {
   try {
     const res = await axios.get(`/api/clinicalHistory/${note_id}/feedback`);
@@ -330,7 +351,10 @@ export const addComment = (note_id, newFeedback) => async dispatch => {
   }
 };
 
-export const addCommentClinicalHistory = (note_id, newFeedback) => async dispatch => {
+export const addCommentClinicalHistory = (
+  note_id,
+  newFeedback
+) => async dispatch => {
   try {
     const res = await axios.post(
       `/api/clinicalHistory/${note_id}/feedback`,
@@ -403,7 +427,7 @@ export const addMedicine = (newMedicine, patient_id, history) => dispatch => {
       history.push(`/paciente/ver/${patient_id}`);
     })
     .catch(err => {
-      console.log(err.response)
+      console.log(err.response);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -487,9 +511,12 @@ export const addTherapistPatient = (therapist_name, patient_id) => dispatch => {
     .catch(err => console.log(err.response.data));
 };
 
-export const removeTherapistPatient = (logged_user, id, therapist_id, history) => dispatch => {
-
-  
+export const removeTherapistPatient = (
+  logged_user,
+  id,
+  therapist_id,
+  history
+) => dispatch => {
   axios
     .delete(`/api/patient-profile/${id}/therapist/${therapist_id}`)
     .then(res => {
@@ -498,16 +525,14 @@ export const removeTherapistPatient = (logged_user, id, therapist_id, history) =
         payload: therapist_id
       });
 
-
-      if(logged_user == therapist_id){
+      if (logged_user == therapist_id) {
         history.push(`/terapeuta-dashboard`);
-      }else{
+      } else {
         dispatch({
           type: GET_PATIENT,
           payload: res.data
         });
       }
-
     })
     .catch(err => console.log(err));
 };

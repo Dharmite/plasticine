@@ -116,6 +116,7 @@ router.post(
               new TherapeuticNote(newTherapeuticNote)
                 .save()
                 .then(note => {
+                  
                   note.availableTo.forEach(user => {
                     Base.findById(user)
                       .then(user => {
@@ -166,7 +167,9 @@ router.post(
                 let fileObj = {
                   filename: file.filename,
                   destination: file.destination,
-                  src: file.destination + file.filename
+                  src: file.destination + file.filename,
+                  fileType: file.mimetype,
+                  originalname: file.originalname
                 };
                 newTherapeuticNote.files.push(fileObj);
               });

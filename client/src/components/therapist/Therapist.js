@@ -29,7 +29,7 @@ class Therapist extends Component {
 
     return (
       <div className="row  mb-5">
-        <div className="col-md-10">
+        <div className="col-md-10 pl-3 pr-3 mt-3">
           <div
             className="row card"
             style={{ display: "flex", flexDirection: "row" }}

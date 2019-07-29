@@ -65,16 +65,22 @@ class DashboardAdmin extends Component {
     let filtered_patients;
     let filtered_therapists;
 
-
     if (patients) {
       filtered_patients = patients.filter(patient => {
-        return patient.name.toLowerCase().indexOf(this.state.patient_search.toLocaleLowerCase()) !== -1;
+        return (
+          patient.name
+            .toLowerCase()
+            .indexOf(this.state.patient_search.toLocaleLowerCase()) !== -1
+        );
       });
     }
 
     if (therapists) {
       filtered_therapists = therapists.filter(therapist => {
-        return therapist.name.toLowerCase().indexOf(this.state.therapist_search) !== -1;
+        return (
+          therapist.name.toLowerCase().indexOf(this.state.therapist_search) !==
+          -1
+        );
       });
     }
 
@@ -238,42 +244,42 @@ class DashboardAdmin extends Component {
                     </div>
                   </div>
 
-                  {this.state.therapist ? (
-                    <div className="row">
-                      <div className="col-5">
-                    <div
-                      class="form-group"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Pesquise pelo nome do especialista"
-                        value={this.state.therapist_search}
-                        onChange={this.updateSearchTherapist.bind(this)}
-                        class="form-control"
-                      />{" "}
-                    </div>
-                    </div>
-                    </div>
+                  {this.state.therapist && therapistContent ? (
+                    therapistContent.length ? (
+                      <div className="row">
+                        <div className="col-5">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              placeholder="Pesquise pelo nome do especialista"
+                              value={this.state.therapist_search}
+                              onChange={this.updateSearchTherapist.bind(this)}
+                              class="form-control"
+                            />{" "}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null
                   ) : null}
 
                   {this.state.therapist ? therapistContent : null}
 
-                  {this.state.patient ? (
-                    <div className="row">
-                      <div className="col-5">
-                    <div
-                      class="form-group"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Pesquise pelo nome do utente"
-                        value={this.state.patient_search}
-                        onChange={this.updateSearch.bind(this)}
-                        class="form-control"
-                      />{" "}
-                    </div>
-                    </div>
-                    </div>
+                  {this.state.patient && patientContent ? (
+                    patientContent.length ? (
+                      <div className="row">
+                        <div className="col-5">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              placeholder="Pesquise pelo nome do utente"
+                              value={this.state.patient_search}
+                              onChange={this.updateSearch.bind(this)}
+                              class="form-control"
+                            />{" "}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null
                   ) : null}
                   {this.state.patient ? patientContent : null}
 

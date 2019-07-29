@@ -286,6 +286,7 @@ class AddClinicalHistory extends Component {
                           "is-invalid": errors.valuationDate
                         })}
                         value={this.state.valuationDate}
+                        
                         onChange={this.onChange}
                         max={max_date}
                       />
