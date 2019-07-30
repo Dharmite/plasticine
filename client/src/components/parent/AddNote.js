@@ -207,7 +207,7 @@ class AddNote extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar registo terapêutico</div>
+                <div className="card-header">Adicionar Registo</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit} encType="multipart/form-data">
                     <TextInputGroup
@@ -298,7 +298,7 @@ class AddNote extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar observação"
+                      value="Adicionar Registo"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

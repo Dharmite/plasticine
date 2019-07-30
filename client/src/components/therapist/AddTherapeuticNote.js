@@ -196,7 +196,7 @@ class AddTherapeuticNote extends Component {
                       >
                         Cancelar
                       </button>
-                      <Link to="/terapeuta-dashboard" className="btn btn-light">
+                      <Link to={`/paciente/ver/${this.props.match.params.id}`} className="btn btn-light">
                         Voltar
                       </Link>{" "}
                     </div>
@@ -204,7 +204,7 @@ class AddTherapeuticNote extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar registo terapêutico</div>
+                <div className="card-header">Adicionar Registo</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit} encType="multipart/form-data">
                     <TextInputGroup
@@ -320,7 +320,7 @@ class AddTherapeuticNote extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar registo"
+                      value="Adicionar Registo"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

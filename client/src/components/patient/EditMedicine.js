@@ -108,7 +108,7 @@ class EditMedicine extends Component {
               <Sidebar />
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar medicamento</div>
+                <div className="card-header">Editar Medicamento</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -166,7 +166,7 @@ class EditMedicine extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar medicamento"
+                      value="Guardar Medicamento"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

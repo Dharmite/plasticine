@@ -146,7 +146,7 @@ class AddMedicine extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar medicamento</div>
+                <div className="card-header">Adicionar Medicamento</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -194,7 +194,7 @@ class AddMedicine extends Component {
                     />
 
                     <TextInputGroup
-                      label="Date de fim da toma do medicamento"
+                      label="Data de fim da toma do medicamento"
                       name="finishedDate"
                       type="date"
                       onChange={this.onChange}
@@ -203,7 +203,7 @@ class AddMedicine extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar medicamento"
+                      value="Adicionar Medicamento"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

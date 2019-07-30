@@ -136,7 +136,7 @@ class DashboardTherapist extends Component {
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row pr-3">
                 <div
                   className="col-12 col-sm-6 col-md-3"
                   onClick={() => {
@@ -203,28 +203,25 @@ class DashboardTherapist extends Component {
                 </div>
               </div>
 
-              {this.state.patients && patientContent ? (
-                patientContent.length ? (
-                  <div className="row">
-                    <div className="col-5">
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          placeholder="Pesquise pelo nome do utente"
-                          value={this.state.patient_search}
-                          onChange={this.updateSearch.bind(this)}
-                          class="form-control"
-                        />{" "}
-                      </div>
+              {this.state.patients ? (
+                <div className="row">
+                  <div className="col-md-6 pr-3">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        placeholder="Pesquise pelo nome do utente"
+                        value={this.state.patient_search}
+                        onChange={this.updateSearch.bind(this)}
+                        class="form-control"
+                      />{" "}
                     </div>
                   </div>
-                ) : null
+                </div>
               ) : null}
 
-              {this.state.previousPatients && previousPatientsContent ? (
-                previousPatientsContent.length > 0 ? (
+              {this.state.previousPatients  ? (
                   <div className="row">
-                    <div className="col-5">
+                    <div className="col-md-6 pr-3">
                       <div class="form-group">
                         <input
                           type="text"
@@ -236,8 +233,7 @@ class DashboardTherapist extends Component {
                       </div>
                     </div>
                   </div>
-                ) : null
-              ) : null}
+                ) : null}
 
               {this.state.patients ? patientContent : null}
               {this.state.previousPatients ? previousPatientsContent : null}

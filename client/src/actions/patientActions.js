@@ -181,6 +181,8 @@ export const removeTherapeuticNote = note_id => async dispatch => {
       type: REMOVE_THERAPEUTIC_NOTE,
       payload: res.data._id
     });
+    window.location.reload();
+
   } catch (error) {
     dispatch({
       type: GET_ERRORS,
@@ -196,6 +198,7 @@ export const removeClinicalHistory = note_id => async dispatch => {
       type: REMOVE_CLINICAL_HISTORY,
       payload: res.data._id
     });
+    window.location.reload();
   } catch (error) {
     dispatch({
       type: GET_ERRORS,

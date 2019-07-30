@@ -132,7 +132,7 @@ class TherapeuticNoteDetails extends Component {
                 style={{ cursor: "pointer" }}
               />
               <div className="card-footer bg-white">
-              {user ? (
+                {user ? (
                   user._id == this.props.user.id ? (
                     <div className="row">
                       <div className="col-md-3 col-sm-4 border-right">
@@ -211,7 +211,7 @@ class TherapeuticNoteDetails extends Component {
                       </div>
                     </div>
                   )
-                ) : null} 
+                ) : null}
               </div>
             </div>
           ) : null
@@ -271,7 +271,6 @@ class TherapeuticNoteDetails extends Component {
                     </button>
                   ) : null
                 ) : null}
-
               </p>
             </div>
           ) : null
@@ -318,7 +317,6 @@ class TherapeuticNoteDetails extends Component {
                     </button>
                   ) : null
                 ) : null}
-
               </p>
             </div>
           ) : null
@@ -365,19 +363,18 @@ class TherapeuticNoteDetails extends Component {
                 Download
               </button>
               {user ? (
-                  user._id == this.props.user.id ? (
-                    <button
-                      data-toggle="modal"
-                      data-target="#deleteFileModal"
-                      className="btn"
-                      style={{ border: "1px solid black" }}
-                      onClick={this.getFile.bind(this, file.originalname)}
-                    >
-                      Apagar
-                    </button>
-                  ) : null
-                ) : null}
-
+                user._id == this.props.user.id ? (
+                  <button
+                    data-toggle="modal"
+                    data-target="#deleteFileModal"
+                    className="btn"
+                    style={{ border: "1px solid black" }}
+                    onClick={this.getFile.bind(this, file.originalname)}
+                  >
+                    Apagar
+                  </button>
+                ) : null
+              ) : null}
             </div>
           ) : null
         )
@@ -513,7 +510,7 @@ class TherapeuticNoteDetails extends Component {
                           {observation ? (
                             <p class="lead">
                               {" "}
-                              <b>Observação</b> {observation}
+                              <b>Observação: </b> {observation}
                             </p>
                           ) : null}
                         </div>
@@ -584,10 +581,18 @@ class TherapeuticNoteDetails extends Component {
                                       <b>Email: </b>
                                       {elem.email}
                                     </span>
-                                    <span className="product-description">
-                                      <b>Especialidade: </b>
-                                      {elem.specialty}
-                                    </span>
+
+                                    {elem.specialty ? (
+                                      <span className="product-description">
+                                        <b>Especialidade: </b>
+                                        {elem.specialty}
+                                      </span>
+                                    ) : (
+                                      <span className="product-description">
+                                        <b>Grau de parentesco: </b>
+                                        {elem.relationship}
+                                      </span>
+                                    )}
                                   </div>
                                 </li>
                               </li>

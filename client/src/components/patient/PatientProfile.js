@@ -383,19 +383,19 @@ class PatientProfile extends Component {
                             Deseja mesmo remover este utilizador?
                           </p>
 
-                          <span className="mr-2">
-                            Guardar este utilizador no historial da criança
-                          </span>
-
                           <input
                             value={this.state.isChecked}
                             defaultChecked={this.state.isChecked}
                             onChange={this.handleChange}
                             id="isChecked"
                             type="checkbox"
-                            class="flat-red"
+                            class="flat-red ml-2"
                             name="isChecked"
                           />
+
+                          <span className="mr-2 ml-2">
+                            Guardar este utilizador no historial da criança
+                          </span>
                         </div>
                         <div className="modal-footer">
                           <button
@@ -1996,7 +1996,6 @@ class PatientProfile extends Component {
                                               <b>Grau de parentesco: </b>
                                               {elem.relationship}
                                             </span>
-
                                           </div>
                                         </li>
                                       ))
@@ -2054,15 +2053,15 @@ class PatientProfile extends Component {
 
                                             {elem.dates
                                               ? elem.dates.map(date => (
-                                                  <div>
-                                                    <p>
+                                                  <div className="mb-3">
+                                                    <span className="mr-2">
                                                       <b>Inicio:</b>{" "}
                                                       {date.addedDate.slice(
                                                         0,
                                                         10
                                                       )}
-                                                    </p>
-                                                    <p>
+                                                    </span>
+                                                    <span>
                                                       <b>Fim:</b>{" "}
                                                       {date.removedDate !==
                                                       null ? (
@@ -2072,11 +2071,10 @@ class PatientProfile extends Component {
                                                         )
                                                       ) : (
                                                         <span>
-                                                          Ainda em
-                                                          acompanhamento
+                                                          --
                                                         </span>
                                                       )}
-                                                    </p>
+                                                    </span>
                                                   </div>
                                                 ))
                                               : null}

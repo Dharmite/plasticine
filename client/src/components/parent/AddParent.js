@@ -167,7 +167,7 @@ class AddParent extends Component {
               </div>
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar familiar</div>
+                <div className="card-header">Adicionar Familiar</div>
                 <small className="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -283,7 +283,7 @@ class AddParent extends Component {
                     </div>
                     <input
                       type="submit"
-                      value="Adicionar familiar"
+                      value="Adicionar Familiar"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

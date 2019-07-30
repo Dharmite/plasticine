@@ -243,7 +243,7 @@ class EditTherapeuticNote extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar registo terapêutico</div>
+                <div className="card-header">Editar Registo</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit} encType="multipart/form-data">
                     <TextInputGroup
@@ -356,7 +356,7 @@ class EditTherapeuticNote extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar registo"
+                      value="Guardar Registo"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

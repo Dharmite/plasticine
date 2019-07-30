@@ -194,7 +194,7 @@ class EditTherapist extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar especialista</div>
+                <div className="card-header">Editar Especialista</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -282,7 +282,7 @@ class EditTherapist extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar terapeuta"
+                      value="Guardar Especialista"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

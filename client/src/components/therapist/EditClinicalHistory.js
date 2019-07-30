@@ -290,7 +290,7 @@ class EditClinicalHistory extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar historial clínico</div>
+                <div className="card-header">Editar Historial Clínico</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit} encType="multipart/form-data">
                     <TextInputGroup
@@ -358,7 +358,7 @@ class EditClinicalHistory extends Component {
                     <TextInputGroup
                       label="Duração da avaliação realizada"
                       name="duration"
-                      placeholder="Faça uma avaliação"
+                      placeholder="Indique a duração da avaliação"
                       value={duration}
                       onChange={this.onChange}
                       error={errors.duration}
@@ -440,7 +440,7 @@ class EditClinicalHistory extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar historial clínico"
+                      value="Guardar Historial Clínico"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

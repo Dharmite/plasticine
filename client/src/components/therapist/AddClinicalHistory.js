@@ -223,7 +223,7 @@ class AddClinicalHistory extends Component {
                       >
                         Cancelar
                       </button>
-                      <Link to="/terapeuta-dashboard" className="btn btn-light">
+                      <Link to={`/paciente/ver/${this.props.match.params.id}`} className="btn btn-light">
                         Voltar
                       </Link>{" "}
                     </div>
@@ -231,7 +231,7 @@ class AddClinicalHistory extends Component {
                 </div>
               </div>
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar historial clínico</div>
+                <div className="card-header">Adicionar Historial Clínico</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit} encType="multipart/form-data">
                     <TextInputGroup
@@ -300,7 +300,7 @@ class AddClinicalHistory extends Component {
                     <TextInputGroup
                       label="Duração da avaliação realizada"
                       name="duration"
-                      placeholder="Faça uma avaliação"
+                      placeholder="Indique a duração da avaliação"
                       value={duration}
                       onChange={this.onChange}
                       error={errors.duration}
@@ -390,7 +390,7 @@ class AddClinicalHistory extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar historial clínico"
+                      value="Adicionar Historial Clínico"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

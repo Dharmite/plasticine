@@ -84,7 +84,7 @@ class NavbarGuest extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/register">
-            Registo
+            Registar
           </Link>
         </li>
         <li className="nav-item">

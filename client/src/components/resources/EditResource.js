@@ -211,7 +211,7 @@ data-toggle="modal"
           </div>
         </div>
       <div className="card mb-3 mt-4">
-        <div className="card-header">Editar recurso</div>
+        <div className="card-header">Editar Recurso</div>
         <div className="card-body">
           <form onSubmit={this.onSubmit} encType="multipart/form-data">
             <TextInputGroup
@@ -514,7 +514,7 @@ data-toggle="modal"
 
             <input
               type="submit"
-              value="Guardar recurso"
+              value="Guardar Recurso"
               className="btn btn-info btn-block mt-4"
             />
           </form>

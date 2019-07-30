@@ -171,7 +171,7 @@ class EditPatient extends Component {
                 </div>
               </div>{" "}
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar utente</div>
+                <div className="card-header">Editar Utente</div>
                 <small className="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -229,7 +229,7 @@ class EditPatient extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar utente"
+                      value="Guardar Utente"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

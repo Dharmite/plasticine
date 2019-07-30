@@ -154,7 +154,7 @@ class AddTherapist extends Component {
               </div>
 
               <div className="card mb-3 mt-4">
-                <div className="card-header">Adicionar especialista</div>
+                <div className="card-header">Adicionar Especialista</div>
                 <small class="text-muted ml-3 mt-3">
                   Todos os campos são obrigatórios
                 </small>
@@ -249,7 +249,7 @@ class AddTherapist extends Component {
 
                     <input
                       type="submit"
-                      value="Adicionar especialista"
+                      value="Adicionar Especialista"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>

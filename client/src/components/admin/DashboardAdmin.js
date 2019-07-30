@@ -127,7 +127,7 @@ class DashboardAdmin extends Component {
                       </p>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row pr-3">
                     <div
                       className="col-12 col-sm-6 col-md-3 terapeutas"
                       onClick={() => {
@@ -244,42 +244,38 @@ class DashboardAdmin extends Component {
                     </div>
                   </div>
 
-                  {this.state.therapist && therapistContent ? (
-                    therapistContent.length ? (
-                      <div className="row">
-                        <div className="col-5">
-                          <div class="form-group">
-                            <input
-                              type="text"
-                              placeholder="Pesquise pelo nome do especialista"
-                              value={this.state.therapist_search}
-                              onChange={this.updateSearchTherapist.bind(this)}
-                              class="form-control"
-                            />{" "}
-                          </div>
+                  {this.state.therapist ? (
+                    <div className="row">
+                      <div className="col-md-6 pr-3">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            placeholder="Pesquise pelo nome do especialista"
+                            value={this.state.therapist_search}
+                            onChange={this.updateSearchTherapist.bind(this)}
+                            class="form-control"
+                          />{" "}
                         </div>
                       </div>
-                    ) : null
+                    </div>
                   ) : null}
 
                   {this.state.therapist ? therapistContent : null}
 
-                  {this.state.patient && patientContent ? (
-                    patientContent.length ? (
-                      <div className="row">
-                        <div className="col-5">
-                          <div class="form-group">
-                            <input
-                              type="text"
-                              placeholder="Pesquise pelo nome do utente"
-                              value={this.state.patient_search}
-                              onChange={this.updateSearch.bind(this)}
-                              class="form-control"
-                            />{" "}
-                          </div>
+                  {this.state.patient ? (
+                    <div className="row">
+                      <div className="col-md-6 pr-3">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            placeholder="Pesquise pelo nome do utente"
+                            value={this.state.patient_search}
+                            onChange={this.updateSearch.bind(this)}
+                            class="form-control"
+                          />{" "}
                         </div>
                       </div>
-                    ) : null
+                    </div>
                   ) : null}
                   {this.state.patient ? patientContent : null}
 

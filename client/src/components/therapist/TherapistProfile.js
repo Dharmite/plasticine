@@ -6,10 +6,10 @@ import { getTherapist } from "../../actions/therapistActions";
 import Resource from "../resources/Resource";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import doctor_pic from '../../img/doctor.png'
-import user_pic from '../../img/user.png'
-import kid_pic from '../../img/kid.png'
-
+import doctor_pic from "../../img/doctor.png";
+import user_pic from "../../img/user.png";
+import kid_pic from "../../img/kid.png";
+import Patient from "../patient/Patient";
 
 class TherapistProfile extends Component {
   componentDidMount() {
@@ -18,7 +18,15 @@ class TherapistProfile extends Component {
   }
 
   render() {
-    const { _id, name, email, specialty, resources, patient, account_status } = this.props.therapist;
+    const {
+      _id,
+      name,
+      email,
+      specialty,
+      resources,
+      patient,
+      account_status
+    } = this.props.therapist;
 
     let userType;
 
@@ -56,59 +64,15 @@ class TherapistProfile extends Component {
                 <div class="container-fluid">
                   {account_status ? (
                     account_status == "active" ? (
-                      <div className="card card-body mb-3" style={{backgroundColor:"#FFE4B5"}}>
-                        <div className="row">
-                          <div className="col-lg-2 col-md-2">
-                          <img
-                          className="img-circle elevation-1"
-                          src={doctor_pic}
-                          alt="User Avatar"
-                        />
-                          </div>
-                          <div className="col-lg-4 col-md-4 border-right pl-0">
-                            {name ? <h3>{name}</h3> : null}
-                            {email ? (
-                              <p>
-                                <i className="fas fa-envelope-square" /> {email}
-                              </p>
-                            ) : null}
-                            {specialty ? <p>{specialty}</p> : null}
-                            {this.props.user.userType == "admin" ? (
-                            <Link
-                              to={`/terapeuta/editar/${_id}`}
-                              className="btn bg-white"
-                              style={{
-                                border: "1px solid",
-                              }}
-                            >
-                              Editar
-                            </Link>
-                          ) : null}
-
-                          </div>
-
-                          <div className="col-lg-4 col-md-4 pl-4">
-                            {resources ? (
-                              <h5>
-                                Recursos criados: {resources.length}
-                              </h5>
-                            ) : null}
-
-                            {patient ? (
-                              <h5>
-                                Crianças: {patient.length}{" "}
-                              </h5>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="card card-body bg-secondary text-white mb-3">
+                      <div
+                        className="card card-body mb-3"
+                        style={{ backgroundColor: "#FFE4B5" }}
+                      >
                         <div className="row">
                           <div className="col-lg-2 col-md-2">
                             <img
-                              className="img-circle elevation-2"
-                              src="../dist/img/user7-128x128.jpg"
+                              className="img-circle elevation-1"
+                              src={doctor_pic}
                               alt="User Avatar"
                             />
                           </div>
@@ -120,6 +84,59 @@ class TherapistProfile extends Component {
                               </p>
                             ) : null}
                             {specialty ? <p>{specialty}</p> : null}
+                            {this.props.user.userType == "admin" ? (
+                              <Link
+                                to={`/terapeuta/editar/${_id}`}
+                                className="btn bg-white"
+                                style={{
+                                  border: "1px solid"
+                                }}
+                              >
+                                Editar
+                              </Link>
+                            ) : null}
+                          </div>
+
+                          <div className="col-lg-4 col-md-4 pl-4">
+                            {resources ? (
+                              <h5>Recursos criados: {resources.length}</h5>
+                            ) : null}
+
+                            {patient ? (
+                              <h5>Crianças: {patient.length} </h5>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="card card-body bg-secondary text-white mb-3">
+                        <div className="row">
+                        <div className="col-lg-2 col-md-2">
+                            <img
+                              className="img-circle elevation-1"
+                              src={doctor_pic}
+                              alt="User Avatar"
+                            />
+                          </div>
+                          <div className="col-lg-4 col-md-4 border-right pl-0">
+                            {name ? <h3>{name}</h3> : null}
+                            {email ? (
+                              <p>
+                                <i className="fas fa-envelope-square" /> {email}
+                              </p>
+                            ) : null}
+                            {specialty ? <p>{specialty}</p> : null}
+                            {this.props.user.userType == "admin" ? (
+                              <Link
+                                to={`/terapeuta/editar/${_id}`}
+                                className="btn bg-white"
+                                style={{
+                                  border: "1px solid"
+                                }}
+                              >
+                                <span style={{color:"black"}}>Editar</span>
+                              </Link>
+                            ) : null}
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">
@@ -140,50 +157,52 @@ class TherapistProfile extends Component {
                     )
                   ) : null}
 
-                  <div class="row">
-                    <div class="col-md-8">
-                      <h2>Recursos</h2>
-                      {resources ? (
-                        resources.length > 0 ? (
-                          resources.map(resource => (
-                            <Resource key={resource._id} resource={resource} />
-                          ))
-                        ) : (
-                          <h3 className="text-center">
-                            Sem recursos para mostrar
-                          </h3>
-                        )
-                      ) : null}
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card">
-                        <div class="card-header">
+                  {this.props.user ? (
+                    this.props.user.userType == "admin" ? (
+                      <div class="row">
+                        {/* <div class="col-md-8">
+                          <h2>Recursos</h2>
+                          {resources ? (
+                            resources.length > 0 ? (
+                              resources.map(resource => (
+                                <Resource
+                                  key={resource._id}
+                                  resource={resource}
+                                />
+                              ))
+                            ) : (
+                              <h3 className="text-center">
+                                Sem recursos para mostrar
+                              </h3>
+                            )
+                          ) : null}
+                        </div> */}
+                        <div class="col-md-12">
                           <h3 class="card-title">Crianças</h3>
-                        </div>
 
-                        {/* /.card-header */}
-                        <div className="card-body p-0">
-                          <ul className="products-list product-list-in-card pl-2 pr-2">
+                          {/* /.card-header */}
+                          <ul className="products-list product-list-in-card">
                             {patient ? (
                               patient.length > 0 ? (
                                 patient.map(user => (
-                                  <li class="item">
-                                    <div className="product-img">
-                                      <img
-                                        className="img-circle elevation-2"
-                                        src={kid_pic}
-                                        alt="User Avatar"
-                                      />
-                                    </div>
-                                    <div className="product-info">
-                                      <Link
-                                        style={{ color: "black" }}
-                                        to={`/paciente/ver/${user._id}`}
-                                      >
-                                        {user.name}
-                                      </Link>
-                                    </div>
-                                  </li>
+                                  <Patient key={user.id} patient={user} />
+                                  // <li class="item">
+                                  //   <div className="product-img">
+                                  //     <img
+                                  //       className="img-circle elevation-2"
+                                  //       src={kid_pic}
+                                  //       alt="User Avatar"
+                                  //     />
+                                  //   </div>
+                                  //   <div className="product-info">
+                                  //     <Link
+                                  //       style={{ color: "black" }}
+                                  //       to={`/paciente/ver/${user._id}`}
+                                  //     >
+                                  //       {user.name}
+                                  //     </Link>
+                                  //   </div>
+                                  // </li>
                                 ))
                               ) : (
                                 <p> Sem familiares associados </p>
@@ -192,8 +211,65 @@ class TherapistProfile extends Component {
                           </ul>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    ) : (
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h2>Recursos</h2>
+                          {resources ? (
+                            resources.length > 0 ? (
+                              resources.map(resource => (
+                                <Resource
+                                  key={resource._id}
+                                  resource={resource}
+                                />
+                              ))
+                            ) : (
+                              <h3 className="text-center">
+                                Sem recursos para mostrar
+                              </h3>
+                            )
+                          ) : null}
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card">
+                            <div class="card-header">
+                              <h3 class="card-title">Crianças</h3>
+                            </div>
+
+                            <div className="card-body p-0">
+                              <ul className="products-list product-list-in-card pl-2 pr-2">
+                                {patient ? (
+                                  patient.length > 0 ? (
+                                    patient.map(user => (
+                                      <li class="item">
+                                        <div className="product-img">
+                                          <img
+                                            className="img-circle elevation-2"
+                                            src={kid_pic}
+                                            alt="User Avatar"
+                                          />
+                                        </div>
+                                        <div className="product-info">
+                                          <Link
+                                            style={{ color: "black" }}
+                                            to={`/paciente/ver/${user._id}`}
+                                          >
+                                            {user.name}
+                                          </Link>
+                                        </div>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <p> Sem familiares associados </p>
+                                  )
+                                ) : null}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  ) : null}
                 </div>
               </section>
             </div>

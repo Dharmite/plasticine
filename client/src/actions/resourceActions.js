@@ -130,6 +130,7 @@ export const removeResourceFile = (resource_id, filename) => async dispatch => {
     type: GET_RESOURCE,
     payload: res.data
   });
+  
 };
 
 export const removeResource = resource_id => async dispatch => {
@@ -138,6 +139,7 @@ export const removeResource = resource_id => async dispatch => {
     type: REMOVE_RESOURCE,
     payload: res.data
   });
+  window.location.reload();
 };
 
 export const getResourceByCategory = category_name => async dispatch => {

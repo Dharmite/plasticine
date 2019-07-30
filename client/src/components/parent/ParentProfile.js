@@ -8,6 +8,7 @@ import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 import user_pic from "../../img/user.png";
 import kid from "../../img/kid.png";
+import Patient from "../patient/Patient";
 
 class ParentProfile extends Component {
   componentDidMount() {
@@ -17,6 +18,7 @@ class ParentProfile extends Component {
 
   render() {
     const {
+      _id,
       name,
       email,
       notes,
@@ -95,12 +97,27 @@ class ParentProfile extends Component {
                               </p>
                             ) : null}
 
-                            {work_status ? <p>{work_status}</p> : null}
+                            {work_status ? (
+                              <p>
+                                Situação atual: {work_status}
+                              </p>
+                            ) : null}
+                            {this.props.user.userType == "admin" ? (
+                              <Link
+                                to={`/parente/editar/${_id}`}
+                                className="btn bg-white"
+                                style={{
+                                  border: "1px solid"
+                                }}
+                              >
+                                <span style={{ color: "black" }}>Editar</span>
+                              </Link>
+                            ) : null}
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">
                             {notes ? (
-                              <h5>Notas criados: {notes.length}</h5>
+                              <h5>Registos criados: {notes.length}</h5>
                             ) : null}
 
                             {patient ? (
@@ -112,7 +129,7 @@ class ParentProfile extends Component {
                     ) : (
                       <div className="card card-body bg-secondary text-white mb-3">
                         <div className="row">
-                          <div className="col-lg-4 col-md-4">
+                        <div className="col-lg-4 col-md-4">
                             <img
                               className="img-circle elevation-1"
                               src={user_pic}
@@ -127,11 +144,41 @@ class ParentProfile extends Component {
                                 <i className="fas fa-envelope-square" /> {email}
                               </p>
                             ) : null}
+                            {birthday ? (
+                              <p>
+                                <b>Idade:</b>{" "}
+                                {Math.floor(
+                                  (Date.now() - new Date(birthday)) /
+                                    1000 /
+                                    60 /
+                                    60 /
+                                    24 /
+                                    365
+                                )}
+                              </p>
+                            ) : null}
+
+                            {work_status ? (
+                              <p>
+                                Situação atual: {work_status}
+                              </p>
+                            ) : null}
+                            {this.props.user.userType == "admin" ? (
+                              <Link
+                                to={`/terapeuta/editar/${_id}`}
+                                className="btn bg-white"
+                                style={{
+                                  border: "1px solid"
+                                }}
+                              >
+                                <span style={{ color: "black" }}>Editar</span>
+                              </Link>
+                            ) : null}
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">
                             {notes ? (
-                              <h5>Numero de notas criados: {notes.length}</h5>
+                              <h5>Registos criados: {notes.length}</h5>
                             ) : null}
 
                             {patient ? (
@@ -145,11 +192,11 @@ class ParentProfile extends Component {
                     )
                   ) : null}
 
-                  <div>
+                  {/* <div>
                     <h2>Notas</h2>
-                  </div>
+                  </div> */}
                   <div class="row">
-                    <div class="col-md-8">
+                    {/* <div class="col-md-8">
                       {notes ? (
                         notes.length > 0 ? (
                           notes.map(note => (
@@ -164,44 +211,39 @@ class ParentProfile extends Component {
                           </h3>
                         )
                       ) : null}
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card">
-                        <div class="card-header">
-                          <h3 class="card-title">Crianças</h3>
-                        </div>
+                    </div> */}
+                    <div class="col-md-12">
+                      <h3 class="mb-4">Crianças</h3>
 
-                        {/* /.card-header */}
-                        <div className="card-body p-0">
-                          <ul className="products-list product-list-in-card pl-2 pr-2">
-                            {patient ? (
-                              patient.length > 0 ? (
-                                patient.map(user => (
-                                  <li class="item">
-                                    <div className="product-img">
-                                      <img
-                                        className="img-circle elevation-1 bg-success"
-                                        src={kid}
-                                        alt="User Avatar"
-                                      />
-                                    </div>
-                                    <div className="product-info">
-                                      <Link
-                                        style={{ color: "black" }}
-                                        to={`/paciente/ver/${user._id}`}
-                                      >
-                                        {user.name}
-                                      </Link>
-                                    </div>
-                                  </li>
-                                ))
-                              ) : (
-                                <p> Sem familiares associados </p>
-                              )
-                            ) : null}
-                          </ul>
-                        </div>
-                      </div>
+                      <ul className="products-list product-list-in-card">
+                        {patient ? (
+                          patient.length > 0 ? (
+                            patient.map(user => (
+                              <Patient key={user.id} patient={user} />
+
+                              // <li class="item">
+                              //   <div className="product-img">
+                              //     <img
+                              //       className="img-circle elevation-1 bg-success"
+                              //       src={kid}
+                              //       alt="User Avatar"
+                              //     />
+                              //   </div>
+                              //   <div className="product-info">
+                              //     <Link
+                              //       style={{ color: "black" }}
+                              //       to={`/paciente/ver/${user._id}`}
+                              //     >
+                              //       {user.name}
+                              //     </Link>
+                              //   </div>
+                              // </li>
+                            ))
+                          ) : (
+                            <p> Sem familiares associados </p>
+                          )
+                        ) : null}
+                      </ul>
                     </div>
                   </div>
                 </div>

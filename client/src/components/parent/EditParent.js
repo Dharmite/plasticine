@@ -182,7 +182,7 @@ class EditParent extends Component {
                 </div>
               </div>{" "}
               <div className="card mb-3 mt-4">
-                <div className="card-header">Editar familiar</div>
+                <div className="card-header">Editar Familiar</div>
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <TextInputGroup
@@ -296,7 +296,7 @@ class EditParent extends Component {
 
                     <input
                       type="submit"
-                      value="Guardar parente"
+                      value="Guardar Familiar"
                       className="btn btn-info btn-block mt-4"
                     />
                   </form>
