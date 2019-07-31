@@ -80,10 +80,7 @@ class DashboardResources extends Component {
                 <div class="container">
                   <div class="row">
                     <div class="col-md-12">
-                      <h1 class="display-4 text-center">Recursos</h1>
-                      <p class="lead text-center">
-                        Recursos divididos por categoria
-                      </p>
+                      <h1 class="display-4 text-center">Categorias de Recursos</h1>
                     </div>
                   </div>
                   <ul className="nav nav-tabs" id="myTab" role="tablist">

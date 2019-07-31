@@ -129,7 +129,7 @@ class ParentProfile extends Component {
                     ) : (
                       <div className="card card-body bg-secondary text-white mb-3">
                         <div className="row">
-                        <div className="col-lg-4 col-md-4">
+                        <div className="col-lg-2 col-md-2">
                             <img
                               className="img-circle elevation-1"
                               src={user_pic}
@@ -160,13 +160,13 @@ class ParentProfile extends Component {
 
                             {work_status ? (
                               <p>
-                                Situação atual: {work_status}
+                                <b>Situação atual:</b> {work_status}
                               </p>
                             ) : null}
                             {this.props.user.userType == "admin" ? (
                               <Link
-                                to={`/terapeuta/editar/${_id}`}
-                                className="btn bg-white"
+                              to={`/parente/editar/${_id}`}
+                              className="btn bg-white"
                                 style={{
                                   border: "1px solid"
                                 }}

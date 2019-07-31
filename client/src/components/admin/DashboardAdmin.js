@@ -21,7 +21,8 @@ class DashboardAdmin extends Component {
     patient: true,
     parent: false,
     patient_search: "",
-    therapist_search: ""
+    therapist_search: "",
+    parent_search: ""
   };
 
   componentDidMount() {
@@ -39,6 +40,9 @@ class DashboardAdmin extends Component {
   updateSearchTherapist(event) {
     this.setState({ therapist_search: event.target.value.substr(0, 20) });
   }
+  updateSearchParent(event) {
+    this.setState({ parent_search: event.target.value.substr(0, 20) });
+  }
 
   render() {
     const { therapists, parents, patients } = this.props;
@@ -52,18 +56,10 @@ class DashboardAdmin extends Component {
     let patientContent;
     let parentContent;
 
-    if (loading_parents == true) {
-      parentContent = <Spinner />;
-    } else {
-      parentContent =
-        parents.length > 0 ? (
-          parents.map(parent => <Parent key={parent.id} parent={parent} />)
-        ) : (
-          <h6 className="mt-4">Nenhum parente disponível</h6>
-        );
-    }
+
     let filtered_patients;
     let filtered_therapists;
+    let filtered_parents;
 
     if (patients) {
       filtered_patients = patients.filter(patient => {
@@ -78,10 +74,30 @@ class DashboardAdmin extends Component {
     if (therapists) {
       filtered_therapists = therapists.filter(therapist => {
         return (
-          therapist.name.toLowerCase().indexOf(this.state.therapist_search) !==
+          therapist.name.toLowerCase().indexOf(this.state.therapist_search.toLocaleLowerCase()) !==
           -1
         );
       });
+    }
+
+    if (parents) {
+      filtered_parents = parents.filter(parent => {
+        return (
+          parent.name.toLowerCase().indexOf(this.state.parent_search.toLocaleLowerCase()) !==
+          -1
+        );
+      });
+    }
+
+    if (loading_parents == true) {
+      parentContent = <Spinner />;
+    } else {
+      parentContent =
+        parents.length > 0 ? (
+          filtered_parents.map(parent => <Parent key={parent.id} parent={parent} />)
+        ) : (
+          <h6 className="mt-4">Nenhum parente disponível</h6>
+        );
     }
 
     if (loading_patients == true) {
@@ -137,9 +153,9 @@ class DashboardAdmin extends Component {
                         document.getElementsByClassName(
                           "info-box"
                         )[1].style.backgroundColor = "white";
-                        // document.getElementsByClassName(
-                        //   "info-box"
-                        // )[2].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[2].style.backgroundColor = "white";
 
                         this.setState({
                           therapist: true,
@@ -173,9 +189,9 @@ class DashboardAdmin extends Component {
                         document.getElementsByClassName(
                           "info-box"
                         )[1].style.backgroundColor = "#E8E8E8";
-                        // document.getElementsByClassName(
-                        //   "info-box"
-                        // )[2].style.backgroundColor = "white";
+                        document.getElementsByClassName(
+                          "info-box"
+                        )[2].style.backgroundColor = "white";
 
                         this.setState({
                           therapist: false,
@@ -201,7 +217,7 @@ class DashboardAdmin extends Component {
                     </div>
                     <div className="clearfix hidden-md-up" />
                     {/* Comentar a partir daqui */}
-                    {/* <div
+                    <div
                       className="col-12 col-sm-6 col-md-3"
                       onClick={() => {
                         document.getElementsByClassName(
@@ -235,7 +251,7 @@ class DashboardAdmin extends Component {
                           </span>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
 
                   <div className="row">
@@ -278,6 +294,22 @@ class DashboardAdmin extends Component {
                     </div>
                   ) : null}
                   {this.state.patient ? patientContent : null}
+
+                  {this.state.parent ? (
+                    <div className="row">
+                      <div className="col-md-6 pr-3">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            placeholder="Pesquise pelo nome do familiar"
+                            value={this.state.parent_search}
+                            onChange={this.updateSearchParent.bind(this)}
+                            class="form-control"
+                          />{" "}
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
 
                   {this.state.parent ? parentContent : null}
                 </div>

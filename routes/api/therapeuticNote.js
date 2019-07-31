@@ -513,7 +513,7 @@ router.get("/:filename/download", function(req, res, next) {
 router.delete(
   "/notes/:note_id/:filename",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isTherapistOrAdmin,
+  auth_middleware.isTherapistOrParent,
   (req, res) => {
     TherapeuticNote.findById(req.params.note_id).then(note => {
       if (!note) {

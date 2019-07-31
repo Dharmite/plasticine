@@ -27,6 +27,8 @@ class TherapeuticNoteDetails extends Component {
   };
   onClickRemoveNoteFile = filename => {
     const { note_id } = this.props.match.params;
+    console.log(note_id);
+
     this.props.removeTherapeuticNoteFile(note_id, filename);
   };
 
@@ -54,9 +56,6 @@ class TherapeuticNoteDetails extends Component {
     e.preventDefault();
 
     const { _id } = this.props.note;
-    console.log(_id, "note_id");
-
-    console.log(this.props.user.id, "id");
     const newFeedback = {
       user: this.props.user.id,
       observation: this.state.observation
@@ -103,7 +102,6 @@ class TherapeuticNoteDetails extends Component {
       date
     } = this.props.note;
 
-    console.log(this.props.note.files, "note");
 
     const { errors } = this.state;
     let hasImageFiles;

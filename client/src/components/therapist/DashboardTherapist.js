@@ -102,7 +102,15 @@ class DashboardTherapist extends Component {
                           <b>{patient.name}</b>
                         </h1>
                         <h6 className="widget-user-desc">
-                          <b>Idade:</b> {patient.age}
+                          <b>Idade:</b>{" "}
+                          {Math.floor(
+                            (Date.now() - new Date(patient.birthday)) /
+                              1000 /
+                              60 /
+                              60 /
+                              24 /
+                              365
+                          )}
                         </h6>
                         <p className="widget-user-desc">
                           <b>Estado clinico:</b> {patient.clinicalStatus}
@@ -219,21 +227,21 @@ class DashboardTherapist extends Component {
                 </div>
               ) : null}
 
-              {this.state.previousPatients  ? (
-                  <div className="row">
-                    <div className="col-md-6 pr-3">
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          placeholder="Pesquise pelo nome do utente"
-                          value={this.state.previousPatients_search}
-                          onChange={this.updateSearchPrevious.bind(this)}
-                          class="form-control"
-                        />{" "}
-                      </div>
+              {this.state.previousPatients ? (
+                <div className="row">
+                  <div className="col-md-6 pr-3">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        placeholder="Pesquise pelo nome do utente"
+                        value={this.state.previousPatients_search}
+                        onChange={this.updateSearchPrevious.bind(this)}
+                        class="form-control"
+                      />{" "}
                     </div>
                   </div>
-                ) : null}
+                </div>
+              ) : null}
 
               {this.state.patients ? patientContent : null}
               {this.state.previousPatients ? previousPatientsContent : null}

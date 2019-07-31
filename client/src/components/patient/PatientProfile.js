@@ -1228,39 +1228,45 @@ class PatientProfile extends Component {
                                                   <p>
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
-                                                  <div className="row">
-                                                    <div className="description-block mr-3">
-                                                      <button
-                                                        className="btn"
-                                                        data-toggle="modal"
-                                                        data-target="#removeMedicineModal"
-                                                        onClick={this.removeMedicineOnClick.bind(
-                                                          this,
-                                                          elem._id
-                                                        )}
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                      >
-                                                        Apagar
-                                                      </button>
-                                                    </div>
-                                                    <div className="description-block mr-3">
-                                                      <Link
-                                                        className="btn"
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                        to={`/paciente/${_id}/ver/medicamento/editar/${
-                                                          elem._id
-                                                        }`}
-                                                      >
-                                                        Editar
-                                                      </Link>
-                                                    </div>
-                                                  </div>
+                                                  {elem ? (
+                                                    elem.user_name ==
+                                                    this.props.auth.user
+                                                      .name ? (
+                                                      <div className="row">
+                                                        <div className="description-block mr-3">
+                                                          <button
+                                                            className="btn"
+                                                            data-toggle="modal"
+                                                            data-target="#removeMedicineModal"
+                                                            onClick={this.removeMedicineOnClick.bind(
+                                                              this,
+                                                              elem._id
+                                                            )}
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                          >
+                                                            Apagar
+                                                          </button>
+                                                        </div>
+                                                        <div className="description-block mr-3">
+                                                          <Link
+                                                            className="btn"
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                            to={`/paciente/${_id}/ver/medicamento/editar/${
+                                                              elem._id
+                                                            }`}
+                                                          >
+                                                            Editar
+                                                          </Link>
+                                                        </div>
+                                                      </div>
+                                                    ) : null
+                                                  ) : null}
                                                 </div>
                                               </div>
                                             ))
@@ -1322,6 +1328,7 @@ class PatientProfile extends Component {
                                         Historial
                                       </a>
                                     </li>
+                                    */}
                                     <li className="nav-item">
                                       <a
                                         className="nav-link"
@@ -1334,7 +1341,7 @@ class PatientProfile extends Component {
                                       >
                                         Historial Partilhado
                                       </a>
-                                    </li> */}
+                                    </li>
 
                                     <li className="nav-item">
                                       <a
@@ -1432,7 +1439,7 @@ class PatientProfile extends Component {
                                       ) : null}
                                     </div> */}
 
-                                    {/* <div
+                                    <div
                                       className="tab-pane fade"
                                       id="clinicalAvailableTo"
                                       role="tabpanel"
@@ -1458,7 +1465,7 @@ class PatientProfile extends Component {
                                           </p>
                                         )
                                       ) : null}
-                                    </div> */}
+                                    </div>
 
                                     <div
                                       className="tab-pane fade"
@@ -1529,39 +1536,45 @@ class PatientProfile extends Component {
                                                   <p>
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
-                                                  <div className="row">
-                                                    <div className="description-block mr-3">
-                                                      <button
-                                                        className="btn"
-                                                        data-toggle="modal"
-                                                        data-target="#removeMedicineModal"
-                                                        onClick={this.removeMedicineOnClick.bind(
-                                                          this,
-                                                          elem._id
-                                                        )}
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                      >
-                                                        Apagar
-                                                      </button>
-                                                    </div>
-                                                    <div className="description-block mr-3">
-                                                      <Link
-                                                        className="btn"
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                        to={`/paciente/${_id}/ver/medicamento/editar/${
-                                                          elem._id
-                                                        }`}
-                                                      >
-                                                        Editar
-                                                      </Link>
-                                                    </div>
-                                                  </div>
+                                                  {elem ? (
+                                                    elem.user_name ==
+                                                    this.props.auth.user
+                                                      .name ? (
+                                                      <div className="row">
+                                                        <div className="description-block mr-3">
+                                                          <button
+                                                            className="btn"
+                                                            data-toggle="modal"
+                                                            data-target="#removeMedicineModal"
+                                                            onClick={this.removeMedicineOnClick.bind(
+                                                              this,
+                                                              elem._id
+                                                            )}
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                          >
+                                                            Apagar
+                                                          </button>
+                                                        </div>
+                                                        <div className="description-block mr-3">
+                                                          <Link
+                                                            className="btn"
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                            to={`/paciente/${_id}/ver/medicamento/editar/${
+                                                              elem._id
+                                                            }`}
+                                                          >
+                                                            Editar
+                                                          </Link>
+                                                        </div>
+                                                      </div>
+                                                    ) : null
+                                                  ) : null}
                                                 </div>
                                               </div>
                                             ))
@@ -1830,39 +1843,45 @@ class PatientProfile extends Component {
                                                   <p>
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
-                                                  <div className="row">
-                                                    <div className="description-block mr-3">
-                                                      <button
-                                                        className="btn"
-                                                        data-toggle="modal"
-                                                        data-target="#removeMedicineModal"
-                                                        onClick={this.removeMedicineOnClick.bind(
-                                                          this,
-                                                          elem._id
-                                                        )}
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                      >
-                                                        Apagar
-                                                      </button>
-                                                    </div>
-                                                    <div className="description-block mr-3">
-                                                      <Link
-                                                        className="btn"
-                                                        style={{
-                                                          border:
-                                                            "1px solid black"
-                                                        }}
-                                                        to={`/paciente/${_id}/ver/medicamento/editar/${
-                                                          elem._id
-                                                        }`}
-                                                      >
-                                                        Editar
-                                                      </Link>
-                                                    </div>
-                                                  </div>
+                                                  {elem ? (
+                                                    elem.user_name ==
+                                                    this.props.auth.user
+                                                      .name ? (
+                                                      <div className="row">
+                                                        <div className="description-block mr-3">
+                                                          <button
+                                                            className="btn"
+                                                            data-toggle="modal"
+                                                            data-target="#removeMedicineModal"
+                                                            onClick={this.removeMedicineOnClick.bind(
+                                                              this,
+                                                              elem._id
+                                                            )}
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                          >
+                                                            Apagar
+                                                          </button>
+                                                        </div>
+                                                        <div className="description-block mr-3">
+                                                          <Link
+                                                            className="btn"
+                                                            style={{
+                                                              border:
+                                                                "1px solid black"
+                                                            }}
+                                                            to={`/paciente/${_id}/ver/medicamento/editar/${
+                                                              elem._id
+                                                            }`}
+                                                          >
+                                                            Editar
+                                                          </Link>
+                                                        </div>
+                                                      </div>
+                                                    ) : null
+                                                  ) : null}
                                                 </div>
                                               </div>
                                             ))
@@ -2070,9 +2089,7 @@ class PatientProfile extends Component {
                                                           10
                                                         )
                                                       ) : (
-                                                        <span>
-                                                          --
-                                                        </span>
+                                                        <span>--</span>
                                                       )}
                                                     </span>
                                                   </div>

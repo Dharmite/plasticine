@@ -176,7 +176,7 @@ router.delete(
 router.get(
   "/:resource_id",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isTherapistOrAdmin,
+  auth_middleware.isTherapistOrParent,
   (req, res) => {
     Resource.findById(req.params.resource_id)
       .populate("user")

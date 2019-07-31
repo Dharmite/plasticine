@@ -111,7 +111,7 @@ class TherapistProfile extends Component {
                     ) : (
                       <div className="card card-body bg-secondary text-white mb-3">
                         <div className="row">
-                        <div className="col-lg-2 col-md-2">
+                          <div className="col-lg-2 col-md-2">
                             <img
                               className="img-circle elevation-1"
                               src={doctor_pic}
@@ -134,7 +134,7 @@ class TherapistProfile extends Component {
                                   border: "1px solid"
                                 }}
                               >
-                                <span style={{color:"black"}}>Editar</span>
+                                <span style={{ color: "black" }}>Editar</span>
                               </Link>
                             ) : null}
                           </div>
@@ -231,11 +231,9 @@ class TherapistProfile extends Component {
                           ) : null}
                         </div>
                         <div class="col-md-4">
-                          <div class="card">
-                            <div class="card-header">
-                              <h3 class="card-title">Crianças</h3>
-                            </div>
+                          <h2>Crianças</h2>
 
+                          <div class="card">
                             <div className="card-body p-0">
                               <ul className="products-list product-list-in-card pl-2 pr-2">
                                 {patient ? (
