@@ -232,7 +232,8 @@ class EditParent extends Component {
                           onChange={this.handleSelectionChanged}
                           error={errors.work_status}
                         />
-                        Empregado
+                        Empregado/a
+
                       </div>
                       <div>
                         <input
@@ -244,7 +245,8 @@ class EditParent extends Component {
                           onChange={this.handleSelectionChanged}
                           error={errors.work_status}
                         />
-                        Desempregado
+                        Desempregado/a
+
                       </div>
                     </div>
 

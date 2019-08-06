@@ -563,25 +563,28 @@ class PatientProfile extends Component {
                             </div>
                           </div>
 
-                          <div className="row">
-                            <div className="col-md-12">
-                              <div className="card card-body bg-light mb-3">
-                                <h3 className="text-info">
-                                  Estado Clínico {name}
-                                </h3>
-                                <p className="lead">{clinicalStatus}</p>
+                          {isAdmin || isTherapist ? (
+                            <div className="row">
+                              <div className="col-md-12">
+                                <div className="card card-body bg-light mb-3">
+                                  <h3 className="text-info">
+                                    Informação clínica {name}
+                                  </h3>
+                                  <p className="lead">{clinicalStatus}</p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-
-                          <div className="row">
-                            <div className="col-md-12">
-                              <div className="card card-body bg-light mb-3">
-                                <h3 className="text-info">Observações</h3>
-                                <p className="lead">{observation}</p>
+                          ) : null}
+                          {isAdmin || isTherapist ? (
+                            <div className="row">
+                              <div className="col-md-12">
+                                <div className="card card-body bg-light mb-3">
+                                  <h3 className="text-info">Observações</h3>
+                                  <p className="lead">{observation}</p>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ) : null}
 
                           {isAdmin ? (
                             <div
@@ -840,7 +843,7 @@ class PatientProfile extends Component {
                                 }}
                               >
                                 <i className="fas fa-pills text-info mr-1" />{" "}
-                                Adicionar Medicamento
+                                Adicionar terapêutica farmacológica
                               </Link>
                             </div>
                           ) : null}
@@ -1041,7 +1044,7 @@ class PatientProfile extends Component {
                                         aria-controls="medicamentos"
                                         aria-selected="false"
                                       >
-                                        Medicamentos
+                                        T.Farmacológica
                                       </a>
                                     </li>
                                   </ul>
@@ -1272,7 +1275,8 @@ class PatientProfile extends Component {
                                             ))
                                           ) : (
                                             <p className="mt-4">
-                                              Sem medicamentos disponíveis
+                                              Sem terapêuticas farmacológicas
+                                              disponíveis
                                             </p>
                                           )}
                                         </div>
@@ -1329,7 +1333,7 @@ class PatientProfile extends Component {
                                       </a>
                                     </li>
                                     */}
-                                    <li className="nav-item">
+                                    {/* <li className="nav-item">
                                       <a
                                         className="nav-link"
                                         id="clinicalAvailableTo-tab"
@@ -1341,7 +1345,7 @@ class PatientProfile extends Component {
                                       >
                                         Historial Partilhado
                                       </a>
-                                    </li>
+                                    </li> */}
 
                                     <li className="nav-item">
                                       <a
@@ -1353,7 +1357,7 @@ class PatientProfile extends Component {
                                         aria-controls="medicamentos"
                                         aria-selected="false"
                                       >
-                                        Medicamentos
+                                        T. Farmacológica
                                       </a>
                                     </li>
                                   </ul>
@@ -1439,7 +1443,7 @@ class PatientProfile extends Component {
                                       ) : null}
                                     </div> */}
 
-                                    <div
+                                    {/* <div
                                       className="tab-pane fade"
                                       id="clinicalAvailableTo"
                                       role="tabpanel"
@@ -1465,7 +1469,7 @@ class PatientProfile extends Component {
                                           </p>
                                         )
                                       ) : null}
-                                    </div>
+                                    </div> */}
 
                                     <div
                                       className="tab-pane fade"
@@ -1580,7 +1584,8 @@ class PatientProfile extends Component {
                                             ))
                                           ) : (
                                             <p className="mt-4">
-                                              Sem medicamentos disponíveis
+                                              Sem terapêuticas farmacológicas
+                                              disponíveis
                                             </p>
                                           )}
                                         </div>
@@ -1660,7 +1665,7 @@ class PatientProfile extends Component {
                                         aria-controls="medicamentos"
                                         aria-selected="false"
                                       >
-                                        Medicamentos
+                                        T. Farmacológica
                                       </a>
                                     </li>
                                   </ul>
@@ -1887,7 +1892,8 @@ class PatientProfile extends Component {
                                             ))
                                           ) : (
                                             <p className="mt-4">
-                                              Sem medicamentos disponíveis
+                                              Sem terapêuticas farmacológicas
+                                              disponíveis
                                             </p>
                                           )}
                                         </div>

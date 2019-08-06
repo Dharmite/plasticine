@@ -38,6 +38,28 @@ class AddClinicalHistory extends Component {
     errors: {}
   };
 
+  selectAll = e => {
+    let availableTo2 = [];
+    let inputElements = document.getElementsByClassName("form-check-input custom");
+    let selectAll_option = document.getElementById("selectAll");
+    if (selectAll_option.checked) {
+      for (var i = 0; inputElements[i]; ++i) {
+        inputElements[i].checked = true;
+
+        availableTo2.push(inputElements[i].value);
+      }
+    } else {
+      for (var i = 0; inputElements[i]; ++i) {
+        inputElements[i].checked = false;
+      }
+      availableTo2 = [];
+    }
+
+    this.setState({
+      availableTo2: availableTo2
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -307,8 +329,8 @@ class AddClinicalHistory extends Component {
                     />
 
                     <div className="form-group">
-                      {therapist || parent ? (
-                        therapist.length > 1 || parent.length > 0 ? (
+                      {therapist  ? (
+                        therapist.length > 1 ? (
                           <label>Disponível para:</label>
                         ) : null
                       ) : null}
@@ -318,7 +340,7 @@ class AddClinicalHistory extends Component {
                             elem.account_status == "active" ? (
                               <div class="form-check mb-1">
                                 <input
-                                  class="form-check-input"
+                                  class="form-check-input custom"
                                   type="checkbox"
                                   name="availableTo2"
                                   id="defaultCheck1"
@@ -337,7 +359,27 @@ class AddClinicalHistory extends Component {
                           )
                         : null}
 
-                      {parent
+                      {therapist  ? (
+                        therapist.length > 1? (
+                          <div class="form-check mb-1">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              name="availableTo2"
+                              id="selectAll"
+                              value={availableTo2}
+                              onChange={this.selectAll}
+                              error={errors.availableTo2}
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              Selecionar todos
+                            </label>
+                          </div>
+                        ) : null
+                      ) : null}
+
+
+                      {/* {parent
                         ? parent.map(elem =>
                             elem._id !== this.props.auth.user.id ? (
                               <div class="form-check mb-1">
@@ -359,7 +401,7 @@ class AddClinicalHistory extends Component {
                               </div>
                             ) : null
                           )
-                        : null}
+                        : null} */}
                     </div>
 
                     <div className="custom-file mb-4">

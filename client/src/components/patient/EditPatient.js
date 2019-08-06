@@ -193,9 +193,9 @@ class EditPatient extends Component {
                       onChange={this.onChange}
                     />
                     <TextAreaFieldGroup
-                      label="Estado clinico"
+                      label="Informação clínica"
                       name="clinicalStatus"
-                      placeholder="Introduza estado clinico"
+                      placeholder="Introduza a informação clínica"
                       value={clinicalStatus}
                       onChange={this.onChange}
                       error={errors.clinicalStatus}

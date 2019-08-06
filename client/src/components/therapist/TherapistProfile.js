@@ -41,9 +41,9 @@ class TherapistProfile extends Component {
     return (
       <div>
         <Navbar />
-        <div class="content-wrapper">
-          <section class="content">
-            <div class="container-fluid">
+        <div className="content-wrapper">
+          <section className="content">
+            <div className="container-fluid">
               <Sidebar />
               <div className="row">
                 <div className="col-6 mt-3 mb-3">
@@ -60,8 +60,8 @@ class TherapistProfile extends Component {
                 </div>
               </div>
 
-              <section class="content">
-                <div class="container-fluid">
+              <section className="content">
+                <div className="container-fluid">
                   {account_status ? (
                     account_status == "active" ? (
                       <div
@@ -97,7 +97,7 @@ class TherapistProfile extends Component {
                             ) : null}
                           </div>
 
-                          <div className="col-lg-4 col-md-4 pl-4">
+                          {/* <div className="col-lg-4 col-md-4 pl-4">
                             {resources ? (
                               <h5>Recursos criados: {resources.length}</h5>
                             ) : null}
@@ -105,7 +105,7 @@ class TherapistProfile extends Component {
                             {patient ? (
                               <h5>Crianças: {patient.length} </h5>
                             ) : null}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ) : (
@@ -139,7 +139,7 @@ class TherapistProfile extends Component {
                             ) : null}
                           </div>
 
-                          <div className="col-lg-4 col-md-4 pl-4">
+                          {/* <div className="col-lg-4 col-md-4 pl-4">
                             {resources ? (
                               <h5>
                                 Numero de recursos criados: {resources.length}
@@ -151,7 +151,7 @@ class TherapistProfile extends Component {
                                 Numero de crianças tratadas: {patient.length}{" "}
                               </h5>
                             ) : null}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     )
@@ -159,7 +159,7 @@ class TherapistProfile extends Component {
 
                   {this.props.user ? (
                     this.props.user.userType == "admin" ? (
-                      <div class="row">
+                      <div className="row">
                         {/* <div class="col-md-8">
                           <h2>Recursos</h2>
                           {resources ? (
@@ -177,8 +177,8 @@ class TherapistProfile extends Component {
                             )
                           ) : null}
                         </div> */}
-                        <div class="col-md-12">
-                          <h3 class="card-title">Crianças</h3>
+                        <div className="col-md-12">
+                          <h3 className="card-title">Crianças</h3>
 
                           {/* /.card-header */}
                           <ul className="products-list product-list-in-card">
@@ -231,7 +231,7 @@ class TherapistProfile extends Component {
                           ) : null}
                         </div>
                         <div class="col-md-4">
-                          <h2>Crianças</h2>
+                          <h2>Utentes em comum</h2>
 
                           <div class="card">
                             <div className="card-body p-0">

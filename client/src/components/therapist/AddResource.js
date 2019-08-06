@@ -474,9 +474,9 @@ data-toggle="modal"
             </div>
 
             <TextInputGroup
-              label="Se utilizou alguma aplicação insira o url"
+              label="Usou algum site como recurso? Coloque aqui o seu endereço."
               name="application"
-              placeholder="Url da aplicação utilizada"
+              placeholder="Endereço do site"
               value={application}
               onChange={this.onChange}
               error={errors.application}

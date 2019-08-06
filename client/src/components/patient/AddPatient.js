@@ -184,9 +184,9 @@ class AddPatient extends Component {
                     </div>
 
                     <TextAreaFieldGroup
-                      label="Estado clínico"
+                      label="Informação clínica"
                       name="clinicalStatus"
-                      placeholder="Introduza estado clínico"
+                      placeholder="Introduza a informação clínica"
                       value={clinicalStatus}
                       onChange={this.onChange}
                       // error={errors.clinicalStatus}

@@ -139,7 +139,7 @@ class DashboardAdmin extends Component {
                     <div className="col-md-12">
                       <h1 className="display-4">Perfil de administrador</h1>
                       <p className="lead text-muted">
-                        Bem vindo {this.props.user.name}
+                        {this.props.user.name}
                       </p>
                     </div>
                   </div>

@@ -8,8 +8,7 @@ import $ from "jquery";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
-import {Progress} from 'reactstrap';
-
+import { Progress } from "reactstrap";
 
 class AddTherapeuticNote extends Component {
   componentWillUnmount() {
@@ -114,6 +113,28 @@ class AddTherapeuticNote extends Component {
     });
   };
 
+  selectAll = e => {
+    let availableTo2 = [];
+    let inputElements = document.getElementsByClassName("form-check-input custom");
+    let selectAll_option = document.getElementById("selectAll");
+    if (selectAll_option.checked) {
+      for (var i = 0; inputElements[i]; ++i) {
+        inputElements[i].checked = true;
+
+        availableTo2.push(inputElements[i].value);
+      }
+    } else {
+      for (var i = 0; inputElements[i]; ++i) {
+        inputElements[i].checked = false;
+      }
+      availableTo2 = [];
+    }
+
+    this.setState({
+      availableTo2: availableTo2
+    });
+  };
+
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.getPatient(id);
@@ -196,7 +217,10 @@ class AddTherapeuticNote extends Component {
                       >
                         Cancelar
                       </button>
-                      <Link to={`/paciente/ver/${this.props.match.params.id}`} className="btn btn-light">
+                      <Link
+                        to={`/paciente/ver/${this.props.match.params.id}`}
+                        className="btn btn-light"
+                      >
                         Voltar
                       </Link>{" "}
                     </div>
@@ -253,7 +277,7 @@ class AddTherapeuticNote extends Component {
                             elem.account_status == "active" ? (
                               <div class="form-check mb-1">
                                 <input
-                                  class="form-check-input"
+                                  class="form-check-input custom"
                                   type="checkbox"
                                   name="availableTo2"
                                   id="defaultCheck1"
@@ -277,7 +301,7 @@ class AddTherapeuticNote extends Component {
                             elem._id !== this.props.auth.user.id ? (
                               <div class="form-check mb-1">
                                 <input
-                                  class="form-check-input"
+                                  class="form-check-input custom"
                                   type="checkbox"
                                   name="availableTo2"
                                   id="defaultCheck1"
@@ -295,6 +319,24 @@ class AddTherapeuticNote extends Component {
                             ) : null
                           )
                         : null}
+                      {therapist || parent ? (
+                        therapist.length > 1 || parent.length > 0 ? (
+                          <div class="form-check mb-1">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              name="availableTo2"
+                              id="selectAll"
+                              value={availableTo2}
+                              onChange={this.selectAll}
+                              error={errors.availableTo2}
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              Selecionar todos
+                            </label>
+                          </div>
+                        ) : null
+                      ) : null}
                     </div>
 
                     <div className="custom-file mb-4">
@@ -314,9 +356,14 @@ class AddTherapeuticNote extends Component {
                       </label>
                     </div>
 
-
-                    <Progress style={{width:"100%"}} max="100" color="success" value={this.props.loaded} >{Math.round(this.props.loaded,2) }%</Progress>
-
+                    <Progress
+                      style={{ width: "100%" }}
+                      max="100"
+                      color="success"
+                      value={this.props.loaded}
+                    >
+                      {Math.round(this.props.loaded, 2)}%
+                    </Progress>
 
                     <input
                       type="submit"
@@ -343,8 +390,7 @@ const mapStateToProps = state => ({
   patientTherapists: state.patient.patientTherapists,
   patientParents: state.patient.patientParents,
   auth: state.auth,
-  loaded: state.patient.loaded,
-
+  loaded: state.patient.loaded
 });
 
 export default connect(

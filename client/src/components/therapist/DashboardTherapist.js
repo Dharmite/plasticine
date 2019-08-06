@@ -113,7 +113,7 @@ class DashboardTherapist extends Component {
                           )}
                         </h6>
                         <p className="widget-user-desc">
-                          <b>Estado clinico:</b> {patient.clinicalStatus}
+                          <b>Informação clínica:</b> {patient.clinicalStatus}
                         </p>
                       </div>
                     </div>
@@ -139,7 +139,7 @@ class DashboardTherapist extends Component {
                 <div className="col-md-12">
                   <h1 className="display-4">Perfil de especialista</h1>
                   <p className="lead text-muted">
-                    Bem vindo {this.props.user.name}
+                    {this.props.user.name}
                   </p>
                 </div>
               </div>
