@@ -1,9 +1,10 @@
-import { SET_CURRENT_USER } from "../actions/types";
+import { SET_CURRENT_USER, GET_USER_PATIENTS } from "../actions/types";
 import isEmpty from "../validation/isEmpty";
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  patients: []
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +18,12 @@ export default function(state = initialState, action) {
         isTherapist: action.payload.userType === "therapist" ? true : false,
         isParent: action.payload.userType === "parent" ? true : false
       };
+
+      case GET_USER_PATIENTS:
+        return {
+          ...state,
+          patients: action.payload
+        };
     default:
       return state;
   }

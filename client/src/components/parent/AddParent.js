@@ -262,7 +262,7 @@ class AddParent extends Component {
                           type="radio"
                           name="work_status"
                           id="defaultCheck1"
-                          value="empregado"
+                          value="empregado/a"
                           onChange={this.handleSelectionChanged}
                           error={errors.work_status}
                         />
@@ -274,7 +274,7 @@ class AddParent extends Component {
                           type="radio"
                           name="work_status"
                           id="defaultCheck1"
-                          value="desempregado"
+                          value="desempregado/a"
                           onChange={this.handleSelectionChanged}
                           error={errors.work_status}
                         />

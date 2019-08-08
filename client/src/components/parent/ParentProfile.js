@@ -25,6 +25,7 @@ class ParentProfile extends Component {
       patient,
       account_status,
       work_status,
+      relationship,
       birthday
     } = this.props.parent;
 
@@ -79,12 +80,12 @@ class ParentProfile extends Component {
                             {name ? <h3>{name}</h3> : null}
 
                             {email ? (
-                              <p>
-                                <i className="fas fa-envelope-square" /> {email}
-                              </p>
+                              <h6>
+                                <b><i className="fas fa-envelope-square" /> {email}</b>
+                              </h6>
                             ) : null}
                             {birthday ? (
-                              <p>
+                              <h6>
                                 <b>Idade:</b>{" "}
                                 {Math.floor(
                                   (Date.now() - new Date(birthday)) /
@@ -94,14 +95,9 @@ class ParentProfile extends Component {
                                     24 /
                                     365
                                 )}
-                              </p>
+                              </h6>
                             ) : null}
 
-                            {work_status ? (
-                              <p>
-                                Situação atual: {work_status}
-                              </p>
-                            ) : null}
                             {this.props.user.userType == "admin" ? (
                               <Link
                                 to={`/parente/editar/${_id}`}
@@ -116,12 +112,14 @@ class ParentProfile extends Component {
                           </div>
 
                           <div className="col-lg-4 col-md-4 pl-4">
-                            {notes ? (
-                              <h5>Registos criados: {notes.length}</h5>
+                          {work_status ? (
+                              <h6>
+                                <b>Situação atual:</b> {work_status}
+                              </h6>
                             ) : null}
 
-                            {patient ? (
-                              <h5>Crianças: {patient.length} </h5>
+                            {relationship ? (
+                              <h6><b>Parentesco:</b> {relationship} </h6>
                             ) : null}
                           </div>
                         </div>

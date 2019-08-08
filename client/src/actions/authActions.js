@@ -1,4 +1,4 @@
-import { GET_ERRORS, SET_CURRENT_USER } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, GET_USER_PATIENTS } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
@@ -50,6 +50,25 @@ export const setCurrentUser = user => {
   };
 };
 
+export const getUserPatients = therapist_id => dispatch => {
+  axios
+    .get(`/api/users/therapist/${therapist_id}`)
+    .then(res => {
+      if (res.data.patient) {
+        dispatch({
+          type: GET_USER_PATIENTS,
+          payload: res.data.patient
+        });
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export const logoutUser = history => dispatch => {
   localStorage.removeItem("jwtToken");
 
@@ -87,7 +106,10 @@ export const therapistChangePassword = (passwordData, history) => dispatch => {
       })
     );
 };
-export const parentChangePassword = (passwordData, history) => async dispatch => {
+export const parentChangePassword = (
+  passwordData,
+  history
+) => async dispatch => {
   axios
     .post("/api/users/parent/change/password", passwordData)
     .then(res => {

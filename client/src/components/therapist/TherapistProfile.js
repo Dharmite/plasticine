@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getTherapist } from "../../actions/therapistActions";
+import { getUserPatients } from "../../actions/authActions";
 import Resource from "../resources/Resource";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
@@ -15,7 +16,34 @@ class TherapistProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getTherapist(id);
+
+    if(this.props.user.userType == "therapist"){
+      this.props.getUserPatients(this.props.user.id);
+    }
+
   }
+
+  diff = (arr1, arr2) => {
+
+    var ret = [];
+    arr1.sort();
+    arr2.sort();
+    for(var i = 0; i < arr1.length; i += 1) {
+      console.log(arr1[i]._id, "ELEM");
+        if(arr2.findIndex(elem => {
+          console.log(elem._id, "elem._id");
+          console.log(arr1[i]._id, "arr1[i]._id");
+          return elem._id == arr1[i]._id
+        
+        }) > -1){
+            ret.push(arr1[i]);
+        }
+    }
+    return ret;
+
+  }
+
+  
 
   render() {
     const {
@@ -37,6 +65,31 @@ class TherapistProfile extends Component {
     } else {
       userType = "parente";
     }
+
+    let common_patients;
+    let patient_ids = [];
+
+    
+
+    if(patient && this.props.auth.patients){
+
+      // patient.forEach(element => {
+
+      //   patient_ids.push(element._id);
+        
+      // });
+
+      // console.log(patient_ids);
+
+      common_patients = this.diff(patient,this.props.auth.patients);
+
+
+    }
+
+    console.log(common_patients, "common patients");
+
+    
+
 
     return (
       <div>
@@ -236,9 +289,9 @@ class TherapistProfile extends Component {
                           <div class="card">
                             <div className="card-body p-0">
                               <ul className="products-list product-list-in-card pl-2 pr-2">
-                                {patient ? (
-                                  patient.length > 0 ? (
-                                    patient.map(user => (
+                                {common_patients ? (
+                                  common_patients.length > 0 ? (
+                                    common_patients.map(user => (
                                       <li class="item">
                                         <div className="product-img">
                                           <img
@@ -285,10 +338,11 @@ TherapistProfile.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  auth: state.auth,
   therapist: state.therapist.therapist
 });
 
 export default connect(
   mapStateToProps,
-  { getTherapist }
+  { getTherapist, getUserPatients }
 )(TherapistProfile);

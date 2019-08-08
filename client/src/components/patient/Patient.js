@@ -41,7 +41,7 @@ class Patient extends Component {
             <div className="col-md-7 col-sm-12 pr-3 pl-3 pt-3 pb-3">
               <Link to={`/paciente/ver/${_id}`}>
                 <div className="card-widget widget-user-2">
-                  <div className="widget-user-header widget-user-header-custom bg-success">
+                  <div className="widget-user-header widget-user-header-custom bg-success" style={{height:"auto"}}>
                     <div className="widget-user-image">
                       <img
                         className="img-circle elevation-1"

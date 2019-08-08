@@ -179,6 +179,7 @@ router.get(
   }
 );
 
+
 // @route GET api/users/therapist/:therapist_id
 // @desc Return therapist
 // @access Private
