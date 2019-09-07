@@ -32,6 +32,7 @@ class AddClinicalHistory extends Component {
     valuationDate: "",
     duration: "",
     valuation: "",
+    evolution: "",
     availableTo2: "",
     files: "",
     filename: "Escolha um ficheiro",
@@ -71,6 +72,7 @@ class AddClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       files,
       availableTo2
     } = this.state;
@@ -94,6 +96,7 @@ class AddClinicalHistory extends Component {
       formData.append("valuationDate", valuationDate);
       formData.append("duration", duration);
       formData.append("valuation", valuation);
+      formData.append("evolution", evolution);
       formData.append("availableTo", availableTo);
 
       for (var x = 0; x < this.state.files.length; x++) {
@@ -111,6 +114,7 @@ class AddClinicalHistory extends Component {
         valuationDate: "",
         duration: "",
         valuation: "",
+        evolution: "",
         files: "",
         availableTo2: "",
         errors: {}
@@ -124,6 +128,7 @@ class AddClinicalHistory extends Component {
       formData.append("valuationDate", valuationDate);
       formData.append("duration", duration);
       formData.append("valuation", valuation);
+      formData.append("evolution", evolution);
       formData.append("availableTo", availableTo2);
       for (var x = 0; x < this.state.files.length; x++) {
         formData.append("files", this.state.files[x]);
@@ -140,6 +145,7 @@ class AddClinicalHistory extends Component {
         valuationDate: "",
         duration: "",
         valuation: "",
+        evolution: "",
         files: "",
         availableTo2: "",
         errors: {}
@@ -183,6 +189,7 @@ class AddClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       errors,
       availableTo2,
       files,
@@ -252,6 +259,52 @@ class AddClinicalHistory extends Component {
                   </div>
                 </div>
               </div>
+              <div
+                className="modal fade"
+                id="confirmTherapeuticNote"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      Deseja mesmo partilhar com estes utilizadores?
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-success"
+                        data-dismiss="modal"
+                        onClick={this.onSubmit}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="card mb-3 mt-4">
                 <div className="card-header">Adicionar Historial Clínico</div>
                 <div className="card-body">
@@ -297,6 +350,15 @@ class AddClinicalHistory extends Component {
                       value={valuation}
                       onChange={this.onChange}
                       error={errors.valuation}
+                    />
+
+                    <TextAreaFieldGroup
+                      label="Síntese da evolução"
+                      name="evolution"
+                      placeholder="Descreva a evolução apresentada pelo utente"
+                      value={evolution}
+                      onChange={this.onChange}
+                      error={errors.evolution}
                     />
 
                     <div className="form-group">
@@ -431,9 +493,12 @@ class AddClinicalHistory extends Component {
                     </Progress>
 
                     <input
-                      type="submit"
+                      // type="submit"
                       value="Adicionar Historial Clínico"
                       className="btn btn-info btn-block mt-4"
+                      data-toggle="modal"
+                      data-target="#confirmTherapeuticNote"
+
                     />
                   </form>
                 </div>

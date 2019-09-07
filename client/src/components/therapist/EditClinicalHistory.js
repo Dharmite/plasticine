@@ -14,13 +14,10 @@ import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import Sidebar from "../layout/Sidebar";
 import Navbar from "../layout/Navbar";
 
-
 let data = new Date();
 let max_date = `${data.getFullYear()}-${
   data.getMonth() < 9 ? "0" + data.getMonth() : data.getMonth()
 }-${data.getDate() < 9 ? "0" + data.getDate() : data.getDate()}`;
-
-
 
 class EditClinicalHistory extends Component {
   componentWillUnmount() {
@@ -38,6 +35,7 @@ class EditClinicalHistory extends Component {
     valuationDate: "",
     duration: "",
     valuation: "",
+    evolution: "",
     availableTo2: "",
     files: "",
     filename: "Escolha um ficheiro",
@@ -61,10 +59,10 @@ class EditClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       files,
       filename
     } = nextProps.note;
-
 
     this.setState({
       title,
@@ -74,6 +72,7 @@ class EditClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       files,
       availableTo2: "",
       filename
@@ -95,7 +94,8 @@ class EditClinicalHistory extends Component {
       availableTo2,
       valuationDate,
       duration,
-      valuation
+      valuation,
+      evolution
     } = this.state;
 
     let availableTo = "";
@@ -117,6 +117,7 @@ class EditClinicalHistory extends Component {
       formData.append("valuationDate", valuationDate);
       formData.append("duration", duration);
       formData.append("valuation", valuation);
+      formData.append("evolution", evolution);
       formData.append("availableTo", availableTo);
       for (var x = 0; x < this.state.files.length; x++) {
         formData.append("files", this.state.files[x]);
@@ -139,6 +140,7 @@ class EditClinicalHistory extends Component {
         valuationDate: "",
         duration: "",
         valuation: "",
+        evolution: "",
         files: "",
         availableTo2: "",
         errors: {}
@@ -152,6 +154,7 @@ class EditClinicalHistory extends Component {
       formData.append("valuationDate", valuationDate);
       formData.append("duration", duration);
       formData.append("valuation", valuation);
+      formData.append("evolution", evolution);
       formData.append("availableTo", availableTo2);
       for (var x = 0; x < this.state.files.length; x++) {
         formData.append("files", this.state.files[x]);
@@ -174,6 +177,7 @@ class EditClinicalHistory extends Component {
         valuationDate: "",
         duration: "",
         valuation: "",
+        evolution: "",
         files: "",
         availableTo2: "",
         errors: {}
@@ -211,17 +215,16 @@ class EditClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       errors,
       filename
     } = this.state;
 
     let { therapist, parent } = this.props.patient;
 
-    if(this.props.note.valuationDate){
-      console.log(this.props.note.valuationDate.slice(0,10), "note");
+    if (this.props.note.valuationDate) {
+      console.log(this.props.note.valuationDate.slice(0, 10), "note");
     }
-    
-
 
     return (
       <div>
@@ -344,7 +347,11 @@ class EditClinicalHistory extends Component {
                         className={classnames("form-control form-control-lg", {
                           "is-invalid": errors.valuationDate
                         })}
-                        value={this.state.valuationDate?this.state.valuationDate.slice(0,10):null}
+                        value={
+                          this.state.valuationDate
+                            ? this.state.valuationDate.slice(0, 10)
+                            : null
+                        }
                         onChange={this.onChange}
                         max={max_date}
                       />
@@ -362,6 +369,14 @@ class EditClinicalHistory extends Component {
                       value={duration}
                       onChange={this.onChange}
                       error={errors.duration}
+                    />
+                    <TextAreaFieldGroup
+                      label="Síntese da evolução"
+                      name="evolution"
+                      placeholder="Descreva a evolução apresentada pelo utente"
+                      value={evolution}
+                      onChange={this.onChange}
+                      error={errors.evolution}
                     />
 
                     <div className="form-group">

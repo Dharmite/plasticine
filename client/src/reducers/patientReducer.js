@@ -24,6 +24,7 @@ import {
   ADD_COMMENT,
   GET_COMMENTS,
   LOADED,
+  CLEAR_LOADED,
   GET_CLINICAL_HISTORY,
   ADD_CLINICAL_HISTORY,
   GET_CLINICAL_HISTORIES,
@@ -54,6 +55,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loaded: action.payload
+      };
+    case CLEAR_LOADED:
+      return {
+        ...state,
+        loaded: 0
       };
     case PATIENTS_LOADING:
       return {
@@ -99,37 +105,39 @@ export default function(state = initialState, action) {
         notes: [...state.notes, action.payload]
       };
 
-      case GET_CLINICAL_HISTORIES:
-        return {
-          ...state,
-          clinicalNotes: action.payload
-        };
-  
-      case GET_CLINICAL_HISTORY:
-        return {
-          ...state,
-          clinicalNote: action.payload
-        };
-  
-      case REMOVE_CLINICAL_HISTORY:
-        return {
-          ...state,
-          clinicalNotes: state.clinicalNotes.filter(note => note._id !== action.payload)
-        };
-  
-      case UPDATE_CLINICAL_HISTORY:
-        return {
-          ...state,
-          clinicalNotes: state.clinicalNotes.map(note =>
-            note._id !== action.payload.id ? (note = action.payload) : note
-          )
-        };
-  
-      case ADD_CLINICAL_HISTORY:
-        return {
-          ...state,
-          clinicalNotes: [...state.clinicalNotes, action.payload]
-        };
+    case GET_CLINICAL_HISTORIES:
+      return {
+        ...state,
+        clinicalNotes: action.payload
+      };
+
+    case GET_CLINICAL_HISTORY:
+      return {
+        ...state,
+        clinicalNote: action.payload
+      };
+
+    case REMOVE_CLINICAL_HISTORY:
+      return {
+        ...state,
+        clinicalNotes: state.clinicalNotes.filter(
+          note => note._id !== action.payload
+        )
+      };
+
+    case UPDATE_CLINICAL_HISTORY:
+      return {
+        ...state,
+        clinicalNotes: state.clinicalNotes.map(note =>
+          note._id !== action.payload.id ? (note = action.payload) : note
+        )
+      };
+
+    case ADD_CLINICAL_HISTORY:
+      return {
+        ...state,
+        clinicalNotes: [...state.clinicalNotes, action.payload]
+      };
 
     case ADD_COMMENT:
       return {
@@ -137,11 +145,11 @@ export default function(state = initialState, action) {
         comments: [...state.comments, action.payload]
       };
 
-      case GET_COMMENTS:
-        return {
-          ...state,
-          comments: action.payload
-        }; 
+    case GET_COMMENTS:
+      return {
+        ...state,
+        comments: action.payload
+      };
 
     case GET_PATIENTS:
       return {

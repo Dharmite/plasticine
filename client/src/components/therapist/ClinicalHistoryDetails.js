@@ -97,6 +97,7 @@ class ClinicalHistoryDetails extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       availableTo,
       files,
       feedback,
@@ -536,6 +537,15 @@ class ClinicalHistoryDetails extends Component {
                             </p>
                           ) : null}
                         </div>
+                        <div className="row">
+                          {evolution ? (
+                            <p class="lead">
+                              {" "}
+                              <b>Síntese da evolução:</b> {evolution}
+                            </p>
+                          ) : null}
+                        </div>
+
                         <div className="row">
                           {valuationDate ? (
                             <p class="lead">

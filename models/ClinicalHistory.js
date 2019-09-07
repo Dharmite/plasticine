@@ -35,6 +35,9 @@ const ClinicalHistorySchema = new Schema({
   valuation: {
     type: String
   },
+  evolution: {
+    type:String
+  },
   feedback: [
     {
       user: {

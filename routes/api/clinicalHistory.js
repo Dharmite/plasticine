@@ -101,6 +101,7 @@ router.post(
                 valuationDate: req.body.valuationDate,
                 duration: req.body.duration,
                 valuation: req.body.valuation,
+                evolution: req.body.evolution,
                 availableTo: availableTo,
                 files: []
               };
@@ -231,6 +232,7 @@ router.post(
             valuationDate: req.body.valuationDate,
             duration: req.body.duration,
             valuation: req.body.valuation,
+            evolution: req.body.evolution,
             availableTo: availableTo,
             files: upload_files
           },
@@ -261,6 +263,7 @@ router.post(
             valuationDate: req.body.valuationDate,
             duration: req.body.duration,
             valuation: req.body.valuation,
+            evolution: req.body.evolution,
             availableTo: availableTo,
             behavior: req.body.behavior
           },

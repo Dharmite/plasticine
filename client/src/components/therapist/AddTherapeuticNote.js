@@ -115,7 +115,9 @@ class AddTherapeuticNote extends Component {
 
   selectAll = e => {
     let availableTo2 = [];
-    let inputElements = document.getElementsByClassName("form-check-input custom");
+    let inputElements = document.getElementsByClassName(
+      "form-check-input custom"
+    );
     let selectAll_option = document.getElementById("selectAll");
     if (selectAll_option.checked) {
       for (var i = 0; inputElements[i]; ++i) {
@@ -182,6 +184,54 @@ class AddTherapeuticNote extends Component {
               >
                 Voltar
               </button>
+
+              <div
+                className="modal fade"
+                id="confirmTherapeuticNote"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Atenção!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      Deseja mesmo partilhar com estes utilizadores?
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-success"
+                        data-dismiss="modal"
+                        onClick={this.onSubmit}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div
                 class="modal fade"
                 id="backModal"
@@ -366,9 +416,12 @@ class AddTherapeuticNote extends Component {
                     </Progress>
 
                     <input
-                      type="submit"
+                      // type="submit"
                       value="Adicionar Registo"
                       className="btn btn-info btn-block mt-4"
+                      data-toggle="modal"
+                      data-target="#confirmTherapeuticNote"
+      
                     />
                   </form>
                 </div>

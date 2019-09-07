@@ -96,7 +96,7 @@ router.delete(
 router.post(
   "/patient/:patient_id",
   passport.authenticate("jwt", { session: false }),
-  auth_middleware.isAdmin,
+  auth_middleware.isTherapistOrAdmin,
   (req, res) => {
     const { errors, isValid } = validatePatientInput(req.body);
     if (!isValid) {

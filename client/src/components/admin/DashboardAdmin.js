@@ -63,6 +63,7 @@ class DashboardAdmin extends Component {
 
     if (patients) {
       filtered_patients = patients.filter(patient => {
+        console.log(patient);
         return (
           patient.name
             .toLowerCase()

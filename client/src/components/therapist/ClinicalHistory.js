@@ -20,6 +20,7 @@ class ClinicalHistory extends Component {
       valuationDate,
       duration,
       valuation,
+      evolution,
       date
     } = this.props.ClinicalHistory;
 

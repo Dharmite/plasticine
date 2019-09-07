@@ -653,6 +653,7 @@ export const updatePatient = (patient, history) => async dispatch => {
       `/api/patient-profile/patient/${patient.id}`,
       patient
     );
+    
     dispatch({
       type: UPDATE_PATIENT,
       payload: res.data
@@ -662,6 +663,10 @@ export const updatePatient = (patient, history) => async dispatch => {
 
     history.push("/admin-dashboard");
   } catch (error) {
+
+    console.log("entrei!!")
+    console.log(error);
+
     dispatch({
       type: GET_ERRORS,
       payload: error.response.data
