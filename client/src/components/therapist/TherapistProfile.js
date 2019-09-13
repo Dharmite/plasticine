@@ -258,7 +258,7 @@ class TherapistProfile extends Component {
                                   // </li>
                                 ))
                               ) : (
-                                <p> Sem familiares associados </p>
+                                <p className="mt-4"> Sem familiares associados </p>
                               )
                             ) : null}
                           </ul>

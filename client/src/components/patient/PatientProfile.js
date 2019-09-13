@@ -202,6 +202,7 @@ class PatientProfile extends Component {
       name,
       birthday,
       schoolName,
+      schoolSchedule,
       clinicalStatus,
       parent,
       medicine,
@@ -543,6 +544,11 @@ class PatientProfile extends Component {
                                 {schoolName ? (
                                   <p>
                                     <b>Escola:</b> {schoolName}
+                                  </p>
+                                ) : null}
+                                {schoolSchedule ? (
+                                  <p>
+                                    <b>Horário escolar:</b> {schoolSchedule}
                                   </p>
                                 ) : null}
                                 {isAdmin || isTherapist ? (
