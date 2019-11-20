@@ -172,7 +172,7 @@ class AddClinicalHistory extends Component {
   }
 
   onChange = e => {
-    if (e.target.name == "files") {
+    if (e.target.name === "files") {
       this.setState({ files: e.target.files });
       this.setState({ filename: e.target.files[0].name });
     } else {

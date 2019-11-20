@@ -65,7 +65,7 @@ class ParentProfile extends Component {
               <section class="content">
                 <div class="container-fluid">
                   {account_status ? (
-                    account_status == "active" ? (
+                    account_status === "active" ? (
                       <div className="card card-body bg-info text-white mb-3">
                         <div className="row">
                           <div className="col-lg-2 col-md-2">
@@ -98,7 +98,7 @@ class ParentProfile extends Component {
                               </h6>
                             ) : null}
 
-                            {this.props.user.userType == "admin" ? (
+                            {this.props.user.userType === "admin" ? (
                               <Link
                                 to={`/parente/editar/${_id}`}
                                 className="btn bg-white"
@@ -161,7 +161,7 @@ class ParentProfile extends Component {
                                 <b>Situação atual:</b> {work_status}
                               </p>
                             ) : null}
-                            {this.props.user.userType == "admin" ? (
+                            {this.props.user.userType === "admin" ? (
                               <Link
                               to={`/parente/editar/${_id}`}
                               className="btn bg-white"

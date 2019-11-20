@@ -90,7 +90,7 @@ class DashboardAdmin extends Component {
       });
     }
 
-    if (loading_parents == true) {
+    if (loading_parents === true) {
       parentContent = <Spinner />;
     } else {
       parentContent =
@@ -101,7 +101,7 @@ class DashboardAdmin extends Component {
         );
     }
 
-    if (loading_patients == true) {
+    if (loading_patients === true) {
       patientContent = <Spinner />;
     } else {
       patientContent =
@@ -114,7 +114,7 @@ class DashboardAdmin extends Component {
         );
     }
 
-    if (loading_therapists == true) {
+    if (loading_therapists === true) {
       therapistContent = <Spinner />;
     } else {
       therapistContent =

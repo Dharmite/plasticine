@@ -7,6 +7,22 @@ import { withRouter } from "react-router-dom";
 import NavbarGuest from "../layout/NavbarGuest";
 
 class Register extends Component {
+
+  // constructor(){
+
+  //   super();
+
+  //   this.state = {
+  //     name: "",
+  //     email: "",
+  //     password: "",
+  //     password2: "",
+  //     productKey: "",
+  //     errors: {}
+  //   };
+
+  // }
+
   state = {
     name: "",
     email: "",

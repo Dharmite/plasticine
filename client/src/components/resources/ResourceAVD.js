@@ -25,49 +25,49 @@ class ResourceAVD extends Component {
 
     if (this.props.avd) {
       autonomia = this.props.avd.filter(
-        resource => resource.subCategory == "Autonomia"
+        resource => resource.subCategory === "Autonomia"
       );
     }
     if (this.props.avd) {
       escola = this.props.avd.filter(
-        resource => resource.subCategory == "Escola"
+        resource => resource.subCategory === "Escola"
       );
     }
     if (this.props.avd) {
       supermercado = this.props.avd.filter(
-        resource => resource.subCategory == "Supermercado"
+        resource => resource.subCategory === "Supermercado"
       );
     }
 
     if (this.props.avd) {
       cabeleireiro = this.props.avd.filter(
-        resource => resource.subCategory == "Cabeleireiro"
+        resource => resource.subCategory === "Cabeleireiro"
       );
     }
     if (this.props.avd) {
       centro_comercial = this.props.avd.filter(
-        resource => resource.subCategory == "Centro Comercial"
+        resource => resource.subCategory === "Centro Comercial"
       );
     }
     if (this.props.avd) {
       parque_infantil = this.props.avd.filter(
-        resource => resource.subCategory == "Parque Infantil"
+        resource => resource.subCategory === "Parque Infantil"
       );
     }
 
     if (this.props.avd) {
       livraria = this.props.avd.filter(
-        resource => resource.subCategory == "Livraria"
+        resource => resource.subCategory === "Livraria"
       );
     }
     if (this.props.avd) {
       roupa = this.props.avd.filter(
-        resource => resource.subCategory == "Loja de Roupa"
+        resource => resource.subCategory === "Loja de Roupa"
       );
     }
     if (this.props.avd) {
       hospital_centro = this.props.avd.filter(
-        resource => resource.subCategory == "Hospital / Centro Médico"
+        resource => resource.subCategory === "Hospital / Centro Médico"
       );
     }
 

@@ -17,7 +17,7 @@ class TherapistProfile extends Component {
     const { id } = this.props.match.params;
     this.props.getTherapist(id);
 
-    if(this.props.user.userType == "therapist"){
+    if(this.props.user.userType === "therapist"){
       this.props.getUserPatients(this.props.user.id);
     }
 
@@ -33,7 +33,7 @@ class TherapistProfile extends Component {
         if(arr2.findIndex(elem => {
           console.log(elem._id, "elem._id");
           console.log(arr1[i]._id, "arr1[i]._id");
-          return elem._id == arr1[i]._id
+          return elem._id === arr1[i]._id
         
         }) > -1){
             ret.push(arr1[i]);
@@ -116,7 +116,7 @@ class TherapistProfile extends Component {
               <section className="content">
                 <div className="container-fluid">
                   {account_status ? (
-                    account_status == "active" ? (
+                    account_status === "active" ? (
                       <div
                         className="card card-body mb-3"
                         style={{ backgroundColor: "#FFE4B5" }}
@@ -137,7 +137,7 @@ class TherapistProfile extends Component {
                               </p>
                             ) : null}
                             {specialty ? <p>{specialty}</p> : null}
-                            {this.props.user.userType == "admin" ? (
+                            {this.props.user.userType === "admin" ? (
                               <Link
                                 to={`/terapeuta/editar/${_id}`}
                                 className="btn bg-white"
@@ -179,7 +179,7 @@ class TherapistProfile extends Component {
                               </p>
                             ) : null}
                             {specialty ? <p>{specialty}</p> : null}
-                            {this.props.user.userType == "admin" ? (
+                            {this.props.user.userType === "admin" ? (
                               <Link
                                 to={`/terapeuta/editar/${_id}`}
                                 className="btn bg-white"
@@ -211,7 +211,7 @@ class TherapistProfile extends Component {
                   ) : null}
 
                   {this.props.user ? (
-                    this.props.user.userType == "admin" ? (
+                    this.props.user.userType === "admin" ? (
                       <div className="row">
                         {/* <div class="col-md-8">
                           <h2>Recursos</h2>

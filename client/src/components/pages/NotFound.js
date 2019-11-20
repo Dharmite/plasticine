@@ -6,9 +6,9 @@ import NavbarGuest from "../layout/NavbarGuest";
 class NotFound extends Component {
   render() {
     if (
-      this.props.location.pathname == "/" ||
-      this.props.location.pathname == "/register" ||
-      this.props.location.pathname == "/login"
+      this.props.location.pathname === "/" ||
+      this.props.location.pathname === "/register" ||
+      this.props.location.pathname === "/login"
     ) {
       return null;
     }

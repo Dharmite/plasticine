@@ -83,13 +83,6 @@ class AddNote extends Component {
         formData.append("files", this.state.files[x]);
       }
 
-      const newTherapeuticNote = {
-        title,
-        observation,
-        availableTo2,
-        files
-      };
-
       const { id } = this.props.match.params;
       this.props.addTherapeuticNote(id, formData);
 
@@ -124,7 +117,7 @@ class AddNote extends Component {
   }
 
   onChange = e => {
-    if (e.target.name == "files") {
+    if (e.target.name === "files") {
       this.setState({ files: e.target.files });
       this.setState({ filename: e.target.files[0].name });
     } else {

@@ -38,9 +38,9 @@ class Password extends Component {
       newpassword2: this.state.newpassword2
     };
 
-    if (this.props.auth.user.userType == "admin") {
+    if (this.props.auth.user.userType === "admin") {
       this.props.adminChangePassword(passwordData, this.props.history);
-    } else if (this.props.auth.user.userType == "therapist") {
+    } else if (this.props.auth.user.userType === "therapist") {
       this.props.therapistChangePassword(passwordData, this.props.history);
     } else {
       this.props.parentChangePassword(passwordData, this.props.history);
@@ -146,6 +146,11 @@ class Password extends Component {
     );
   }
 }
+
+Password.propTypes = {
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,

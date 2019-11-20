@@ -24,39 +24,39 @@ class ResourceVerbal extends Component {
 
     if (this.props.desenvolvimento_verbal) {
       compreensao = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Compreensão Verbal"
+        resource => resource.subCategory === "Compreensão Verbal"
       );
     }
     if (this.props.desenvolvimento_verbal) {
       raciocinio = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Raciocínio Verbal"
+        resource => resource.subCategory === "Raciocínio Verbal"
       );
     }
 
     if (this.props.desenvolvimento_verbal) {
       consciencia = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Consciência Fonológica"
+        resource => resource.subCategory === "Consciência Fonológica"
       );
     }
     if (this.props.desenvolvimento_verbal) {
       segmentacao = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Segmentação Silábica e fonológica"
+        resource => resource.subCategory === "Segmentação Silábica e fonológica"
       );
     }
 
     if (this.props.desenvolvimento_verbal) {
       fluencia = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Fluência Verbal"
+        resource => resource.subCategory === "Fluência Verbal"
       );
     }
     if (this.props.desenvolvimento_verbal) {
       leitura = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Leitura"
+        resource => resource.subCategory === "Leitura"
       );
     }
     if (this.props.desenvolvimento_verbal) {
       escrita = this.props.desenvolvimento_verbal.filter(
-        resource => resource.subCategory == "Escrita"
+        resource => resource.subCategory === "Escrita"
       );
     }
 

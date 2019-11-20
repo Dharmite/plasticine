@@ -19,7 +19,7 @@ const redirectContent = (
 
 let haveAccess = (props, { component: Component, auth, patientTherapists }) => {
   patientTherapists.forEach(therapist => {
-    if (auth.user._id == therapist._id) {
+    if (auth.user._id === therapist._id) {
       return componentContent(props, {
         component: Component,
         auth,

@@ -82,7 +82,7 @@ class EditTherapist extends Component {
     };
 
     // Check For Errors
-    if (newTherapist.specialty == "0") {
+    if (newTherapist.specialty === "0") {
       console.log("entrei");
       this.setState({
         errors: {
@@ -222,7 +222,7 @@ class EditTherapist extends Component {
                       options={options}
                     />
 
-                    {this.state.specialty == "Outra" ? (
+                    {this.state.specialty === "Outra" ? (
                       <TextInputGroup
                         label="Especialidade"
                         name="other"
@@ -235,7 +235,7 @@ class EditTherapist extends Component {
                     ) : null}
 
                     {account_status ? (
-                      account_status == "active" ? (
+                      account_status === "active" ? (
                         <p>
                           <label>Estado da conta: </label>{" "}
                           <input

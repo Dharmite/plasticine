@@ -18,12 +18,12 @@ class ResourceEmocional extends Component {
 
     if (this.props.emocional_social) {
       emocional = this.props.emocional_social.filter(
-        resource => resource.subCategory == "Área Emocional-Afetiva"
+        resource => resource.subCategory === "Área Emocional-Afetiva"
       );
     }
     if (this.props.emocional_social) {
       social = this.props.emocional_social.filter(
-        resource => resource.subCategory == "Área Social"
+        resource => resource.subCategory === "Área Social"
       );
     }
 

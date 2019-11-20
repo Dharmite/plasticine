@@ -78,7 +78,6 @@ class AddPatient extends Component {
   render() {
     const {
       name,
-      birthday,
       clinicalStatus,
       schoolName,
       observation,

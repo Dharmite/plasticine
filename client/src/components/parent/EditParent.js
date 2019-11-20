@@ -251,7 +251,7 @@ class EditParent extends Component {
                     </div>
 
                     {account_status ? (
-                      account_status == "active" ? (
+                      account_status === "active" ? (
                         <p>
                           <label>Estado da conta: </label>{" "}
                           <input

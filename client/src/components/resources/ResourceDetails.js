@@ -105,17 +105,17 @@ class ResourceDetails extends Component {
       hasImageFiles =
         files.filter(
           file =>
-            file.fileType == "image/jpeg" ||
-            file.fileType == "image/png" ||
-            file.fileType == "image/gif"
+            file.fileType === "image/jpeg" ||
+            file.fileType === "image/png" ||
+            file.fileType === "image/gif"
         ).length > 0;
     }
 
     let image_files = files
       ? files.map(file =>
-          file.fileType == "image/jpeg" ||
-          file.fileType == "image/png" ||
-          file.fileType == "image/gif" ? (
+          file.fileType === "image/jpeg" ||
+          file.fileType === "image/png" ||
+          file.fileType === "image/gif" ? (
             <div className="card col-md-5 mt-4 mr-5">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
@@ -127,7 +127,7 @@ class ResourceDetails extends Component {
               />
               <div className="card-footer bg-white">
                 {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <div className="row">
                       <div className="col-md-3 col-sm-4 border-right">
                         <div className="bg-white text-center">
@@ -216,19 +216,19 @@ class ResourceDetails extends Component {
       hasAudioFiles =
         files.filter(
           file =>
-            file.fileType == "audio/aac" ||
-            file.fileType == "audio/ogg" ||
-            file.fileType == "audio/x-wav" ||
-            file.fileType == "audio/mp3"
+            file.fileType === "audio/aac" ||
+            file.fileType === "audio/ogg" ||
+            file.fileType === "audio/x-wav" ||
+            file.fileType === "audio/mp3"
         ).length > 0;
     }
 
     let audio_files = files
       ? files.map(file =>
-          file.fileType == "audio/aac" ||
-          file.fileType == "audio/ogg" ||
-          file.fileType == "audio/x-wav" ||
-          file.fileType == "audio/mp3" ? (
+          file.fileType === "audio/aac" ||
+          file.fileType === "audio/ogg" ||
+          file.fileType === "audio/x-wav" ||
+          file.fileType === "audio/mp3" ? (
             <div className="col-md-12 mt-3">
               <p>
                 <audio controls>
@@ -302,7 +302,7 @@ class ResourceDetails extends Component {
                   Download
                 </button>
                 {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <button
                       data-toggle="modal"
                       data-target="#deleteFileModal"
@@ -325,19 +325,19 @@ class ResourceDetails extends Component {
       hasVideoFiles =
         files.filter(
           file =>
-            file.fileType == "video/x-msvideo" ||
-            file.fileType == "video/mpeg" ||
-            file.fileType == "video/ogg" ||
-            file.fileType == "video/mp4"
+            file.fileType === "video/x-msvideo" ||
+            file.fileType === "video/mpeg" ||
+            file.fileType === "video/ogg" ||
+            file.fileType === "video/mp4"
         ).length > 0;
     }
 
     let video_files = files
       ? files.map(file =>
-          file.fileType == "video/x-msvideo" ||
-          file.fileType == "video/mpeg" ||
-          file.fileType == "video/ogg" ||
-          file.fileType == "video/mp4" ? (
+          file.fileType === "video/x-msvideo" ||
+          file.fileType === "video/mpeg" ||
+          file.fileType === "video/ogg" ||
+          file.fileType === "video/mp4" ? (
             <div className="col-md-12 mt-3">
               <p>
                 <video controls style={{ width: "50%", height: "50%" }}>
@@ -360,7 +360,7 @@ class ResourceDetails extends Component {
                 Download
               </button>
               {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <button
                       data-toggle="modal"
                       data-target="#deleteFileModal"

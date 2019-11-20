@@ -141,7 +141,7 @@ class EditTherapeuticNote extends Component {
     }
   };
   onChange = e => {
-    if (e.target.name == "files") {
+    if (e.target.name === "files") {
       this.setState({ files: e.target.files });
       this.setState({ filename: e.target.files[0].name });
     } else {
@@ -173,13 +173,6 @@ class EditTherapeuticNote extends Component {
     } = this.state;
 
     let { therapist, parent } = this.props.patient;
-
-    // let users_ids = [];
-    // if (this.props.note.availableTo) {
-    //   this.props.note.availableTo.forEach(user => {
-    //     users_ids.push(user._id);
-    //   });
-    // }
 
     return (
       <div>

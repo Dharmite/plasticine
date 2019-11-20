@@ -26,7 +26,7 @@ class Sidebar extends Component {
           <div className="sidebar">
             {/* Sidebar user panel (optional) */}
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-              {this.props.user.userType == "therapist" ? (
+              {this.props.user.userType === "therapist" ? (
                 <div className="image">
                   <img
                     src={doctor_pic}
@@ -36,7 +36,7 @@ class Sidebar extends Component {
                 </div>
               ) : null}
 
-              {this.props.user.userType == "admin" ? (
+              {this.props.user.userType === "admin" ? (
                 <div className="image">
                   <img
                     src={user_pic}
@@ -46,7 +46,7 @@ class Sidebar extends Component {
                 </div>
               ) : null}
 
-              {this.props.user.userType == "parent" ? (
+              {this.props.user.userType === "parent" ? (
                 <div className="image">
                   <img
                     src={user_pic}
@@ -57,17 +57,17 @@ class Sidebar extends Component {
               ) : null}
 
               <div className="info">
-                {this.props.user.userType == "therapist" ? (
+                {this.props.user.userType === "therapist" ? (
                   <Link to="/terapeuta-dashboard" className="d-block">
                     {this.props.user ? this.props.user.name : null}
                   </Link>
                 ) : null}
-                {this.props.user.userType == "admin" ? (
+                {this.props.user.userType === "admin" ? (
                   <Link to="/admin-dashboard" className="d-block">
                     {this.props.user ? this.props.user.name : null}
                   </Link>
                 ) : null}
-                {this.props.user.userType == "parent" ? (
+                {this.props.user.userType === "parent" ? (
                   <Link to="/parente-dashboard" className="d-block">
                     {this.props.user ? this.props.user.name : null}
                   </Link>
@@ -75,7 +75,7 @@ class Sidebar extends Component {
               </div>
             </div>
             {/* Sidebar Menu */}
-            {this.props.user.userType == "admin" ? (
+            {this.props.user.userType === "admin" ? (
               <nav className="mt-2">
                 <ul
                   className="nav nav-pills nav-sidebar flex-column"
@@ -106,7 +106,7 @@ class Sidebar extends Component {
                 </ul>
               </nav>
             ) : null}
-            {this.props.user.userType == "therapist" ? (
+            {this.props.user.userType === "therapist" ? (
               <nav className="mt-2">
                 <ul
                   className="nav nav-pills nav-sidebar flex-column"

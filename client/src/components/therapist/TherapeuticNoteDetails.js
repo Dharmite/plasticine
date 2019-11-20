@@ -109,17 +109,17 @@ class TherapeuticNoteDetails extends Component {
       hasImageFiles =
         files.filter(
           file =>
-            file.fileType == "image/jpeg" ||
-            file.fileType == "image/png" ||
-            file.fileType == "image/gif"
+            file.fileType === "image/jpeg" ||
+            file.fileType === "image/png" ||
+            file.fileType === "image/gif"
         ).length > 0;
     }
 
     let image_files = files
       ? files.map(file =>
-          file.fileType == "image/jpeg" ||
-          file.fileType == "image/png" ||
-          file.fileType == "image/gif" ? (
+          file.fileType === "image/jpeg" ||
+          file.fileType === "image/png" ||
+          file.fileType === "image/gif" ? (
             <div className="card col-md-5 mt-4 mr-5">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${file.filename}`}
@@ -131,7 +131,7 @@ class TherapeuticNoteDetails extends Component {
               />
               <div className="card-footer bg-white">
                 {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <div className="row">
                       <div className="col-md-3 col-sm-4 border-right">
                         <div className="bg-white text-center">
@@ -220,19 +220,19 @@ class TherapeuticNoteDetails extends Component {
       hasAudioFiles =
         files.filter(
           file =>
-            file.fileType == "audio/aac" ||
-            file.fileType == "audio/ogg" ||
-            file.fileType == "audio/x-wav" ||
-            file.fileType == "audio/mp3"
+            file.fileType === "audio/aac" ||
+            file.fileType === "audio/ogg" ||
+            file.fileType === "audio/x-wav" ||
+            file.fileType === "audio/mp3"
         ).length > 0;
     }
 
     let audio_files = files
       ? files.map(file =>
-          file.fileType == "audio/aac" ||
-          file.fileType == "audio/ogg" ||
-          file.fileType == "audio/x-wav" ||
-          file.fileType == "audio/mp3" ? (
+          file.fileType === "audio/aac" ||
+          file.fileType === "audio/ogg" ||
+          file.fileType === "audio/x-wav" ||
+          file.fileType === "audio/mp3" ? (
             <div className="col-md-12 mt-3">
               <p>
                 <audio controls>
@@ -257,7 +257,7 @@ class TherapeuticNoteDetails extends Component {
                   Download
                 </button>
                 {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <button
                       data-toggle="modal"
                       data-target="#deleteFileModal"
@@ -280,14 +280,14 @@ class TherapeuticNoteDetails extends Component {
       hasApplicationFiles =
         files.filter(
           file =>
-            file.fileType == "application/pdf" ||
-            file.fileType == "application/msword"
+            file.fileType === "application/pdf" ||
+            file.fileType === "application/msword"
         ).length > 0;
     }
     let application_files = files
       ? files.map(file =>
-          file.fileType == "application/pdf" ||
-          file.fileType == "application/msword" ? (
+          file.fileType === "application/pdf" ||
+          file.fileType === "application/msword" ? (
             <div className="col-md-12 mt-3">
               <p>
                 {file.originalname}{" "}
@@ -303,7 +303,7 @@ class TherapeuticNoteDetails extends Component {
                   Download
                 </button>
                 {user ? (
-                  user._id == this.props.user.id ? (
+                  user._id === this.props.user.id ? (
                     <button
                       data-toggle="modal"
                       data-target="#deleteFileModal"
@@ -326,19 +326,19 @@ class TherapeuticNoteDetails extends Component {
       hasVideoFiles =
         files.filter(
           file =>
-            file.fileType == "video/x-msvideo" ||
-            file.fileType == "video/mpeg" ||
-            file.fileType == "video/ogg" ||
-            file.fileType == "video/mp4"
+            file.fileType === "video/x-msvideo" ||
+            file.fileType === "video/mpeg" ||
+            file.fileType === "video/ogg" ||
+            file.fileType === "video/mp4"
         ).length > 0;
     }
 
     let video_files = files
       ? files.map(file =>
-          file.fileType == "video/x-msvideo" ||
-          file.fileType == "video/mpeg" ||
-          file.fileType == "video/ogg" ||
-          file.fileType == "video/mp4" ? (
+          file.fileType === "video/x-msvideo" ||
+          file.fileType === "video/mpeg" ||
+          file.fileType === "video/ogg" ||
+          file.fileType === "video/mp4" ? (
             <div className="col-md-12">
               <p>
                 <video controls style={{ width: "350px", height: "250px" }}>
@@ -361,7 +361,7 @@ class TherapeuticNoteDetails extends Component {
                 Download
               </button>
               {user ? (
-                user._id == this.props.user.id ? (
+                user._id === this.props.user.id ? (
                   <button
                     data-toggle="modal"
                     data-target="#deleteFileModal"
@@ -634,7 +634,7 @@ class TherapeuticNoteDetails extends Component {
                       style={{ backgroundColor: "white" }}
                     >
                       <div className="card-comment">
-                        {elem.user.userType == "therapist" ? (
+                        {elem.user.userType === "therapist" ? (
                           <img
                             className="img-circle img-sm"
                             src={doctor_pic}
@@ -649,7 +649,7 @@ class TherapeuticNoteDetails extends Component {
                         )}
 
                         <div className="comment-text">
-                          {elem.user.userType == "therapist" ? (
+                          {elem.user.userType === "therapist" ? (
                             <span className="username">
                               <Link
                                 style={{ color: "black" }}

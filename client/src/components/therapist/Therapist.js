@@ -23,7 +23,7 @@ class Therapist extends Component {
     if (show_patients.length > 4) {
       show_patients = show_patients.slice(0, 3);
     }
-    if (show_patients.length == 4) {
+    if (show_patients.length === 4) {
       show_patients = show_patients.slice(0, 4);
     }
 
@@ -38,7 +38,7 @@ class Therapist extends Component {
               <Link to={`/terapeuta/${_id}`}>
                 <div className="card-widget widget-user-2">
                   {account_status ? (
-                    account_status == "active" ? (
+                    account_status === "active" ? (
                       <div
                         className="widget-user-header widget-user-header-custom"
                         style={{ backgroundColor: "#FFE4B5", color:"black" }}
@@ -132,7 +132,7 @@ class Therapist extends Component {
               ))}
 
               {show_patients ? (
-                patient.length == 0 ? (
+                patient.length === 0 ? (
                   <h4 className="text-center">Sem utentes</h4>
                 ) : null
               ) : null}

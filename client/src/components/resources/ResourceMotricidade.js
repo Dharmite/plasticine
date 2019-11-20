@@ -20,24 +20,24 @@ class ResourceMotricidade extends Component {
 
     if (this.props.motricidade) {
       esquema = this.props.motricidade.filter(
-        resource => resource.subCategory == "Esquema Corporal"
+        resource => resource.subCategory === "Esquema Corporal"
       );
     }
     if (this.props.motricidade) {
       oculo = this.props.motricidade.filter(
-        resource => resource.subCategory == "Coordenação óculo-manual"
+        resource => resource.subCategory === "Coordenação óculo-manual"
       );
     }
 
     if (this.props.motricidade) {
       grafo = this.props.motricidade.filter(
         resource =>
-          resource.subCategory == "Coordenação grafo-manual (pré-escrita)"
+          resource.subCategory === "Coordenação grafo-manual (pré-escrita)"
       );
     }
     if (this.props.motricidade) {
       precisao = this.props.motricidade.filter(
-        resource => resource.subCategory == "Precisão Manual"
+        resource => resource.subCategory === "Precisão Manual"
       );
     }
 

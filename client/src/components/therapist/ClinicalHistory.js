@@ -75,7 +75,7 @@ class ClinicalHistory extends Component {
         <div className="row">
           {this.props.user ? (
             user ? (
-              this.props.user.id == user._id ? (
+              this.props.user.id === user._id ? (
                 <div className="card card-body">
                   <div className="col-lg-12 col-md-12 col-sm-12">
                     <div className="row" style={{ display: "flex" }}>
@@ -101,7 +101,7 @@ class ClinicalHistory extends Component {
 
                       {user ? (
                         this.props.auth ? (
-                          this.props.auth.user.id == user._id ? (
+                          this.props.auth.user.id === user._id ? (
                             <div className="description-block mr-3">
                               <Link
                                 className="btn"
@@ -118,7 +118,7 @@ class ClinicalHistory extends Component {
                       <div className="description-block mr-3">
                         {user ? (
                           this.props.auth ? (
-                            this.props.auth.user.id == user._id ? (
+                            this.props.auth.user.id === user._id ? (
                               <button
                                 className="btn"
                                 data-toggle="modal"
@@ -181,7 +181,7 @@ class ClinicalHistory extends Component {
                       </div>
                       {user ? (
                         this.props.auth ? (
-                          this.props.auth.user.id == user._id ? (
+                          this.props.auth.user.id === user._id ? (
                             <div className="description-block mr-3">
                               <Link
                                 className="btn"
@@ -197,7 +197,7 @@ class ClinicalHistory extends Component {
                       <div className="description-block mr-3">
                         {user ? (
                           this.props.auth ? (
-                            this.props.auth.user.id == user._id ? (
+                            this.props.auth.user.id === user._id ? (
                               <button
                                 className="btn"
                                 data-toggle="modal"

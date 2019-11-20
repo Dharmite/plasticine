@@ -74,31 +74,31 @@ class AddResource extends Component {
       subCategory: e.target.innerHTML
     }, () => {
 
-      if(this.state.subCategory == "Esquema Corporal" || this.state.subCategory == "Coordenação óculo-manual" || this.state.subCategory == "Coordenação grafo-manual (pré-escrita)" || this.state.subCategory == "Precisão Manual"){
+      if(this.state.subCategory === "Esquema Corporal" || this.state.subCategory === "Coordenação óculo-manual" || this.state.subCategory === "Coordenação grafo-manual (pré-escrita)" || this.state.subCategory === "Precisão Manual"){
         this.setState({category: "Motricidade"})
       }
 
-      else if(this.state.subCategory == "Percepção Visual" || this.state.subCategory == "Percepção Auditiva" || this.state.subCategory == "Espacial" || this.state.subCategory == "Contrastes" || this.state.subCategory == "Temporal"){
+      else if(this.state.subCategory === "Percepção Visual" || this.state.subCategory === "Percepção Auditiva" || this.state.subCategory === "Espacial" || this.state.subCategory === "Contrastes" || this.state.subCategory === "Temporal"){
         this.setState({category: "Percepção"})
       }
 
-      else if(this.state.subCategory == "Compreensão Verbal" || this.state.subCategory == "Raciocínio Verbal" || this.state.subCategory == "Consciência Fonológica" || this.state.subCategory == "Segmentação Silábica e fonológica" || this.state.subCategory == "Fluência Verbal" || this.state.subCategory == "Leitura" || this.state.subCategory == "Escrita"){
+      else if(this.state.subCategory === "Compreensão Verbal" || this.state.subCategory === "Raciocínio Verbal" || this.state.subCategory === "Consciência Fonológica" || this.state.subCategory === "Segmentação Silábica e fonológica" || this.state.subCategory === "Fluência Verbal" || this.state.subCategory === "Leitura" || this.state.subCategory === "Escrita"){
         this.setState({category: "Desenvolvimento Verbal"})
       }
 
-      else if(this.state.subCategory == "Memória Auditiva" || this.state.subCategory == "Memória Visual" || this.state.subCategory == "Verbal e Numérica Repetitiva" || this.state.subCategory == "Verbal e Numérica Significativa"){
+      else if(this.state.subCategory === "Memória Auditiva" || this.state.subCategory === "Memória Visual" || this.state.subCategory === "Verbal e Numérica Repetitiva" || this.state.subCategory === "Verbal e Numérica Significativa"){
         this.setState({category: "Memória"})
       }
 
-      else if(this.state.subCategory == "Conceitos Numéricos Básicos" || this.state.subCategory == "Cálculo" || this.state.subCategory == "Raciocínio Abstrato"){
+      else if(this.state.subCategory === "Conceitos Numéricos Básicos" || this.state.subCategory === "Cálculo" || this.state.subCategory === "Raciocínio Abstrato"){
         this.setState({category: "Áreas Numéricas"})
       }
 
-      else if(this.state.subCategory == "Área Emocional-Afetiva" || this.state.subCategory == "Área Social"){
+      else if(this.state.subCategory === "Área Emocional-Afetiva" || this.state.subCategory === "Área Social"){
         this.setState({category: "Desenvolvimento Emocional-Social"})
       }
 
-      else if(this.state.subCategory == "Autonomia" || this.state.subCategory == "Escola" || this.state.subCategory == "Supermercado" || this.state.subCategory=="Cabeleireiro" || this.state.subCategory == "Centro Comercial" || this.state.subCategory == "Parque Infantil" || this.state.subCategory == "Livraria" || this.state.subCategory == "Loja de Roupa" || this.state.subCategory == "Hospital / Centro Médico"){
+      else if(this.state.subCategory === "Autonomia" || this.state.subCategory === "Escola" || this.state.subCategory === "Supermercado" || this.state.subCategory==="Cabeleireiro" || this.state.subCategory === "Centro Comercial" || this.state.subCategory === "Parque Infantil" || this.state.subCategory === "Livraria" || this.state.subCategory === "Loja de Roupa" || this.state.subCategory === "Hospital / Centro Médico"){
         this.setState({category: "AVD's"})
       }
 
@@ -108,7 +108,7 @@ class AddResource extends Component {
 
   };
   onChange = e => {
-    if (e.target.name == "files") {
+    if (e.target.name === "files") {
       this.setState({ files: e.target.files });
       this.setState({ filename: e.target.files[0].name });
     } else {

@@ -216,7 +216,7 @@ class AddTherapist extends Component {
                       options={options}
                     />
 
-                    {this.state.specialty == "Outra" ? (
+                    {this.state.specialty === "Outra" ? (
                       // <TextInputGroup
                       //   label="Especialidade"
                       //   name="other"
@@ -234,14 +234,14 @@ class AddTherapist extends Component {
                           className={classnames(
                             "form-control form-control-lg",
                             {
-                              "is-invalid": (errors.other && this.state.specialty =="Outra")
+                              "is-invalid": (errors.other && this.state.specialty ==="Outra")
                             }
                           )}
                           placeholder="Insira a especialidade médica"
                           value={this.state.other}
                           onChange={this.onChange}
                         />
-                        {this.state.specialty == "Outra" && errors.other && (
+                        {this.state.specialty === "Outra" && errors.other && (
                           <div className="invalid-feedback">{errors.other}</div>
                         )}
                       </div>

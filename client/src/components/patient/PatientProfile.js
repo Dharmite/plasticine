@@ -110,8 +110,8 @@ class PatientProfile extends Component {
     e.preventDefault();
 
     if (
-      this.state.selectedTherapist == "Escolha um especialista" ||
-      this.state.selectedTherapist == ""
+      this.state.selectedTherapist === "Escolha um especialista" ||
+      this.state.selectedTherapist === ""
     ) {
       this.setState({ errors: { err: "Escolha um utilizador valido" } });
     } else {
@@ -123,7 +123,7 @@ class PatientProfile extends Component {
           let a = true;
 
           this.props.patientTherapists.forEach(element => {
-            if (element._id == therapist_id) {
+            if (element._id === therapist_id) {
               this.setState({
                 errors: { err: "Utilizador já está associado" }
               });
@@ -153,8 +153,8 @@ class PatientProfile extends Component {
     e.preventDefault();
 
     if (
-      this.state.selectedParent == "Escolha um familiar" ||
-      this.state.selectedParent == ""
+      this.state.selectedParent === "Escolha um familiar" ||
+      this.state.selectedParent === ""
     ) {
       this.setState({ errors: { err: "Escolha um utilizador valido" } });
     } else {
@@ -166,7 +166,7 @@ class PatientProfile extends Component {
           let a = true;
 
           this.props.patientParents.forEach(element => {
-            if (element._id == parent_id) {
+            if (element._id === parent_id) {
               this.setState({
                 errors: { err: "Utilizador já está associado" }
               });
@@ -216,10 +216,10 @@ class PatientProfile extends Component {
 
     let { therapists } = this.props;
 
-    therapists = therapists.filter(user => user.account_status == "active");
+    therapists = therapists.filter(user => user.account_status === "active");
 
     let { parents } = this.props;
-    parents = parents.filter(user => user.account_status == "active");
+    parents = parents.filter(user => user.account_status === "active");
 
     const { errors } = this.state;
 
@@ -227,10 +227,10 @@ class PatientProfile extends Component {
     let { patientParents } = this.props;
 
     patientParents = patientParents.filter(
-      user => user.account_status == "active"
+      user => user.account_status === "active"
     );
     patientTherapists = patientTherapists.filter(
-      user => user.account_status == "active"
+      user => user.account_status === "active"
     );
 
     let shared_notes = [];
@@ -240,7 +240,7 @@ class PatientProfile extends Component {
         if (note.availableTo) {
           note.availableTo.forEach(elem => {
             if (
-              elem == this.props.auth.user.id &&
+              elem === this.props.auth.user.id &&
               note.user._id !== this.props.auth.user.id
             ) {
               shared_notes.push(note);
@@ -258,7 +258,7 @@ class PatientProfile extends Component {
         if (note.availableTo) {
           note.availableTo.forEach(elem => {
             if (
-              elem == this.props.auth.user.id &&
+              elem === this.props.auth.user.id &&
               note.user._id !== this.props.auth.user.id
             ) {
               shared_notes_clinical.push(note);
@@ -275,7 +275,7 @@ class PatientProfile extends Component {
     if (this.props.auth) {
       if (this.props.auth.user.userType == "therapist") {
         patientTherapists.forEach(element => {
-          if (element._id == this.props.auth.user.id) {
+          if (element._id === this.props.auth.user.id) {
             therapist_auth = true;
           }
         });
@@ -283,7 +283,7 @@ class PatientProfile extends Component {
 
       if (this.props.auth.user.userType == "parent") {
         patientParents.forEach(element => {
-          if (element._id == this.props.auth.user.id) {
+          if (element._id === this.props.auth.user.id) {
             parent_auth = true;
           }
         });
@@ -291,14 +291,14 @@ class PatientProfile extends Component {
     }
 
     if (
-      therapist_auth == true ||
-      parent_auth == true ||
-      this.props.auth.user.userType == "admin"
+      therapist_auth === true ||
+      parent_auth === true ||
+      this.props.auth.user.userType === "admin"
     ) {
       if (
-        therapist_auth == true ||
-        parent_auth == true ||
-        this.props.auth.user.userType == "admin"
+        therapist_auth === true ||
+        parent_auth === true ||
+        this.props.auth.user.userType === "admin"
       ) {
         return (
           <div>
@@ -613,7 +613,7 @@ class PatientProfile extends Component {
                                       showParents: false
                                     },
                                     () => {
-                                      if (this.state.showTherapists == true) {
+                                      if (this.state.showTherapists === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "#E8E8E8";
@@ -621,7 +621,7 @@ class PatientProfile extends Component {
                                           "associateParent"
                                         ).style.backgroundColor = "white";
                                       }
-                                      if (this.state.showParents == true) {
+                                      if (this.state.showParents === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "white";
@@ -630,8 +630,8 @@ class PatientProfile extends Component {
                                         ).style.backgroundColor = "#E8E8E8";
                                       }
                                       if (
-                                        this.state.showParents == false &&
-                                        this.state.showTherapists == false
+                                        this.state.showParents === false &&
+                                        this.state.showTherapists === false
                                       ) {
                                         document.getElementById(
                                           "associateTherapist"
@@ -662,7 +662,7 @@ class PatientProfile extends Component {
                                       showTherapists: false
                                     },
                                     () => {
-                                      if (this.state.showTherapists == true) {
+                                      if (this.state.showTherapists === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "#E8E8E8";
@@ -670,7 +670,7 @@ class PatientProfile extends Component {
                                           "associateParent"
                                         ).style.backgroundColor = "white";
                                       }
-                                      if (this.state.showParents == true) {
+                                      if (this.state.showParents === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "white";
@@ -679,8 +679,8 @@ class PatientProfile extends Component {
                                         ).style.backgroundColor = "#E8E8E8";
                                       }
                                       if (
-                                        this.state.showParents == false &&
-                                        this.state.showTherapists == false
+                                        this.state.showParents === false &&
+                                        this.state.showTherapists === false
                                       ) {
                                         document.getElementById(
                                           "associateTherapist"
@@ -733,7 +733,7 @@ class PatientProfile extends Component {
                                       showParents: false
                                     },
                                     () => {
-                                      if (this.state.showTherapists == true) {
+                                      if (this.state.showTherapists === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "#E8E8E8";
@@ -741,7 +741,7 @@ class PatientProfile extends Component {
                                           "associateParent"
                                         ).style.backgroundColor = "white";
                                       }
-                                      if (this.state.showParents == true) {
+                                      if (this.state.showParents === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "white";
@@ -750,8 +750,8 @@ class PatientProfile extends Component {
                                         ).style.backgroundColor = "#E8E8E8";
                                       }
                                       if (
-                                        this.state.showParents == false &&
-                                        this.state.showTherapists == false
+                                        this.state.showParents === false &&
+                                        this.state.showTherapists === false
                                       ) {
                                         document.getElementById(
                                           "associateTherapist"
@@ -781,7 +781,7 @@ class PatientProfile extends Component {
                                       showTherapists: false
                                     },
                                     () => {
-                                      if (this.state.showTherapists == true) {
+                                      if (this.state.showTherapists === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "#E8E8E8";
@@ -789,7 +789,7 @@ class PatientProfile extends Component {
                                           "associateParent"
                                         ).style.backgroundColor = "white";
                                       }
-                                      if (this.state.showParents == true) {
+                                      if (this.state.showParents === true) {
                                         document.getElementById(
                                           "associateTherapist"
                                         ).style.backgroundColor = "white";
@@ -798,8 +798,8 @@ class PatientProfile extends Component {
                                         ).style.backgroundColor = "#E8E8E8";
                                       }
                                       if (
-                                        this.state.showParents == false &&
-                                        this.state.showTherapists == false
+                                        this.state.showParents === false &&
+                                        this.state.showTherapists === false
                                       ) {
                                         document.getElementById(
                                           "associateTherapist"
@@ -1069,7 +1069,7 @@ class PatientProfile extends Component {
                                         therapeuticNote.length > 0 ? (
                                           therapeuticNote.map(note =>
                                             note.user ? (
-                                              note.user._id ==
+                                              note.user._id ===
                                               this.props.auth.user.id ? (
                                                 <TherapeuticNote
                                                   key={note.id}
@@ -1092,10 +1092,10 @@ class PatientProfile extends Component {
                                       aria-labelledby="availableTo-tab"
                                     >
                                       {therapeuticNote ? (
-                                        shared == true ? (
+                                        shared === true ? (
                                           therapeuticNote.map(note =>
                                             note.availableTo.map(elem =>
-                                              elem == this.props.auth.user.id &&
+                                              elem === this.props.auth.user.id &&
                                               note.user._id !==
                                                 this.props.auth.user.id ? (
                                                 <TherapeuticNote
@@ -1123,7 +1123,7 @@ class PatientProfile extends Component {
                                         clinicalHistory.length > 0 ? (
                                           clinicalHistory.map(note =>
                                             note.user ? (
-                                              note.user._id ==
+                                              note.user._id ===
                                               this.props.auth.user.id ? (
                                                 <ClinicalHistory
                                                   key={note.id}
@@ -1147,10 +1147,10 @@ class PatientProfile extends Component {
                                       aria-labelledby="clinicalAvailableTo-tab"
                                     >
                                       {clinicalHistory ? (
-                                        shared_clinical == true ? (
+                                        shared_clinical === true ? (
                                           clinicalHistory.map(note =>
                                             note.availableTo.map(elem =>
-                                              elem == this.props.auth.user.id &&
+                                              elem === this.props.auth.user.id &&
                                               note.user._id !==
                                                 this.props.auth.user.id ? (
                                                 <ClinicalHistory
@@ -1238,7 +1238,7 @@ class PatientProfile extends Component {
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
                                                   {elem ? (
-                                                    elem.user_name ==
+                                                    elem.user_name ===
                                                     this.props.auth.user
                                                       .name ? (
                                                       <div className="row">
@@ -1381,7 +1381,7 @@ class PatientProfile extends Component {
                                       {therapeuticNote ? (
                                         therapeuticNote.length > 0 ? (
                                           therapeuticNote.map(note =>
-                                            note.user._id ==
+                                            note.user._id ===
                                             this.props.auth.user.id ? (
                                               <TherapeuticNote
                                                 key={note.id}
@@ -1403,10 +1403,10 @@ class PatientProfile extends Component {
                                       aria-labelledby="availableTo-tab"
                                     >
                                       {therapeuticNote ? (
-                                        shared == true ? (
+                                        shared === true ? (
                                           therapeuticNote.map(note =>
                                             note.availableTo.map(elem =>
-                                              elem == this.props.auth.user.id &&
+                                              elem === this.props.auth.user.id &&
                                               note.user._id !==
                                                 this.props.auth.user.id ? (
                                                 <TherapeuticNote
@@ -1547,7 +1547,7 @@ class PatientProfile extends Component {
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
                                                   {elem ? (
-                                                    elem.user_name ==
+                                                    elem.user_name ===
                                                     this.props.auth.user
                                                       .name ? (
                                                       <div className="row">
@@ -1855,7 +1855,7 @@ class PatientProfile extends Component {
                                                     <b>Horario:</b> {elem.time}
                                                   </p>
                                                   {elem ? (
-                                                    elem.user_name ==
+                                                    elem.user_name ===
                                                     this.props.auth.user
                                                       .name ? (
                                                       <div className="row">
@@ -2149,7 +2149,7 @@ class PatientProfile extends Component {
                         </p>
                         <p>
                           {this.props.auth ? (
-                            this.props.auth.user.userType == "therapist" ? (
+                            this.props.auth.user.userType === "therapist" ? (
                               <Link to="/terapeuta-dashboard">
                                 Entretanto poderá voltar ao seu dashboard.
                               </Link>
@@ -2158,7 +2158,7 @@ class PatientProfile extends Component {
                         </p>
                         <p>
                           {this.props.auth ? (
-                            this.props.auth.user.userType == "parent" ? (
+                            this.props.auth.user.userType === "parent" ? (
                               <Link to="/parente-dashboard">
                                 Entretanto poderá voltar ao seu dashboard.
                               </Link>

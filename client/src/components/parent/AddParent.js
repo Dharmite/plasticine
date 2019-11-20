@@ -96,10 +96,7 @@ class AddParent extends Component {
       name,
       email,
       password,
-      password2,
-      birthday,
       relationship,
-      work_status,
       errors
     } = this.state;
 

@@ -19,17 +19,17 @@ class ResourceNumerica extends Component {
 
     if (this.props.areas_numericas) {
       conceitos = this.props.areas_numericas.filter(
-        resource => resource.subCategory == "Conceitos Numéricos Básicos"
+        resource => resource.subCategory === "Conceitos Numéricos Básicos"
       );
     }
     if (this.props.areas_numericas) {
       calculo = this.props.areas_numericas.filter(
-        resource => resource.subCategory == "Cálculo"
+        resource => resource.subCategory === "Cálculo"
       );
     }
     if (this.props.areas_numericas) {
       raciocinio = this.props.areas_numericas.filter(
-        resource => resource.subCategory == "Raciocínio Abstrato"
+        resource => resource.subCategory === "Raciocínio Abstrato"
       );
     }
 

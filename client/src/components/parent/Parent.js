@@ -16,7 +16,7 @@ class Parent extends Component {
     if (show_patients.length > 4) {
       show_patients = show_patients.slice(0, 3);
     }
-    if (show_patients.length == 4) {
+    if (show_patients.length === 4) {
       show_patients = show_patients.slice(0, 4);
     }
 
@@ -32,7 +32,7 @@ class Parent extends Component {
             <Link to={`/parente/${_id}`}>
               <div className="card-widget widget-user-2">
                 {account_status ? (
-                  account_status == "active" ? (
+                  account_status === "active" ? (
                     <div className="widget-user-header widget-user-header-custom bg-info">
                       <div className="widget-user-image">
                         <img
@@ -152,7 +152,7 @@ class Parent extends Component {
               ))}
 
               {show_patients ? (
-                patient.length == 0 ? (
+                patient.length === 0 ? (
                   <h4 className="text-center">Sem utentes</h4>
                 ) : null
               ) : null}

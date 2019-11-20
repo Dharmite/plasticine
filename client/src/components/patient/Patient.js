@@ -17,7 +17,7 @@ class Patient extends Component {
     } = this.props.patient;
 
     let show_therapists = therapist.filter(
-      user => user.account_status == "active"
+      user => user.account_status === "active"
     );
 
     // if(show_therapists.length >= 0 && show_therapists.length < 4){
@@ -27,7 +27,7 @@ class Patient extends Component {
     if (show_therapists.length > 4) {
       show_therapists = show_therapists.slice(0, 3);
     }
-    if (show_therapists.length == 4) {
+    if (show_therapists.length === 4) {
       show_therapists = show_therapists.slice(0, 4);
     }
 
@@ -118,7 +118,7 @@ class Patient extends Component {
               ))}
 
               {show_therapists ? (
-                therapist.length == 0 ? (
+                therapist.length === 0 ? (
                   <h4 className="text-center">Sem especialistas</h4>
                 ) : null
               ) : null}

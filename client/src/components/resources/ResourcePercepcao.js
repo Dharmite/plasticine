@@ -21,29 +21,29 @@ class ResourcePercepcao extends Component {
 
     if (this.props.percepcao) {
       visual = this.props.percepcao.filter(
-        resource => resource.subCategory == "Percepção Visual"
+        resource => resource.subCategory === "Percepção Visual"
       );
     }
     if (this.props.percepcao) {
       auditiva = this.props.percepcao.filter(
-        resource => resource.subCategory == "Percepção Auditiva"
+        resource => resource.subCategory === "Percepção Auditiva"
       );
     }
 
     if (this.props.percepcao) {
       espacial = this.props.percepcao.filter(
-        resource => resource.subCategory == "Espacial"
+        resource => resource.subCategory === "Espacial"
       );
     }
     if (this.props.percepcao) {
       contrastes = this.props.percepcao.filter(
-        resource => resource.subCategory == "Contrastes"
+        resource => resource.subCategory === "Contrastes"
       );
     }
 
     if (this.props.percepcao) {
       temporal = this.props.percepcao.filter(
-        resource => resource.subCategory == "Temporal"
+        resource => resource.subCategory === "Temporal"
       );
     }
 

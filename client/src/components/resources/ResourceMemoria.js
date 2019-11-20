@@ -20,22 +20,22 @@ class ResourceMemoria extends Component {
 
     if (this.props.memoria) {
       visual = this.props.memoria.filter(
-        resource => resource.subCategory == "Memória Visual"
+        resource => resource.subCategory === "Memória Visual"
       );
     }
     if (this.props.memoria) {
       auditiva = this.props.memoria.filter(
-        resource => resource.subCategory == "Memória Auditiva"
+        resource => resource.subCategory === "Memória Auditiva"
       );
     }
     if (this.props.memoria) {
       numerica_repetitiva = this.props.memoria.filter(
-        resource => resource.subCategory == "Verbal e Numérica Repetitiva"
+        resource => resource.subCategory === "Verbal e Numérica Repetitiva"
       );
     }
     if (this.props.memoria) {
       numerica_significativa = this.props.memoria.filter(
-        resource => resource.subCategory == "Verbal e Numérica Significativa"
+        resource => resource.subCategory === "Verbal e Numérica Significativa"
       );
     }
 
